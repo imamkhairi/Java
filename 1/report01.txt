@@ -1,0 +1,43 @@
+4J　8番　イマム　カイリ　ルビス　テーマ01　レポート
+
+課題1. 
+[p214071@java22 Java]$ cc koza_all.c -o koza_all
+[p214071@java22 Java]$ ./koza_all 
+利息は50.000000
+
+課題2. 
+struct　使わないで、class を使いました。
+全ての c の関数は一つの class になりました。
+malloc　使わないで、New を使いました。
+c のvoid Koza_syokika 関数は class の constructor として使いました。
+
+課題3.
+[p214071@java22 Java]$ javac Koza.java KozaApp.java
+[p214071@java22 Java]$ java KozaApp
+利息は50.0
+
+改造:
+riritsu = 0.004
+my_koza.gankin = 350000
+my_koza.risoku(6)
+double kekka, double kotae 変数を消す。
+
+[p214071@java22 Java]$ java KozaApp
+利息は700.0
+
+課題４
+1. int型の変数をdouble型に変わる。
+
+2. mallocはポインターを指している先にメモリを割り当てられる。与えられたメモリの大きさは自分で制御できる。
+my_koza = (struct Koza *)malloc(sizeof(struct Koza));
+この場合 sizeof を使うので与えられたメモリの大きさは struct Koza の大きさと同じ大きさになる。
+
+3. -> 演算子(arrow operator)は struct のメンバーをアクセスする。
+koza->riritsu = 0.002. 
+この場合には ririrtu という　koza struct のメンバーアクセスして、0.002の値を与える。
+
+４. ポインターを使わないと、関数Koza_syokika を main に実行する時に全体の struct koza　を作ってしまった。
+でも、この関数の目的なのはただ一つの struct のメンバーに値を与えるだけである。だから、全体全体の struct koza　作る必要はない。
+
+5. riritsu　は銀行からの政策で、最初から固定的である。それに対して、gankin は客によって違う。
+だから、riritsu　は関数Koza_syokikaの中で初期化で、gankinはmain関数で値を代入している

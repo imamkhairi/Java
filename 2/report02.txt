@@ -1,0 +1,31 @@
+4J 08 イマムカイリルビス　テーマ02　レポート
+
+課題２
+class KozaApp2 {
+    public static void main(String[] args) {
+        Koza my_koza; 
+        my_koza = new Koza();
+
+        my_koza.gankin = Integer.parseInt(args[0]);
+        System.out.println("利息は" + my_koza.risoku(3));
+
+        System.exit(0);
+    }
+}
+
+課題３
+Cのコマンドライン引数は
+c itu command linenya mulai dari awal sedangkan java itu dari setelah command untuk eksekusi gt
+ntar coba kasih for di java juga
+
+課題４
+ini karena di java variabelnya menjadi variabel lokal yang berada dalam suatu class
+artinya selama operasi yang dilakukan itu masih di dalam class itu, maka pointer arrow operator gt gak perlu
+
+課題５
+suatu cara dimana kita membuat suatu object yang memiliki variabel lokal dan fungsi nya sendiri.
+semua atribut yang dimiliki tadi hanya bisa diakses oleh class tersebut, kecuali variabelnya dijadikan global variabel.
+
+課題６
+coba angka2nya ubah jadi input command line aja
+における
