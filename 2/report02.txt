@@ -29,3 +29,5 @@ semua atribut yang dimiliki tadi hanya bisa diakses oleh class tersebut, kecuali
 課題６
 coba angka2nya ubah jadi input command line aja
 における
+
+apashi cuk
