@@ -19,15 +19,11 @@ c itu command linenya mulai dari awal sedangkan java itu dari setelah command un
 ntar coba kasih for di java juga
 
 課題４
-ini karena di java variabelnya menjadi variabel lokal yang berada dalam suatu class
-artinya selama operasi yang dilakukan itu masih di dalam class itu, maka pointer arrow operator gt gak perlu
+その変数はプライベート変数として扱われるからである。したがって、そのクラスの中にある限り何かしたいと変数をアクセスするためには矢印演算子とか必要ない。
 
 課題５
-suatu cara dimana kita membuat suatu object yang memiliki variabel lokal dan fungsi nya sendiri.
-semua atribut yang dimiliki tadi hanya bisa diakses oleh class tersebut, kecuali variabelnya dijadikan global variabel.
+classはprivate変数と関数を持つオブジェクトを作成方法である。classからインスタンスを作ることができる。そのインスタンスの中身はclassの中身と全く同じである。
 
 課題６
 coba angka2nya ubah jadi input command line aja
 における
-
-apashi cuk
