@@ -14,9 +14,7 @@ class KozaApp2 {
 }
 
 課題３
-Cのコマンドライン引数は
-c itu command linenya mulai dari awal sedangkan java itu dari setelah command untuk eksekusi gt
-ntar coba kasih for di java juga
+Cのコマンドライン引数は最初のコマンドラインから数えられる。それに対して、Javaのコマンドライン引数は実行コマンドの後から数えられる。
 
 課題４
 その変数はプライベート変数として扱われるからである。したがって、そのクラスの中にある限り何かしたいと変数をアクセスするためには矢印演算子とか必要ない。
@@ -25,5 +23,4 @@ ntar coba kasih for di java juga
 classはprivate変数と関数を持つオブジェクトを作成方法である。classからインスタンスを作ることができる。そのインスタンスの中身はclassの中身と全く同じである。
 
 課題６
-coba angka2nya ubah jadi input command line aja
-における
+元金と
