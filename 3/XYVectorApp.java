@@ -16,19 +16,14 @@ class XYVectorApp {
 
         System.out.println("----------");
 
-        //1
-        System.out.println(a.dotProduct(b)); 
-        
-        //2
-        // a.sum(b);
-        // a.print();
-        
-        //3
-        a.subtrac(b);
-        a.print();
+        System.out.println(a.dotProduct(b));//内積
 
-        //4
-        System.out.println(a.size());
+        a.sum(b);//足算
+
+        a.subtrac(b);//減算
+
+        System.out.println(a.size());//ノマル
+
         System.exit(0);
     }
 

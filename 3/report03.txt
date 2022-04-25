@@ -1,9 +1,7 @@
 4J 08 イマムカイリルビス　テーマ03　レポート
 
-benerin lagi nama2 classnya 
-
-1
-class Vector {
+課題　1
+class XYVector {
     double x;
     double y;
 
@@ -15,7 +13,7 @@ class Vector {
     }
 }
 
-2
+課題　2
 class XYVectorApp {
     public static void main(String[] args) {
         Vector a;
@@ -35,7 +33,7 @@ class XYVectorApp {
 x = 9.0
 y = 1.0
 
-3
+課題　3
 class XYVectorApp {
     public static void main(String[] args) {
         Vector a, b;
@@ -71,4 +69,79 @@ y = 4.0
 x = 3.0
 y = 4.0
 
-5
+課題　5
+XYVector.java
+class XYVector {
+    double x;
+    double y;
+
+    XYVector(){}
+
+    void print() {
+        System.out.println("x = " + x);
+        System.out.println("y = " + y);
+    }
+
+    double dotProduct(XYVector v) {
+        return x*v.x + y*v.y;
+    }
+
+    void sum(XYVector v) {
+        x = x + v.x;
+        y = y + v.y;
+        print();
+    }
+
+    void subtrac(XYVector v) {
+        x = x - v.x;
+        y = y - v.y;
+        print();
+    }
+
+    double size() {
+        return Math.sqrt(x*x + y*y);
+    }
+}
+
+XYVectorApp.java
+class XYVectorApp {
+    public static void main(String[] args) {
+        XYVector a, b;
+        a = new XYVector();
+        b = new XYVector();
+
+        a.x = Double.parseDouble(args[0]);
+        a.y = Double.parseDouble(args[1]);
+        a.print();
+
+        System.out.println("----------");
+
+        b.x = Double.parseDouble(args[2]);
+        b.y = Double.parseDouble(args[3]);
+        b.print();
+
+        System.out.println("----------");
+
+        System.out.println(a.dotProduct(b));//内積
+
+        a.sum(b);//足算
+
+        a.subtrac(b);//減算
+
+        System.out.println(a.size());//ノマル
+
+        System.exit(0);
+    }
+
+}
+
+追加機能：
+１．内積機能
+double dotProduct(XYVector v)メソッドを追加した。ベクトル内積を計算するためにはもう一つベクトルが必要である。だから、XYVector v　を引数として扱われている。
+戻り値はベクトル内積の結果である。
+２．足算
+void sum(XYVector v)メソッドを追加した。二つのベクトル成分を足算するためのメソッドである。戻り値なし。足算するためにはもう一つベクトルが必要なので、XYVector v　を引数として扱われている。
+３．減算
+void subtrac(XYVector v)メソッドを追加した。二つのベクトル成分を減算するためのメソッドである。戻り値なし。減算するためにはもう一つベクトルが必要なので、XYVector v　を引数として扱われている。
+４．ノマル
+double size()メソッドを追加した。ベクトルの大きさを計算するためのメソッドである。戻り値はそのベクトルの大きさである。
