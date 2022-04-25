@@ -1,0 +1,139 @@
+<!--?xml version="1.0" encoding="utf-8"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>プログラミング言語IIIA(Java) テーマ02</title>
+<link rel="stylesheet" href="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIA(Java)%20%E3%83%86%E3%83%BC%E3%83%9E02_files/tenmo2008single.css" type="text/css" media="all">
+</head>
+
+<body>
+
+<h2>プログラミング言語IIIA(Java) テーマ02</h2>
+
+<h3>内容</h3>
+
+<p>Javaは<em>オブジェクト指向</em>プログラミング言語であるため, オブジェクト指向に特有な, 難解で崇高な専門用語(英語/カタカナ)が大量に登場し, C言語のような手続き型プログラミング言語に慣れた初学者に, 非常に高いハードルを感じさせる.</p>
+
+<p>しかし, それらの専門用語は, C言語の世界の言葉に置き換えて考えれば何も恐れる必要はない. 基本は変数・関数・メモリ・<em>ポインタ</em>・<em>構造体</em>である. 今回も前回に引き続き, 諸君が昨年度学習したC言語と, 初めて見たJavaのプログラムを比較し, Javaやオブジェクト指向とはどういうものかを探っていく.</p>
+
+<h3>課題</h3>
+
+<p>以下の課題のレポートは, レポートファイル<code class="em">report02.txt</code>を作成してアップロードにより提出すること. ただし, 課題1のみ紙での提出となるので注意のこと. <em>A4用紙</em>に手描きして, 出席番号・名前・テーマ番号を記入し, 情報棟3階<em>天元ポスト</em>へ提出すること. <!--<em>※R2(2020)年度は遠隔授業のため, レポートファイルはメールで tenmo@kushiro-ct.ac.jp 宛てに送り, 紙は写真を撮ってアップロードしてください. 紙の原本は登校開始まで, 大事に保管しておいてください.</em>--></p>
+<p></p>
+
+<ol>
+
+<li>今回の預金口座プログラムについて, <code>main</code>関数におけるメモリの様子を図に描き表せ. 変数を<em>箱</em>で表し, さらにポインタを, 箱と箱をつなぐ<em>矢印</em>で表現せよ. なお, 変数の具体的なアドレス(16進数)は調べることができないため, 記入不要である. (紙に手描きして提出)
+
+  <p>準備: A4用紙の向きは縦で, まず上部に「4J 出席番号 名前 テーマ02 課題1レポート」と書く.</p>
+
+  <p>ヒント: 「ポインタ(pointer)」とは, 「ポイント(point)するもの(er)」, すなわち, 他の変数を<em>指し示す</em>変数の意である.</p>
+
+  <a href="http://jsuri1.info.kushiro-ct.ac.jp/~tenmo/java/02/2017-04-19-java-pointer.png"><img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIA(Java)%20%E3%83%86%E3%83%BC%E3%83%9E02_files/2017-04-19-java-pointer.png" width="640"></a>
+
+  <p>ヒント: 「構造体」とは, 複数の変数を, 連続したメモリに<em>ひとまとめ</em>に配置したものである. 絵的には, 一つの大きな箱の中に, 複数の小箱が入っている様子をイメージすると良い.</p>
+
+<pre>struct Koza      /* 預金口座構造体 */
+{
+  double riritsu; /* 利率 */
+  int gankin;     /* 元金 */
+};
+</pre>
+
+  <p>注意: <code>my_koza-&gt;gankin</code>等の見た目にだまされない様に注意. この「<code>-&gt;</code>」をそのまま矢印に置き換えて描いたのでは, 正確ではない. <code>my_koza</code>は<em>直接</em><code>gankin</code>は<em>指さない</em>.</p>
+
+  <p>注意: 今回の図に関数は不要. <code>kotae</code>等のローカル変数も不要. 登場するのは<code>riritsu, gankin, my_koza</code>の三つのみ. 矢印も一つのみ.</p>
+
+  <p>知識: Java版の<code>main</code>関数の<code>my_koza</code>には「<code>*</code>」(アスタリスク)が付いていないが, 実は, C言語版と同じポインタである. Javaではこれを「参照(リファレンス)」と呼ぶ.</p>
+
+</li>
+
+<li>今回のJavaプログラムを, 元金を<em>コマンドライン引数</em>から入力できるように改造せよ. (ソース <code class="em">KozaApp2.java</code> を作成し, レポートファイルに貼付け, 実行方法と実行結果も貼付け)
+
+    <ul>
+
+<pre>ソースファイルのコピー方法の例
+$ cp KozaApp.java KozaApp2.java
+</pre>
+
+      <li>ファイル名を変更したので, ソース中に書いてあるクラス名も「<code class="em">KozaApp2</code>」に変更する. 修正漏れに注意のこと. なお, <code>main</code>しか変更しないので, <code>Koza.java</code>側の修正は不要である.</li>
+
+<pre>実行方法の例     ↓これがコマンドライン引数
+$ java KozaApp2 100000
+</pre>
+
+    <li>コマンドライン引数は配列<code>args</code>に, <code>0</code>番から順に格納されている. つまり, 実行時にコマンドライン引数から与えた元金は, <code>args[0]</code>に格納されている. ただし, 文字列型であり, 整数型ではない.</li>
+
+    <li>文字列を整数に変換するには, 「<code class="em">Integer.parseInt( )</code>」という関数を使う. この関数の引数に文字列を一つ与えると, 整数型に変換されて返ってくる. それを元金の変数に代入すると良い.</li>
+
+    <li><code>String</code>型の解説: C言語では文字列型という型は存在せず, <code>\0</code>で終わる, <em>文字の配列</em>であった. これに対し, Javaでは, 予め文字列型である<code>String</code>クラスが用意されており, 文字列を, 配列ではない, 一つの変数として扱える. Javaの<code>main</code>関数の<code>args</code>は, この文字列型の, 配列である. → <code>String</code>型はテーマ08で, 配列はテーマ10で正式に扱う予定.</li>
+
+<pre>現時点では「JavaのString型」==「C言語のchar*型」と考えて良い. どちらも「文字列型」.
+</pre>
+
+</ul>
+  </li>
+
+<li>C言語の<code>main</code>関数では, 関数の引数として, コマンドライン引数の<em>個数</em>である<code>argc</code>と, コマンドライン引数の<em>配列</em>である<code>argv</code>の両方が与えられていた. これに対し, Java版では, コマンドライン引数の配列である<code>args</code><em>しか</em>書かれていない. このことから, Javaの配列には, C言語の配列にはない, 何か<em>重要な情報</em>が隠されていると考えられる. どの様な情報が隠されているか, 推測せよ. (レポートファイルに記入)
+
+<pre>              int  main(int argc, char *argv[])       /* C言語版. 引数が二つある.     */
+public static void main(String args[])                /* Java版.  引数が一つしかない. */
+</pre>
+
+  <p>ヒント: まずC言語のコマンドライン引数について思い出し(または調べ), コマンドライン引数を<code>printf("%s\n", argv[i]);</code>で全て表示するプログラムを作成してみると良い. 以下の例では<code>argv[0]</code>に<code>"./a.out"</code>が, <code>argv[1]</code>に<code>"4J"</code>が, <code>argv[2]</code>に<code>"27"</code>が, <code>argv[3]</code>に<code>"TENMOTO"</code>が入っていることが確認できる.</p>
+<pre>C言語でこの↓動作をするプログラムを作ると良い.
+$ ./a.out 4J 27 TENMOTO
+./a.out
+4J
+27
+TENMOTO
+</pre>
+
+  <p>ヒント: その後, Javaで同じ様にコマンドライン引数を全て表示させようとすると, 何かが足りないことに気づくはず. それが答えであり, <code>args</code>という配列変数に隠されているものである.</p>
+
+<!--
+  <p><code>String</code>型の解説: C言語では文字列型という型は存在せず, <code>\0</code>で終わる, <em>文字の配列</em>であった. これに対し, Javaでは, 予め文字列型である<code>String</code>クラスが用意されており, 文字列を, 配列ではない, 一つの変数として扱える. Javaの<code>main</code>関数の<code>args</code>は, この文字列型の, 配列である. → <code>String</code>型はテーマ08で, 配列はテーマ10で正式に扱う予定.</p>
+-->
+    <p>ヒント: C言語の<code>argv</code>は「『文字の配列』の配列」である. Javaの<code>args</code>は「文字列の配列」である. C言語の「文字の配列」は「文字列」に相当するから, <code>argv</code>と<code>args</code>については, 実質的にC言語でもJavaでも同じである. → ではそれ以外で異なる所は?</p>
+
+<!--
+<pre>
+「JavaのString型」==「C言語のchar*型」と考えて良い. どちらも「文字列型」.
+</pre>
+-->
+
+</li>
+
+<li>C言語版の<code>Koza_risoku</code>関数の引数にある「<code>struct Koza *koza</code>」や, <code>kekka</code>の計算式中の「<code>koza-&gt;</code>」が, Java版では不要で, とてもシンプルな記述となっている. その理由を推測せよ. (レポートファイルに記入)
+
+  <p>ヒント: Java版のプログラムの中で, <code>risoku</code>関数がある<em>場所</em>と, その周り(外側)の位置関係を眺めてみると良い.</p>
+
+  <p>ヒント: 「<code>class Koza</code>」の開き中括弧「<code>{</code>」と閉じ中括弧「<code>}</code>」の場所を調べてみよう.</p>
+  
+</li>
+
+<li>これまでの課題より, Javaにおける「クラス(<code>class</code>)」とはどういうものか, 推測せよ. (レポートファイルに記入)
+
+  <p>注意: 現時点でどの様に推測するか, 自分でどう考えるか, が大切なので, 教科書やネットを調べて正解(正確な定義)を答えるのが目的ではない.</p>
+
+  <p>ヒント: 構造体のメンバ変数がある<em>場所</em>, 関数がある<em>場所</em>, クラスの中括弧<code>{ }</code>の<em>場所</em></p>
+
+</li>
+
+<li>Java版の預金口座プログラムを, さらに自由に改造してみよ. 特に何も思い浮かばなければ, 3カ月の箇所を, ループで1カ月～36カ月に変化させてみよ. ファイル名・クラス名は<!--<code class="em">Koza3</code>, --><code class="em">KozaApp3</code>とする. (ソース, 実行方法と実行結果, 改造した点, 改造してみた感想をレポート)</li>
+
+  <p>注意: ファイル名と同時に, ソース中に書いてあるクラス名も<!--「<code class="em">Koza2</code>」-->「<code class="em">KozaApp3</code>」に変更する必要がある. 修正漏れに注意のこと.</p>
+
+  <p>アドバイス: <code>for</code>文や<code>if</code>文, <code>while</code>文などの基本的な文法はC言語と同じであるから, C言語で学習した様々な技術を試してみると良い. Javaの教科書も活用すると良い.</p>
+
+</ol>
+
+<h3>レポート</h3>
+
+<ul>
+<li>内容: 課題中に指示されている通り. 必要な項目を全て記載しているか, 十分に確認すること.</li>
+</ul>
+
+
+
+</body></html>
