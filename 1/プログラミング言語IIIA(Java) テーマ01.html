@@ -1,0 +1,133 @@
+<!--?xml version="1.0" encoding="utf-8"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>プログラミング言語IIIA(Java) テーマ01</title>
+<link rel="stylesheet" href="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIA(Java)%20%E3%83%86%E3%83%BC%E3%83%9E01_files/tenmo2008single.css" type="text/css" media="all">
+</head>
+
+<body>
+
+<h2>プログラミング言語IIIA(Java) テーマ01</h2>
+
+<h3>内容</h3>
+
+<p>これよりJavaを学習するにあたり, 前提知識となるC言語の理解を確認するため, <em>構造体</em>, <em>ポインタ</em>及び<code class="em">malloc</code>関数を用いたプログラムを解析し, C言語を復習する.</p>
+
+<h3>ポインタと<code>malloc</code>関数の復習</h3>
+
+<center>
+<img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIA(Java)%20%E3%83%86%E3%83%BC%E3%83%9E01_files/memory_map.png">
+</center>
+
+<h3>課題</h3>
+
+<p>以下の課題のレポートは, レポートファイル<code class="em">report01.txt</code>を作成してアップロードにより提出すること. ソースも考察もすべてレポートファイル中に記入すること.</p>
+
+<ol>
+
+<li>以下のプログラムは利率, 元金及び預けた期間(単位: 月)より, 利息を計算するC言語プログラムである. このプログラムを<code class="em">koza_all.c</code>として保存し, コンパイルして実行せよ. 文字コードはUTF-8とすること. (コンパイル方法, 実行方法, 実行結果をレポート)</li>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+struct Koza        /* 預金口座構造体 */
+{
+    double riritsu; /* 利率 */
+    int gankin;	    /* 元金 */
+};
+
+void Koza_syokika(struct Koza *koza) /* 預金口座構造体のメンバーを初期化する */
+{
+    koza-&gt;riritsu = 0.002;
+}
+
+double Koza_risoku(struct Koza *koza, int month) /* 利息を計算して返す */
+{
+    double kekka;
+    kekka = (double)(koza-&gt;gankin) * (koza-&gt;riritsu) * (double)month / 12.0;
+    return kekka;
+}
+
+int main(int argc, char *argv[])
+{
+    double kotae;
+
+    struct Koza *my_koza;
+    my_koza = (struct Koza *)malloc(sizeof(struct Koza));
+    Koza_syokika(my_koza);
+    
+    my_koza-&gt;gankin = 100000;
+    kotae = Koza_risoku(my_koza, 3);
+    printf("利息は%lf\n", kotae);
+    
+    exit(0);
+}
+</pre>
+
+<!--
+<li>課題1のプログラムを以下の三つのファイルに<em>分割</em>してコンパイルし, 実行結果が課題1と変わらないことを確認せよ. <code>make</code>は用いなくて良い. (ソース三つ, コンパイル方法, 実行方法, 実行結果をレポート)</li>
+  <ul>
+  <li><code>main</code>関数のみを含む<code class="em">Koza_app.c</code></li>
+  <li><code>Koza</code>構造体の定義及び, <code>main</code>関数以外の二つの関数の<em>プロトタイプ宣言</em>のみを含む<code class="em">Koza.h</code></li>
+  <li><code>main</code>関数以外の二つの関数の<em>定義</em>(本体)のみを含む<code class="em">Koza.c</code></li>
+  </ul>
+  <ul>
+  <li>ヒント: <code>#ifdef</code>は付けなくて良い(付けないほうが無難).</li>
+  <li>ヒント: 関数のプロトタイプ宣言はこれ↓要, 行末のセミコロン.</li>
+<pre>
+double Koza_risoku(struct Koza *Koza, int month);
+</pre>
+  <li>ヒント: <code class="em">Koza_app.c</code>と<code class="em">Koza.c</code>には, <code>#include "Koza.h"</code>が必要. 自作のヘッダファイルのため, <code>&lt;stdio.h&gt;</code>や<code>&lt;stdlib.h&gt;</code>の様に不等号ではなく, ダブルクォートであることに注意.</li>
+  </ul>
+-->
+
+<li>課題1<!--・課題2-->のプログラムは, 配付プリント資料のJavaプログラムをC言語に書き換えたものである. 「見た目の違い」を手掛かりにC言語版とJava版を比較し, C言語とJavaの異なる点を予想せよ. (箇条書きで少なくとも三つレポート)</li>
+
+<li>実際にJava版を入力し, 実行してみよ. また, 少し改造して遊んでみよ. (改造した点等をレポート, 何も無しは不可)</li>
+  <ul>
+  <li>ファイル名:「<code class="em">Koza.java</code>」及び「<code class="em">KozaApp.java</code>」<br>
+      ソースはクラス毎に1ファイルとする. ソースのファイル名はクラス名+<code>.java</code>とする. <em>大文字</em>・<em>小文字</em>に注意.</li>
+  <li>コンパイル方法:「<code>javac Koza.java KozaApp.java</code>」<br>
+      コンパイラは「<code class="em">javac</code>」コマンドである. ソースファイル(拡張子「<code>.java</code>」)をコンパイルするとクラスファイル(拡張子「<code>.class</code>」)が生成される.</li>
+  <li>実行方法:「<code>java KozaApp</code>」<br>
+      クラスファイルを実行するには, 「<code class="em">java</code>」コマンドに引数として<code>main</code>関数を含むクラス名を与える. 拡張子の<code>.java</code>や<code>.class</code>は<em>付けない</em>.</li>
+  </ul>
+
+<li>課題1のプログラムに関して以下の各設問に答えよ. (解答をレポート, 無解答は不可)</li>
+  <ol>
+
+    <li>関数<code>Koza_risoku</code>中の「<code>(double)</code>」の効果を説明せよ. <code>double</code>の外側に括弧が付いていることに注意.</li>
+
+    <li><code>main</code>関数中の「<code>malloc</code>」を用いている行を<em>詳しく</em>説明せよ.</li>
+    <p>ヒント: まず, <code>my_koza</code>という変数にはどの様な値が入るか考えてみよ(利率や元金の値だと思ったら間違い). このページ冒頭の図の「<code>q</code>」を参考にすると良い.</p>
+    <p>ヒント: <code>Koza</code>構造体は実数型の<code>riritsu</code>と, 整数型の<code>gankin</code>を, メモリ上で並べて「<em>ひとまとめ</em>」にしたものである. このページ冒頭の図で「<code>999</code>」が入っている箇所に, <code>riritsu</code>と<code>gankin</code>が並んで「<em>ひとまとめ</em>」で入っている様子を想像せよ.</p><p>
+
+    </p><li>関数<code>Koza_syokika</code>中の「<code>koza-&gt;riritsu</code>」は, メモリ中の<em>どこ</em>にある<em>どの変数</em>を「<em>表している</em>」か, <code>koza</code>変数の値と, 「<code>-&gt;</code>」演算子の意味に注意して説明せよ.</li>
+    <p>ヒント: まず, <code>koza</code>変数には何が入っているか考えてみよ.</p>
+    <p>ヒント: 「<code>-&gt;</code>」演算子の見た目に騙されて, 「<code>koza</code>は<code>riritsu</code>を指す」と考えては間違いである.</p>
+    <!--<p>ヒント: <code>Koza</code>構造体は<code>riritsu</code>と<code>gankin</code>を並べて「<em>ひとまとめ</em>」にしたものである.</p>-->
+
+    <li>関数<code>Koza_syokika</code>は, なぜ構造体を値渡しではなく, ポインタ渡しで受け取る必要があるのか, 理由を考察せよ. (メモリの使用量やコピーの処理時間が理由ではない)</li>
+    <p>ヒント: ポインタを使わずに構造体型の変数そのままで受け取った場合, 関数呼び出し後の<code class="em">main</code><em>側</em>でどのような不具合が起こるか考えてみよ. コンパイル時の不具合(エラー)ではなく, 実行時の不具合である.</p>
+<pre>/* ポインタを使わずに構造体型の変数そのままで受け取るとしたらこう↓書くことになる. */
+void Koza_syokika(struct Koza koza)
+{
+    koza.riritsu = 0.002; /* この場合, 0.002はメモリのどこに代入されてしまうか? */
+}
+</pre>
+    <li>なぜ<code>riritsu</code>の値は関数<code>Koza_syokika</code>の中で初期化(初めの値を代入)しているのに, <code>gankin</code>は<code>main</code>関数で値を代入しているのか, その理由を考察せよ.</li>
+    <p>ヒント: 現実世界での銀行(預金口座<em>機能を提供</em>する側)と, 預金口座者(預金口座<em>機能を利用</em>する側)に当てはめて考えてみよ.
+
+  </p></ol>
+
+</ol>
+
+<h3>レポート</h3>
+
+<ul>
+<li>内容: 課題中に指示されている通り. 必要な項目を全て記載しているか, 十分に確認すること.</li>
+</ul>
+
+
+
+</body></html>
