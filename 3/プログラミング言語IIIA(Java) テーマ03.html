@@ -1,0 +1,183 @@
+<!--?xml version="1.0" encoding="utf-8"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>プログラミング言語IIIA(Java) テーマ03</title>
+<link rel="stylesheet" href="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIA(Java)%20%E3%83%86%E3%83%BC%E3%83%9E03_files/tenmo2008single.css" type="text/css" media="all">
+</head>
+
+<body>
+
+<h2>プログラミング言語IIIA(Java) テーマ03</h2>
+
+<h3>内容</h3>
+
+<p>Java<!--(オブジェクト指向)-->の基本的な専門用語をC言語との対比で理解し, 簡単なクラスの作成を試みる.</p>
+
+<h3>Java用語(要暗記)</h3>
+
+<ul>
+
+<li>クラス(Class) ... 関連のある<em>変数</em>と<em>関数</em>をひとまとめにしたもの. 文法的には, C言語の構造体の内側に, その構造体を使う関数を入れたもの. ただし, C言語の構造体と同じく<em>型</em>であり, メモリを割り当てられた実体ではない. 型であるから, クラスを定義しただけでは, まだメモリは用意されない.</li>
+
+<li>インスタンス(Instance) ... クラスにメモリを割り当てた<em>実体</em>. <code>new</code>演算子で生成する. C言語における, <code>malloc</code>で割り当てられたメモリブロック(メモリのかたまり)に相当する. 前回描いたメモリの図で, 矢印の<em>先</em>にあるメモリブロックに相当する. ※教科書等, 書籍によってはこの用語を「オブジェクト」と表す場合もある. この科目では下記の「オブジェクト変数」と<em>明確に区別</em>して欲しいため, 「インスタンス」を用いる.</li>
+
+<li>オブジェクト変数(Object Variable) ... インスタンスを<em>指す</em>変数. C言語における, 構造体を指すポインタ変数に相当する. <!--これを単にインスタンスと呼ぶこともある(文脈による). -->前回描いたメモリの図で, 矢印の<em>根元</em>の変数に相当する. インスタンスの<em>アドレス</em>が入っている, と考えて良い. ※実際, <code>System.out.println( )</code>で表示すると, アドレス相当の16進数が表示される.</li>
+
+<li>メソッド(Method) ... C言語の<em>関数</em>に相当する. ただし, Javaではメソッドは<em>必ずクラスの内側</em>に書かなければならない. <code>main</code>メソッドも例外ではなく, 必ず何れかのクラスの中に書かなければならない.</li>
+
+<li>フィールド(Field) ... メソッドと同じレベル(階層)にある<em>変数</em>. クラス内のすべてのメソッドで共通に使える. その意味で, C言語のグローバル変数を, 使える範囲をそのクラス内に限定したもの.<br>※注意: 一時的な計算結果やループカウンタ等, メソッド内の<em>ローカル変数はフィールドではない</em>.</li>
+    <center><img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIA(Java)%20%E3%83%86%E3%83%BC%E3%83%9E03_files/2022-04-22-class-Koza.png" width="500"></center>
+
+</ul>
+
+<h3>フィールドとメソッドの使い方</h3>
+
+<ul>
+
+<li>フィールドに値を代入したり, 値を読み取ったりするには, 「オブジェクト変数名<code>.</code>フィールド名」と書く. ここでオブジェクト変数名とフィールド名を結びつけている「<code>.</code>」(ドット)は日本語で「の」と読むと分かり易い. つまりフィールドは<em>名詞</em>, と考えると良い.
+
+<pre>my_koza.gankin = 100000; // my_koza「の」gankin
+// つまり, 私の預金口座「の」元金(名詞)
+
+System.out.println(my_koza.gankin); // フィールドの値を表示する例
+</pre>
+</li>
+
+<li>メソッドを呼び出すには, 「オブジェクト変数名<code>.</code>メソッド名<code>(</code>引数<code>)</code>」と書く. ここでの「<code>.</code>」(ドット)は日本語で「に対して○○する」と読むと分かり易い. つまりメソッドは<em>動詞</em>(○○する), と考えると良い.
+
+<pre>kotae = my_koza.risoku(3); // my_koza「に対して」3を引数としてrisokuを呼び出す
+// つまり, 私の預金口座「に対して」3を引数として利息を計算「する」(動詞)
+</pre>
+
+<pre>参考: C言語での書き方
+kotae = risoku(my_koza, 3); /* my_kozaも3も, すべて引数で与える. */
+</pre>
+
+※参考: 「呼び出す(call)」という言い回しはC言語族(C, C++, Java等々)では<em>関数やメソッドに使う用語</em>である. 変数に使う用語ではないので注意しよう. 良い例: メソッドを呼び出す, 悪い例: 変数を呼び出す
+</li>
+
+</ul>
+
+<h3>Javaプログラムの実行</h3>
+
+<ul>
+
+<li>Javaプログラムは, <code>java</code>コマンドで指定したクラス内にある<code class="em">main</code>メソッドから実行が始まる.
+
+<pre>KozaApp内にあるmainを実行
+$ java KozaApp
+</pre>
+</li>
+
+<!--<li>※つまり, <code>main</code>メソッドはクラスが異なれば複数あっても良い.</li>-->
+
+</ul>
+
+<h3>課題</h3>
+
+<p>以下の課題のレポートは, レポートファイル「<code class="em">report03.txt</code>」を作成してアップロードにより提出すること. ただし, 課題4のみ紙での提出となるので注意のこと. <em>A4用紙</em>に手描きして, 出席番号・名前・テーマ番号を記入し, 情報棟3階<em>天元ポスト</em>へ提出すること. </p>
+
+<p>課題1はクラスの「開発者」, 課題2はクラスの「利用者」の立場で作成する. 課題1・課題2はどちらに先に取り組んでも良い.</p>
+
+  <ol>
+
+  <li>以下の仕様を満たす, 数学のベクトルを表すクラスを作れ. ただし, <code>main</code>メソッドは課題2で作るので, ここでは不要である. (ソース<code>XYVector.java</code>を作成し, レポートファイルに貼付け)
+
+    <center><img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIA(Java)%20%E3%83%86%E3%83%BC%E3%83%9E03_files/2008-04-15-vector.png"></center>
+    <ul>
+    <li>クラス名 ... <code>XYVector</code></li>
+    <li>フィールド ... <code>double</code>型で<code>x</code>と<code>y</code></li>
+    <li>メソッド ... <code>print</code>という名前で, フィールドの値を表示する. 引数<em>なし</em>. 戻り値<em>なし</em>.
+    <p>ヒント: 表示は<code>System.out.println(〜);</code><br>※参考: 改行したくない場合は<code>ln</code>を付けずに<code>System.out.print(〜);</code>とする.</p>
+    <p>アドバイス: 文字列と数値を連結するには, プラス記号で結ぶと良い.</p>
+
+<pre>System.out.println("x=" + x); // x=に続けてxの値が表示される.
+System.out.print("x=" + x); // printlnとは異なり, 改行はされない.
+</pre>
+
+    <p>ヒント: メソッドの作り方はC言語での関数の作り方と同じである.</p>
+
+<pre>戻り値の型 メソッド名(引数の型 引数の変数名, 引数の型 引数の変数名, ...)
+{
+    何か処理;
+    何か処理;
+    何か処理;
+    ...
+    return 返したい変数や値; // 戻り値なしの場合はそもそも書かない
+}
+
+// 戻り値なしの場合, 戻り値の型は何? ※何も書かない, ではない. 正解はvoid
+</pre>
+</li>
+
+    </ul>
+  </li>
+
+<li>以下の仕様で, 課題1で作成したベクトルクラスを使う<code class="em">main</code>メソッドのみを含むクラスを作れ. (ソース<code>XYVectorApp.java</code>及び実行方法, 実行結果をレポートファイルに貼付け)
+
+    <ul>
+    <li>クラス名 ... <code>XYVectorApp</code></li>
+    <li><code>main</code>メソッド
+        <ol>
+        <li><code>XYVector</code>型のオブジェクト変数<code>a</code>を宣言する.</li>
+        <li><code>new</code>演算子を使って, <code>a</code>にメモリを割り当てる. ※預金口座のプログラムを参考にすると良い.</li>
+        <li><code>a</code>「の」<code>x</code>成分に, <code>args[0]</code>から適当な値を代入する.</li>
+        <li><code>a</code>「の」<code>y</code>成分に, <code>args[1]</code>から適当な値を代入する. ※<code>x</code>とは異なる値にする
+	    <p>ただし, <code>args[0]</code>や<code>args[1]</code>は文字列型であるから, 代入する前に<code>double</code>型に変換する必要がある. 文字列を<code>double</code>型に変換するには<code>Double.parseDouble(〜)</code>を用いる.</p>
+        <p>ヒント: 変換と代入をまとめて行うのが難しい場合は, 先にいったん文字列型から<code>double</code>型へ変換し, その結果を<code>double</code>型のローカル変数に代入しておき, そこから<code>a</code>「の」<code>x</code>等へ代入すると良い.</p>
+        </li>
+        <li><code>a</code>「に対して」<code>print</code>メソッドを呼び出すことで, <code>a</code>を表示する.<br>※<code>main</code>の中で直接 <code>System.out.println(a.x);</code> としたら間違い.</li>
+        </ol>
+    <!--
+        <p>ヒント: 実行時にはコマンドラインから実数を二つ与える必要がある.</p>
+    -->
+    </li>
+    </ul>
+</li>
+
+<li>課題2で作成した<code>main</code>の, <em>手順5番の下</em>に, さらに以下のコードを<em>追加</em>せよ. (ソース<code>XYVectorApp.java</code>及び実行方法, 実行結果をレポートファイルに貼付け)
+
+    <p>注意: 課題2と混ぜて書くのではない. 課題2のコードの下に, 以下のコードを書く.</p>
+
+    <ol>
+    <li><code>XYVector</code>型のオブジェクト変数<code>b</code>を宣言する.</li>
+    <li><code>b = a;</code> <em>※この通りに書くこと (<code>new</code>はしない)</em></li>
+    <li><code>b</code>の<code>x</code>成分と<code>y</code>成分に, <code>args[2]</code>と<code>args[3]</code>から適当な値をそれぞれ代入する.<br>※<code>a</code>の<code>x, y</code>とは異なる値にする.</li>
+    <li><code>b</code>に対して<code>print</code>メソッドを呼び出すことで, <code>b</code>を表示する.</li>
+    <li>再び, <code>a</code>に対して<code>print</code>メソッドを呼び出すことで, <code>a</code>を表示する.
+        <p>→ 衝撃の結末が. (これを「なんだ当たり前の結果だ」と感じられた人は, メモリブロックやポインタを正しく理解できていて, 素晴らしい.)</p>
+    </li>
+    </ol>
+</li>
+
+<li>課題3までで作成したプログラムのメモリの様子を図に描き, 課題3で起こった怪しい現象を解析せよ. (<!--A4用-->紙に図を描き, 理由も作文して記入)
+
+    <p>ヒント: まず, 課題2までの状況で, メモリの図を描いてみる. 預金口座のプログラムにおける<code>riritsu</code>と<code>gankin</code>が, 今回のプログラムでは<code>x</code>と<code>y</code>になっている. また, <code>my_koza</code>が<code>a</code>になっている.</p>
+    <p>ヒント: <code>a</code>には<em>何の値</em>が入っているか良く考えてみる. <code>x</code>や<code>y</code>の値が直接入っていると思ったら<em>間違い</em>.</p>
+    <p>→ <code>my_koza</code>には何の値が入っていたか? <code>riritsu</code>の値とgankinの値, <em>ではない!</em></p>
+    <p>→ 悩んだら, このページの最初の方にある「Java用語(要暗記)」の「オブジェクト変数」の項を読み返す.</p>
+    <p>ヒント: <code>b = a;</code>で何が起こっているか良く考えてみる. <code>b</code>の箱と<code>a</code>の箱が矢印で繋がる, と思ったら<em>間違い</em>.</p>
+    <p>→ <code>b = a;</code> では, <code>a</code>の値を<code>b</code>に代入している. これにより, <code>b</code>はどこを指すか? と考える.</p>
+</li>
+
+    <hr>
+    課題5に取り掛かる前に, まずソースファイルをコピーしてバックアップを残しておこう.
+    <hr>
+
+<li>今回作成したベクトルクラスに, ベクトル同士の内積を求めるメソッドや, 加算・減算を行うメソッド, 大きさ(ノルム)を求めるメソッドなど, 機能を自由に追加してみよ. (改造したソース<code>XYVector.java, XYVectorApp.java</code>をレポートファイルに貼り付け, 追加機能の説明を記入) →<a href="http://jsuri1.info.kushiro-ct.ac.jp/~tenmo/java/03/2011-04-26-vector.pdf">数学ヘルプ</a>(PDF)
+    <p>注意: ここで作成するメソッドは, <code>XYVector</code>クラス内に追加する. <code>main</code>がある方の<code>XYVectorApp</code>クラス内に追加したら間違い.</p>
+    <p>アドバイス: 平方根は<code>Math.sqrt(〜)</code>で計算できる.</p>
+</li>
+
+</ol>
+
+<h3>レポート</h3>
+
+<ul>
+<li>内容: 課題中に指示されている通り. 必要な項目を全て記載しているか, 十分に確認すること.</li>
+</ul>
+
+
+
+</body></html>

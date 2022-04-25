@@ -1,0 +1,74 @@
+4J 08 イマムカイリルビス　テーマ03　レポート
+
+benerin lagi nama2 classnya 
+
+1
+class Vector {
+    double x;
+    double y;
+
+    Vector(){}
+
+    void print() {
+        System.out.println("x = " + x);
+        System.out.println("y = " + y);
+    }
+}
+
+2
+class XYVectorApp {
+    public static void main(String[] args) {
+        Vector a;
+        a = new Vector();
+
+        a.x = Double.parseDouble(args[0]);
+        a.y = Double.parseDouble(args[1]);
+    
+        a.print();
+
+        System.exit(0);
+    }
+}
+
+[p214071@java22 3]$ javac XYVector.java XYVectorApp.java
+[p214071@java22 3]$ java XYVectorApp 9 1
+x = 9.0
+y = 1.0
+
+3
+class XYVectorApp {
+    public static void main(String[] args) {
+        Vector a, b;
+        a = new Vector();
+        b = a;
+
+        a.x = Double.parseDouble(args[0]);
+        a.y = Double.parseDouble(args[1]);
+        a.print();
+
+        System.out.println("----------");
+
+        b.x = Double.parseDouble(args[2]);
+        b.y = Double.parseDouble(args[3]);
+        b.print();
+
+        System.out.println("----------");
+
+        a.print();
+
+        System.exit(0);
+    }
+}
+
+[p214071@java22 3]$ javac XYVector.java XYVectorApp.java 
+[p214071@java22 3]$ java XYVectorApp 1 2 3 4
+x = 1.0
+y = 2.0
+----------
+x = 3.0
+y = 4.0
+----------
+x = 3.0
+y = 4.0
+
+5
