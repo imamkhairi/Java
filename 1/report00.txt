@@ -3,3 +3,36 @@
 http://www.infogr.kushiro-ct.ac.jp:8080/info
 
 https://www.freecodecamp.org/news/how-to-make-your-first-pull-request-on-github-3/
+
+p214071@jkb11:~/TestPush$ git init
+Reinitialized existing Git repository in /mnt/home/p214071/TestPush/.git/
+p214071@jkb11:~/TestPush$ git add .
+p214071@jkb11:~/TestPush$ git status
+ブランチ master
+このブランチは 'origin/master' よりも2コミット進んでいます。
+  (use "git push" to publish your local commits)
+
+コミット予定の変更点:
+  (use "git restore --staged <file>..." to unstage)
+	modified:   Koza.java
+
+p214071@jkb11:~/TestPush$ git commit -m 'bangsat'
+[master 2d211f3] bangsat
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+p214071@jkb11:~/TestPush$ git remote add origin https://github.com/imamkhairi/TestPush.git
+fatal: remote origin already exists.
+p214071@jkb11:~/TestPush$ git push -u origin master
+Username for 'https://github.com': imamkhairi
+Password for 'https://imamkhairi@github.com': 
+Enumerating objects: 11, done.
+Counting objects: 100% (11/11), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (9/9), done.
+Writing objects: 100% (9/9), 800 bytes | 400.00 KiB/s, done.
+Total 9 (delta 6), reused 0 (delta 0)
+remote: Resolving deltas: 100% (6/6), completed with 2 local objects.
+To https://github.com/imamkhairi/TestPush.git
+   fcb5d5b..2d211f3  master -> master
+Branch 'master' set up to track remote branch 'master' from 'origin'.
+p214071@jkb11:~/TestPush$ 
+
