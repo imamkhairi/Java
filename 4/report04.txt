@@ -1,0 +1,131 @@
+4J 08 イマムカイリルビス　テーマ04　レポート
+
+課題１
+コンストラクタ
+XYVector(double x, double y){
+        this.x = x;
+        this.y = y;
+}
+
+main
+public static void main(String[] args) {
+        XYVector a;
+        a = new XYVector(Double.parseDouble(args[0]), Double.parseDouble(args[1]));
+
+        a.print();
+
+        System.exit(0);
+}
+
+実行結果：
+[p214071@java22 4]$ javac XYVector.java XYVectorApp.java 
+[p214071@java22 4]$ java XYVectorApp 4 5
+x = 4.0
+y = 5.0
+
+動作の説明:
+mainでコンストラクタを呼び出せ、コマンドライン引数から値を渡った。
+その値がコンストラクタの引数に保存されなくて、オブジェクト変数を指しているインスタンスで保存された。
+printメソッド呼び出された時に表示されるのはインスタンスに保存された値である。
+
+課題２
+ノルム計算メソッド部分のコード
+double calcNorm() {
+        return Math.sqrt(x*x + y*y);
+}
+
+mainのコード
+public static void main(String[] args) {
+        XYVector a;
+        a = new XYVector(Double.parseDouble(args[0]), Double.parseDouble(args[1]));
+
+        a.print();
+
+        System.out.println("大きさ："+ a.calcNorm());
+        System.exit(0);
+}
+
+実行結果
+[p214071@java22 4]$ javac XYVector.java XYVectorApp.java 
+[p214071@java22 4]$ java XYVectorApp 3 4
+x = 3.0
+y = 4.0
+大きさ：5.0
+
+課題３
+減算メソッド部分のコード
+void subtract(XYVector v) {
+        x -= v.x;
+        y -= v.y;
+}
+
+mainのコード
+public static void main(String[] args) {
+        XYVector a, b;
+        a = new XYVector(Double.parseDouble(args[0]), Double.parseDouble(args[1]));
+        b = new XYVector(Double.parseDouble(args[2]), Double.parseDouble(args[3]));
+
+        a.print();
+        
+        a.subtract(b);
+
+        System.out.println("引いた後：");
+        a.print();
+
+        System.exit(0);
+}
+
+実行結果
+[p214071@java22 4]$ java XYVectorApp 3 4 1 3
+x = 3.0
+y = 4.0
+引いた後：
+x = 2.0
+y = 1.0
+
+課題４
+完成したmainメソッド
+public static void main(String[] args) {
+        XYVector a, b;
+        a = new XYVector(Double.parseDouble(args[0]), Double.parseDouble(args[1]));
+        b = new XYVector(Double.parseDouble(args[2]), Double.parseDouble(args[3]));
+
+        System.out.println("A ベクトル");
+        a.print();
+        System.out.println("B ベクトル");
+        b.print();
+
+        System.out.println("Distance :" + a.distance(b));
+
+        System.exit(0);
+}
+
+実行結果
+[p214071@java22 4]$ java XYVectorApp 5 7 2 3
+A ベクトル
+x = 5.0
+y = 7.0
+B ベクトル
+x = 2.0
+y = 3.0
+Distance :5.0
+
+動作の説明
+距離を計算するメソッドは下記の通りである。
+double distance(XYVector v) {
+    subtract(v);
+    return calcNorm();
+}
+mainメソッドで distance メソッドを呼び出せ、オブジェクト変数ｂを引数として扱う。
+distanceメソッドにより、オブジェク変数aのインスタンスとオブジェク変数ｂを引いた。
+その結果、calcNorm　メソッドで大きさを計算する。
+calcNorm メソッドの戻り値が distance メソッドの戻り値として扱う。
+
+
+課題５
+kalau java, karena itu merupakan pemanggilan suatu method pada object hensu, 
+maka ketika pemanggilan dia telah tau nilai dari instance object hensu tersebut.
+jadinya argument yang dibutuhkan hanya 1
+sedangkan c, yang mana tidak ada class. kita hanya bisa membuat fungsi.
+sehingga tidak ada data yang langsung bisa diketahui gt.
+makanya butuh 2 argument.

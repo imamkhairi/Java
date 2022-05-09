@@ -1,0 +1,233 @@
+<!--?xml version="1.0" encoding="utf-8"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>プログラミング言語IIIA(Java) テーマ04</title>
+<link rel="stylesheet" href="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIA(Java)%20%E3%83%86%E3%83%BC%E3%83%9E04_files/tenmo2008single.css" type="text/css" media="all">
+</head>
+
+<body>
+
+<h2>プログラミング言語IIIA(Java) テーマ04</h2>
+
+<h3>内容</h3>
+
+<p>コンストラクタの作り方と使い方を学び, 前回作成したベクトルのクラスに, フィールド<code>x, y</code>の<em>初期化</em>機能(はじめの値を設定する機能)を追加する.</p>
+
+<p>また, いくつかの演算メソッドも追加し, より実用的なクラスとする. その際, C言語による手続き指向プログラミングの考え方から, Javaによるオブジェクト指向プログラミングへの<em>考え方の転換</em>(頭の切り替え)に挑戦する.</p>
+
+<p>なお, ベクトルは位置ベクトルや速度ベクトル, 加速度ベクトル等として, ゲーム中のキャラクターの「動き」を計算するために良く利用される. 興味のある人は, ぜひここで完全なベクトルクラスを作成して, 仕組みの理解を深めておくと良い.</p>
+
+<h3>Java用語(続き)(要暗記)</h3>
+
+<ul>
+
+<li>コンストラクタ(Constructor; con + struct + er) ... 一緒にして + 構造 + にする人, つまり, 組み立てる人, の意味. プログラミングでは, 初期値を集めてデータ構造を組み立てる処理であり, インスタンスを<em>初期化</em>するための特別なメソッドである. <code class="em">new</code>演算子によるインスタンス生成時に, <em>自動的に</em>呼び出される. コンストラクタでは, フィールドに初期値を代入したり, さらに別のインスタンスを生成したり(→後期の課題で予定)など, 最初に1度だけで良い処理を行う.</li>
+
+</ul>
+
+<h3>コンストラクタの使用例</h3>
+
+<pre>class KozaApp
+{
+    public static void main(String[] args)
+    {
+        Koza my_koza = new Koza(100000); // ここからコンストラクタが呼び出される.
+        // 以下略
+    }
+}
+</pre>
+
+<pre>class Koza
+{
+    double riritsu;
+    int gankin;
+
+    Koza(int g)         // これがコンストラクタだ!!
+    {
+        riritsu = 0.002; // フィールドに初期値(定数)を代入
+        gankin  = g;     // フィールドに初期値(mainから渡された引数)を代入
+    }
+    // 以下略
+}
+</pre>
+
+<p>この例では, <code>main</code>メソッド中の<code>new Koza(100000)</code>の実引数である<code class="em">100000</code>が, <code>Koza</code>クラスのコンストラクタに, 仮引数である<em>変数</em><code class="em">g</code>を経由して渡され, それがフィールド<code>gankin</code>に保存されている.</p>
+
+<h3>コンストラクタの条件</h3>
+
+<ul>
+
+<li>(重要) コンストラクタの名前は<em>クラス名</em>と一致させる必要がある. ※大文字・小文字までの完全一致<br>つまり, ソースファイル名の拡張子<code>.java</code>の前 = クラスファイル名の拡張子<code>.class</code>の前 = クラス名 = コンストラクタ名となる.</li>
+
+<pre>例: Koza.java と Koza.class と Koza と Koza
+</pre>
+
+<li>(重要) コンストラクタには戻り値の型を<em>書かない</em>. <code>void</code>でもない. <em>***絶対に書いてはいけない***</em></li>
+
+<pre>class Koza
+{
+    double riritsu;
+    int gankin;
+
+// ↓ここに注目(voidやint等の型を付けない)
+    Koza(int g)
+    {
+        riritsu = 0.002;
+        gankin  = g;
+    }
+</pre>
+
+<li>コンストラクタは<em>引数の個数</em>や<em>引数の型</em>を変えて, 複数作ることができる. もちろん<em>引数なし</em>でも可能である.
+<p>[関連知識] Javaでは引数の個数や型を変えると, <em>同じ名前</em>のメソッドを複数作成できる. C言語ではできない.</p></li>
+
+<li>プログラマーが明示的にコンストラクタを作成していない場合, 引数なしで, 何もしないコンストラクタである「デフォルトコンストラクタ」が, Java内部で<em>自動的に</em>用意される.</li>
+
+<pre>XYVector a = new XYVector(); // 前回テーマ03までの状態ではこうなっていた.
+// ↑コンストラクタを作成していなかったので, 実はデフォルトコンストラクタが使われていた.
+</pre>
+
+</ul>
+
+<h3>課題</h3>
+
+<p>以下の課題のレポートは, レポートファイル「<code class="em">report04.txt</code>」を作成してアップロードにより提出すること.</p>
+
+<p>まず準備として, 今回の作業用ディレクトリを作成し, 前回の<code>XYVector.java</code>をコピーせよ. また, <code>XYVectorApp.java</code>もコピーし, 混乱を避けるため <code>b</code> に関するコードを<em>コメントアウト</em>(コメント化)せよ. 自由改造で追加した部分も混乱の原因となるためコメントアウトしておくと良い.</p>
+
+<hr>
+
+<p>[注意] 今回, <code>main</code>メソッドは課題毎に次々と改造していくことになるが, レポートファイルには<em>各課題</em>が終わった段階で<em>貼り付ける</em>必要がある. これを忘れて, すべての課題が終わってから最終的なプログラムしか残っていないことに気付き, 残念な状況となる事のないよう, 十分に注意せよ.</p>
+
+<hr>
+
+<ol>
+
+<li><code>XYVector</code>クラスに, 以下の仕様を満たすコンストラクタを作成せよ. また, 作成したコンストラクタを<em>呼び出す</em>ように<code>main</code>メソッドも修正せよ. (コンストラクタ部分のコード, <code>main</code>のコード, 実行結果を貼り付け, <em>動作の説明</em>を記入)
+    <ul>
+    <li>コンストラクタを作る方が<code>XYVector.java</code>, コンストラクタを呼び出す方が<code>XYVectorApp.java</code>である.</li>
+    <li>コンストラクタの引数は<code>double</code>型の変数<em>二つ</em>とする. 預金口座の例を参考にすると良い.</li>
+<pre>Koza my_koza = new Koza(100000);
+                       // ↑XYVectorAppクラスでは, ここの部分を数値2つにする.
+                       // 今回の課題ではargs[0], args[1]からdouble型に変換した値2つを
+                       // カンマで区切って並べる.
+</pre>
+<pre>Koza(int g) {
+   // ↑XYVectorクラスでは, ここの部分をdouble型の変数二つにする.
+   // *** なお, フィールドのx, yとは別の変数名にすること. ***
+</pre>
+    <li>コンストラクタの中では, 引数で与えられた値を, それぞれフィールドのx成分, y成分に代入する.</li>
+    <li>(重要) コンストラクタの呼び出し後に, <code>main</code>にて直接フィールドに代入しない. それではコンストラクタを使う意義がなくなってしまう.</li>
+<pre>a.x = Double.parseDouble(args[0]); // mainのこの様な行は削除する. 
+a.y = Double.parseDouble(args[1]); // mainのこの様な行は削除する. 
+</pre>
+    <li>ベクトルの成分の表示に, 前回作成した<code>print</code>メソッドを呼び出して用いる.</li>
+<pre>a.print(); // aに対してprintメソッドを呼び出す.
+</pre>
+
+<pre>System.out.println(a); // これは間違い(アドレスの16進数が表示されてしまう)
+</pre>
+    <li>動作の説明では, <code>main</code>からコンストラクタへ, どの様な値がどの変数を経由して渡され, それがどの変数に保存されるか, またその後, <code>main</code>から<code>print</code>メソッドを呼び出すと, どの変数の値が表示されるか, の様に, <em>処理の流れ</em>(スレッド)を追跡する文章を書く. <em>3行から5行程度</em>にまとめること. ソース1行1行の説明ではない.</li>
+    <li>動作の説明の作文は, 面倒かもしれないが, 頑張ろう. 就職試験や大学編入学試験/専攻科入学試験で, プログラムの流れを追跡する問題が良く出るため, できる様になって欲しい.</li>
+    </ul>
+
+<hr>
+
+<p>注意: オブジェクト指向の「プログラミング作法」を学習するため, これ以降の課題で, <code>x, y</code>以外に新しいフィールドを追加しては<em>いけない</em>. ※ローカル変数は大いに活用して良い.</p>
+<pre>class XYVector() {
+    double x, y;
+    double n;     // ここはフィールドなので追加禁止
+    void method() {
+        double m; // ここはローカル変数なので追加OK
+    }
+}
+</pre>
+
+<hr>
+</li>
+
+<li>課題1までで作成した<code>XYVector</code>クラスに対し, 以下の仕様を満たす「ノルム計算メソッド」を追加せよ. また, <code>main</code>メソッドにもそれを呼び出して<em>動作をテスト</em>するコードを追加せよ. (ノルム計算メソッド部分のコード, <code>main</code>のコード, 実行結果を貼り付け)
+    <ul>
+    <li>メソッド名は<code>calcNorm</code>とする. 「ノルム」とはベクトルの大きさ(長さ)の意味. ※大文字・小文字もこの通りに</li>
+    <li>(重要) メソッドの引数<em>なし</em>.</li>
+    <li>(重要) <em>戻り値</em>の型は<code>double</code>とする.</li>
+    <li>平方根を求めるには <code>Math.sqrt(〜)</code> を用いる. 括弧内に平方根を求めたい変数や値を入れる.</li>
+<pre>ベクトルのノルムを計算する式は Math.sqrt(x * x + y * y)
+※sqrt は square root つまり平方根の意味. C言語と同じ.
+</pre>
+    <li>(重要) このメソッド内でノルムを表示しては<em>いけない</em>. <br><code>return</code>して<code>main</code>で受け取り, <code>main</code>で表示すること. <code>main</code>は預金口座の例を参考にすると良い.</li>
+<pre>double kotae = my_koza.risoku(3);
+System.out.println("利息は" + kotae);
+</pre>
+    <li>関数やメソッドから何かを返すには ※C言語と同じ</li>
+<pre>戻り値の型 メソッド名(引数...)
+~~~~~~~~~~手順2: ここにはdoubleと書く
+{
+    色々計算する.
+    return 返したいもの.
+           ~~~~~~~~~~~~手順1: これがdouble型なら
+}
+</pre>
+    </ul>
+</li>
+
+<li>課題2までで作成した<code>XYVector</code>クラスに対し, 以下の仕様を満たす「減算メソッド」を追加せよ. また, <code>main</code>メソッドにもそれを呼び出して<em>動作をテスト</em>するコードを追加せよ. (減算メソッド部分のコード, <code>main</code>のコード, 実行結果を貼り付け)
+    <ul>
+    <li>メソッド名は<code>subtract</code>とする. ※大文字・小文字もこの通りに</li>
+    <li>減算であるから, ベクトルが二つ必要である. つまり, <code>main</code>には<code>b</code>も登場させる必要がある.</li>
+    <li>(重要) 今回の<code>subtract</code>メソッドの引数は<code>XYVector</code>クラスのオブジェクト変数<em>一つ</em>とする. (受け取る引数の変数名は <code>b</code> にすると分かりやすい.) 引数がオブジェクト変数二つでも, <code>double</code>型変数二つや四つでも間違いである.</li>
+<!--
+    <li><code>main</code>側で<code>a.add(b)</code>と書くと<code>b</code>が渡される. それを<code>add</code>メソッド側で受け取りたい. 受け取るにはどうするか?</li>
+<pre>
+void add(bの型は何? 変数名はbで良い) {
+         ~~~~~~~~~~ここを良く考える.
+</pre>
+-->
+    <li>(重要) 戻り値<em>なし</em>.</li>
+    <li>今回は, <code>main</code>メソッドで「<code>.subtract( )</code>」の<em>前に書く</em>インスタンスのx, y成分から, <em>引数</em>のインスタンスのx, y成分を引きたい. つまり, 基本型(<code>int</code>や<code>double</code>等)における「<code class="em">-=</code><em>演算子</em>」と同じ意味の動作をさせる.</li>
+    <li>つまり, やりたいことの意味はこれ↓である. しかしこれを<code>main</code>ではなく, メソッド内でやりたい.</li>
+<pre>a.x -= b.x;
+a.y -= b.y;
+</pre>
+    <li><code>main</code>側で<code>a.subtract(b)</code>と書くと, <code>subtract</code>メソッドの中では「<code>x</code>」は<code>a.x</code>になり, 「<code>y</code>」は<code>a.y</code>になる.</li>
+    <li><code>-=</code>演算子相当のメソッドを作るので, 今回の課題では↓このような動作はできない. 減算結果はaのインスタンスに<em>上書き</em>して格納される.</li>
+<pre>c = a.subtract(b); // 今回はこれはできない. 戻り値なしなのだから無理. ****できない****
+</pre>
+    <li>(重要) このメソッド内で減算結果を表示<em>しない</em>こと. <code>main</code>で, <code>a</code>や<code>b</code>に対して<code>print</code>メソッドを呼び出して表示すること.</li>
+    </ul>
+</li>
+
+<li>以上で作成した「ノルム計算メソッド」と「減算メソッド」を用いて, 2点間の距離を計算する<code class="em">main</code><em>メソッド</em>を作成せよ. 特に新しいメソッドは追加せず, <code>main</code>メソッドのみで行うこと. (完成した<code>main</code>メソッド, 実行結果を貼り付け, <em>動作の説明</em>を記入)
+    <ul>
+    <li>2点間の距離の公式は D(<b>p</b>, <b>q</b>) = || <b>p</b> - <b>q</b> || (ここで<b>p</b>と<b>q</b>は位置ベクトル)である. →<a href="http://jsuri1.info.kushiro-ct.ac.jp/~tenmo/java/03/2011-04-26-vector.pdf">数学ヘルプ</a>(PDF)</li>
+    <li>ここでの計算結果である<em>距離はスカラー(実数一つ)</em>であり, ベクトルではないから, <code>System.out.println( )</code>で表示して良い.</li>
+    <li><code>main</code>に課題3までの余計なコードが沢山あると混乱するので, 一旦<code>main</code>の内容をすべてコメントアウトし, この課題に必要な部分のみをコピーして抜き出して作っていくと良い.</li>
+    </ul>
+</li>
+
+<li>課題2の<code>calcNorm</code>メソッドより, C言語による手続き指向プログラミングでの「関数呼び出し」と, Javaによるオブジェクト指向プログラミングでの「メソッド呼び出し」それぞれにおける, 「データの流れ」についての根本的な<em>考え方の違い</em>を考察せよ.
+    <ul>
+    <li>ヒント: C言語で<code>calcNorm</code>関数を作るとしたら, <em>引数</em>はどうなるか. それに対して, 今回の課題2の<code>calcNorm</code>メソッドで引数はどうだったか, <code>main</code>から呼び出す際に「<code>.calcNorm( )</code>」<em>の前に書いた</em>ものは何か. それらはどの様に使われるか.</li>
+    <li>ヒント:「オブジェクト」=「インスタンス」=「データ」と考えて良い.</li>
+    <li>ヒント:「○○指向」=「○○ファースト」=「○○第一」=「○○が先」=「まず○○ありき」</li>
+    <li>ヒント:「手続き」=「C言語の関数」と考えて良い.</li>
+    <li>ヒント: C言語の関数の, 括弧内の<em>引数</em>は, データ</li>
+    <li><a href="http://jsuri1.info.kushiro-ct.ac.jp/~tenmo/java/03/">テーマ03</a>の「メソッドの使い方」の説明も参考にすると良い.</li>
+    </ul>
+</li>
+
+<!-- <li>引数として<code>XYVector2</code>クラスのインスタンスを二つ受け取り, 2点間の距離を計算して返すメソッドを作成せよ. -->
+
+<!-- <li>引数として<code>XYVector2</code>クラスのインスタンスを二つ受け取り, その二つを加算した新しいインスタンスを生成して返すメソッドを作成せよ. -->
+
+</ol>
+
+<h3>レポート</h3>
+
+<ul>
+  <li>内容: 課題中に指示されている通り. 必要な項目を全て記載しているか, 十分に確認すること.</li>
+</ul>
+
+
+
+</body></html>
