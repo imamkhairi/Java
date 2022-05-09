@@ -9,15 +9,10 @@ class XYVectorApp {
         System.out.println("B ベクトル");
         b.print();
 
-        System.out.println("Distance :" + a.distance(b));
-
-        //System.out.println("大きさ："+ a.calcNorm());
+        a.subtract(b);
         
-        // a.subtract(b);
-
-        // System.out.println("引いた後：");
-        // a.print();
-
+        System.out.println("Distance" + a.calcNorm());
+        
         System.exit(0);
     }
 
