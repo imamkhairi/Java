@@ -1,0 +1,122 @@
+課題１
+class Kadai01 {
+    public static void main(String[] args) {
+        double x = Double.parseDouble(args[0]);
+        double y = Double.parseDouble(args[1]);
+
+        System.out.println("x = " + x);
+        System.out.println("y = " + y);
+        
+        System.exit(0);
+    }
+}
+
+課題２
+class Kadai02 {
+    static double calcArea(double side){
+        double area = side*side;
+        return area;
+    } 
+    public static void main(String[] args) {
+        double side = Double.parseDouble(args[0]);
+        double area = calcArea(side);
+
+        System.out.println("面積：" + area);
+    }
+}
+
+課題３
+class Kadai03 {
+    static double calcArea(double height, double base) {
+        double area = (base * height)/2;
+        return area;
+    }
+    public static void main(String[] args) {
+        double height = Double.parseDouble(args[0]);
+        double base = Double.parseDouble(args[1]);
+
+        double area = calcArea(height, base);
+        System.out.println("三角形の面積：" + area);
+        System.exit(0);
+    }    
+}
+
+課題４
+class Kadai04 {
+    static double calcAverage(int[] score) {
+        int total = 0;
+        for (int i = 0; i < score.length; i++) {
+            total += score[i];
+        }
+        double average = (double)total/score.length;
+        return average;
+    }
+    public static void main(String[] args) {
+        int[] score = new int[args.length]; 
+
+        for (int i = 0; i < args.length; i++) {
+            score[i] = Integer.parseInt(args[i]);
+        }
+
+        double average = calcAverage(score);
+        System.out.println("平均：" + average);
+        System.exit(0);
+    }    
+}
+
+課題５
+class Kadai05 {
+    static int judge(int a) {
+        int result = a%2 == 0 ? 0 : 1;
+        return result;
+    }
+    public static void main(String[] args) {
+        int a = Integer.parseInt(args[0]);
+        int result = judge(a);
+        if(result == 0){
+            System.out.println(a + "は偶数");
+        } else {
+            System.out.println(a + "は奇数");
+        }
+        
+        System.exit(0);
+    }    
+}
+
+課題６
+class Kadai06 {
+    static int judge(int a, int b) {
+        return a == b ? 1 : 0;
+    }
+    public static void main(String[] args) {
+        int a = Integer.parseInt(args[0]);
+        int b = Integer.parseInt(args[1]);
+        int result = judge(a, b);
+
+        if(result == 1){
+            System.out.println(a + " と " + b + " は同じ");
+        } else {
+            System.out.println(a + " と " + b + " は違う");
+        }
+
+        System.exit(0);
+    }    
+}
+
+課題７
+class Kadai07 {
+    static int judge(int a) {
+        return a >= 0 && a <= 10 ? 1 : 0;
+    }
+    public static void main(String[] args) {
+        int a = Integer.parseInt(args[0]);
+        int result = judge(a);
+        if(result == 1) {
+            System.out.println(a + " is in range of 0 - 10");
+        } else {
+            System.out.println(a + " is outside of 0 - 10");
+        }
+        System.exit(0);
+    }    
+
+}
