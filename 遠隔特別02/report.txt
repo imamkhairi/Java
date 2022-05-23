@@ -1,0 +1,14 @@
+4J 08 イマムカイリルビス　遠隔特別課題02　レポート
+
+
+課題１
+class Kadai01 {
+    public static void main(String[] args) {
+        int[] a = new int[args.length];
+        for(int i = 0; i < args.length ; i++) {
+            a[i] = Integer.parseInt(args[i]);
+            System.out.println(a[i]);
+        }
+    System.exit(0);
+    }
+}
