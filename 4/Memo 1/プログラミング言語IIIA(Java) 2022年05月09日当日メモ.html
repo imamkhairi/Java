@@ -1,0 +1,63 @@
+<!--?xml version="1.0" encoding="utf-8"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>プログラミング言語IIIA(Java) 2022年05月09日当日メモ</title>
+<link rel="stylesheet" href="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIA(Java)%202022%E5%B9%B405%E6%9C%8809%E6%97%A5%E5%BD%93%E6%97%A5%E3%83%A1%E3%83%A2_files/tenmo2008single.css" type="text/css" media="all">
+</head>
+
+<body>
+
+<h2>プログラミング言語IIIA(Java) 2022年05月09日当日メモ</h2>
+
+<pre>4Jプロ言IIIA 2022.05.09 当日メモ
+------------------------------------------------------------------------
+課題1: まず前回のソース二つをコピーして持ってきて準備する.
+XYVectorApp.java の main の
+    new 部分を, コンストラクタを「呼び出す」様に修正する.
+    new の括弧の中は, args[0], args[1]を double 型に変換したもの.
+    a.x = の行は削除する. a.y = の行も同様に削除する.
+    最後に a.print(); して正常動作を確認する.
+XYVector.java に
+    コンストラクタを追加する.
+    コンストラクタの引数は double 型の変数二つ.
+    引数の変数名は x, y 「以外」にしましょう.
+    x に引数の一つめを代入する.
+    y に引数の二つめを代入する.
+------------------------------------------------------------------------
+課題2: 
+XYVectorApp.java の main で
+    a に対して calcNorm( ) メソッドを呼び出す.
+    メソッドの戻り値を double 型の変数に代入する.
+    double 型の変数を System.out.println( ) で表示する.
+XYVector.java に
+    戻り値double型 calcNorm( 引数無し ) {
+        ノルムを計算する.
+        計算した結果を double 型の変数に代入する.
+        double 型の変数を返す.
+    }
+------------------------------------------------------------------------
+課題3:
+XYVectorApp.java の main で
+    a と b を用意する.
+    a に対して b を引数として subtract( ) メソッドを呼び出す.
+    最後に a.print(); して正常動作を確認する.
+XYVector.java に
+    戻り値無し subtract( XYVector b ) {
+        x から bのx を減算する. ※「-= 演算子」を使う.
+        y から bのy を減算する.
+    }
+------------------------------------------------------------------------
+課題4: mainのみで実現する.
+    a と b を用意する.
+    a から b を減算する. ※aが上書きされる.
+    a のノルムを計算する.
+------------------------------------------------------------------------
+「引数」や「戻り値」が苦手な人は,
+教科書8.5節と8.6節をよく読んで復習しておきましょう.
+この辺りはC言語と変わりません.
+</pre>
+
+
+
+</body></html>

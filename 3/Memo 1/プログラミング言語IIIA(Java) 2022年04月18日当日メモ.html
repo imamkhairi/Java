@@ -1,0 +1,64 @@
+<!--?xml version="1.0" encoding="utf-8"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>プログラミング言語IIIA(Java) 2022年04月25日当日メモ</title>
+<link rel="stylesheet" href="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIA(Java)%202022%E5%B9%B404%E6%9C%8818%E6%97%A5%E5%BD%93%E6%97%A5%E3%83%A1%E3%83%A2_files/tenmo2008single.css" type="text/css" media="all">
+</head>
+
+<body>
+
+<h2>プログラミング言語IIIA(Java) 2022年04月25日当日メモ</h2>
+
+<img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIA(Java)%202022%E5%B9%B404%E6%9C%8818%E6%97%A5%E5%BD%93%E6%97%A5%E3%83%A1%E3%83%A2_files/2022-05-09-vector-ab.png" width="640">
+
+<pre>4Jプロ言IIIA 2022.04.25 当日メモ
+------------------------------------------------------------------------
+課題1: ファイル名 XYVector.java
+class XYVector {
+    // ----まずフィールド(変数)を宣言----
+    double x, y;
+    // ----その下にメソッド(関数)を作る----
+    void print() {
+    ~~~~これを忘れずに!!
+        System.out.println(x);
+        System.out.println(y); もっと凝った表示にしてもOK
+    }
+}
+------------------------------------------------------------------------
+課題2: ファイル名 XYVectorApp.java
+class XYVectorApp {
+    public static void main(String[] args) {
+        XYVector a;
+        a = new XYVector();　メモリを割り当ててインスタンス化する
+        a.x = Double.parseDouble( args[0] );
+        a.y = Double.parseDouble( args[1] );
+        a.print(); これで print メソッドを呼び出す
+    }
+}
+$ javac XYVector.java XYVectorApp.java
+$ java XYVectorApp 3.14 2.17 引数が二つ必要
+------------------------------------------------------------------------
+課題3: 課題2の最後の a.print(); の「下に」追加する. それ以前と混ぜない.
+class XYVectorApp {
+    public static void main(String[] args) {
+        XYVector a;
+        a = new XYVector();
+        a.x = Double.parseDouble( args[0] );
+        a.y = Double.parseDouble( args[1] );
+        a.print();
+        **** ここに課題3のコードを書く ****
+$ java XYVectorApp 3.14 2.17 9.99 7.77 この課題では引数が四つ必要
+------------------------------------------------------------------------
+課題4: これは間違い [riritsu, gankin] ← a ← b
+                                        ~~~~~~ここがダメ
+a にはインスタンスのアドレスが入っている.
+b = a; で b にも同じアドレスが入る.
+------------------------------------------------------------------------
+課題5: 今回は自由に作ってOKです.
+次回以降, 「オブジェクト指向の作法」に従った作り方を学習します.
+</pre>
+
+
+
+</body></html>
