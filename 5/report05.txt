@@ -1,3 +1,5 @@
+4J 08 イマムカイリルビス　テーマ05　レポート
+
 課題１
 追加した部分：
 XYVector() {
@@ -51,6 +53,7 @@ System.out.println("Distance :" + r);
 $ java XYVectorApp 
 Distance : 4.004809608458309
 
+
 課題４
 public static void main (String[] args) {
     XYVector a = new XYVector(3.14, 2.17);
@@ -59,12 +62,13 @@ public static void main (String[] args) {
     double r = a.calcDistance(a, b);
     System.out.println("Distance : " + r);
 }
+
 a.calcDistanceのように書くとあるオブジェクト変数のクラスの中からメソッド呼び出すことになった。
-そうするとオブジェクト変数のフィルドの値が直接アクセスできる（thisが使える）。
-karena a.calcDistance artinya memanggil method dari suatu class, dimana field dari class itu sudah pasti diketahui.
-makanya tidak dibutuhkan object dari class(omo) itu sebagai parameter lagi.
-ketika dibuat seperti ini maka this tidak dapat digunakan 
+そうするとオブジェクト変数のフィルドの値が直接アクセスできる（thisが使える）。つまり、実は主のオブジェクト変数は引数として扱う必要がない。
+でも、引数として扱ったら this が使えなくなって、不便な書き方になった。
+
 
 課題５ 
-math.sqrt() merupakan static method. 
-Hal ini dikarenakan static method dapat dipanggil meskipun di luar classnya sendiri (tidak membutuhkan object).
+math.sqrt()はstaticメソッドである。
+なぜか、math.sqrt()を呼び出すときにはオブジェクト変数を前に書かなくても実行できる。
+さらに、もしmath.sqrt()はstaticメソッドでないと、引数なくても実行できる。でも、実際にはできない。

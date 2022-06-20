@@ -1,0 +1,35 @@
+4J 08 イマムカイリルビス　2022-05-30　レポート
+
+課題１
+class MyPoint {
+    int x, y;
+
+    MyPoint(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+
+    void print() {
+        System.out.println("x = " + x);
+        System.out.println("y = " + y);
+    }
+}
+
+課題２
+class MyPointApp {
+    public static void main (String[] args) {
+        int x = Integer.parseInt(args[0]);
+        int y = Integer.parseInt(args[1]);
+
+        MyPoint mp = new MyPoint(x, y);
+
+        mp.print();
+
+        System.exit(0);
+    }    
+}
+
+$ javac MyPoint.java MyPointApp.java
+$ java MyPointApp 89 45
+x = 89
+y = 45                                             
