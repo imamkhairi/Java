@@ -1,0 +1,223 @@
+<!--?xml version="1.0" encoding="utf-8"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>プログラミング言語IIIA(Java) テーマ05</title>
+<link rel="stylesheet" href="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIA(Java)%20%E3%83%86%E3%83%BC%E3%83%9E05_files/tenmo2008single.css" type="text/css" media="all">
+</head>
+
+<body>
+
+<h2>プログラミング言語IIIA(Java) テーマ05</h2>
+
+<h3>内容</h3>
+
+<p>Javaで, 「あえて」手続き指向的(C言語的)なメソッド呼び出しを行う方法である<code class="em">static</code>メソッドの作り方・呼び出し方「も」学習し, オブジェクト指向的である<em>通常</em>のメソッドと, 手続き指向的な<code>static</code>メソッドの違いに関して理解を深める.</p>
+
+<p>※実施理由: 実用的なプログラム(アプリ)を開発するためには, プログラムを白紙から完全自作するのではなく, 様々なライブラリやフレームワークを活用する必要があり, そのためにはオブジェクト指向の(つまりJava的には通常の)メソッドと, 手続き指向の<code>static</code>メソッドの<em>両方を使いこなす</em>ことが必要となるため.</p>
+
+<p>※Javaに限らず, C#やC++, Python, JavaScriptなど現在ソフトウェア開発に広く用いられているプログラミング言語では, オブジェクト指向と手続き指向(と近年はさらにSchemeの様な関数指向)を全て用いる<em>ハイブリッド</em>なスタイルが用いられている.</p>
+
+<h3>Java用語(続き)(要暗記)</h3>
+
+<ul>
+
+  <li><code class="em">this</code> ... メソッド内で, 現在, 処理の対象である「<em>主</em>」となっているインスタンスを指す特別なオブジェクト変数. 日本語で, 「<em>この</em>インスタンス」と読むと理解し易い. 省略可能だが, 初心者は付けた方が分り易くなり, 間違いも少なくなる.</li>
+  
+  <li>※今後は, この授業のプログラムでフィールドを使う際には, 「<code>this.</code>」を付けて書きましょう.</li>
+
+  <li>※これから先, 説明を短くするために, 「オブジェクト変数」と「インスタンス」をまとめて単に「インスタンス」と書く場合があるが, メモリ内部では<a href="http://jsuri1.info.kushiro-ct.ac.jp/~tenmo/java/03/">テーマ03</a>で学習した様に, 別のものである. オブジェクト変数は矢印の根本, インスタンスは矢印の先, というイメージを忘れないで欲しい.
+
+<pre>class XYVectorApp
+{
+    public static void main(String[] args)
+    {
+        XYVector a = new XYVector(3.14, 2.17);
+        XYVector b = new XYVector(-0.5, 0.5);
+        a.add(b); // a「に対して」bを加える.  ... aが「主」でbが「従」
+    }
+}
+</pre>
+
+<pre>class XYVector
+{
+    double x, y;
+
+    void add(XYVector b) // bは引数インスタンス
+    {
+        this.x += b.x; // 左辺のthisはmainでの「主」であるaに該当し, 
+        this.y += b.y; // 右辺の   bはmainでの「従」であるbに該当する. 
+
+        // thisを省略して次の様に書くこともできる. 前回まではこの様な書き方だった.
+        // x += b.x;
+        // y += b.y;
+
+        // **** 今後はフィールドには「this.」を付けて書きましょう ****
+    }
+}
+</pre>
+</li>
+
+<li><code class="em">static</code>メソッド ... 「主」と「従」の関係がない, 手続き指向的な考え方の関数. 呼び出す場合は「<em>クラス名</em><code>.</code>メソッド名<code>(</code>引数<code>)</code>」とする. オブジェクト変数名ではなく「クラス名」を指定する点が, 通常のメソッド呼び出しと異なる. <code>static</code>メソッド内では<code>this</code>が<em>存在しない</em>. (故に, <code>this</code>は使えない.)
+
+<pre>class XYVectorApp
+{
+    public static void main(String[] args)
+    {
+        XYVector a = new XYVector(3.14, 2.17);
+        XYVector b = new XYVector(-0.5, 0.5);
+        XYVector c = XYVector.add(a, b); // 「XYVector.」に注目
+                                         // aとbを加えた結果を受け取ってcに代入
+    }
+}
+</pre>
+
+<pre>class XYVector
+{
+    double x, y;
+
+    static XYVector add(XYVector a, XYVector b) // staticが付いている
+                                                // aもbも平等に引数インスタンス
+    {
+        // この考え方ではthisが存在しない
+        XYVector w = new XYVector(); // 新しいインスタンスwを用意し
+        w.x = a.x + b.x;             // wに計算結果を入れる
+        w.y = a.y + b.y;
+        return w;                    // そしてwを返す
+    }
+}
+</pre>
+</li>
+
+</ul>
+
+<h3>テクニック: コンストラクタでの<code>this</code>の利用</h3>
+
+<p>コンストラクタで, 引数とフィールドを<em>同じ変数名</em>にしたい場合, 引数とフィールドを区別するために<code>this</code>を利用できる.</p>
+
+<p>※今後は, この授業のプログラムでコンストラクタを作る際には, 「<code>this.</code>」を使って書きましょう.</p>
+
+<pre>class XYVector
+{
+    double x, y;
+
+    XYVector(double x, double y) // 引数二つのコンストラクタ
+    {
+        this.x = x; // 「このインスタンスの」xに, 引数のxを代入
+        this.y = y; // 「このインスタンスの」yに, 引数のyを代入
+    }
+}
+</pre>
+
+<h3>通常メソッドと<code>static</code>メソッドの違い, まとめ</h3>
+
+<ul>
+
+<li>通常メソッド ... 呼び出し時は, 主となるインスタンスの<em>オブジェクト変数名.</em>を前に付ける. メソッド内ではその主となるインスタンスが<code>this</code>になる. ※コンストラクタでも新しいインスタンスが<code>this</code>になる.</li>
+
+<li><code>static</code>メソッド ... 呼び出し時は<em>クラス名.</em>を前に付ける. 引数でデータを全て渡し, 必要に応じてreturnで返す.</li>
+
+</ul>
+
+<h3>課題</h3>
+
+<p>以下の課題のレポートは, レポートファイル「<code class="em">report05.txt</code>」を作成してアップロードにより提出すること.</p>
+
+<p>まず準備として, 今回の作業用ディレクトリを作成し, 前回の<code>XYVector</code>クラスと<code>XYVectorApp</code>クラスをコピーせよ. 前回までの指示に従って作成していれば, <code>XYVector</code>クラスの方は特に削除する部分はない. <code>XYVectorApp</code>クラスの方は<code>main</code>内を全てコメントアウトしておくと良い.</p>
+
+<ol>
+
+<li><code>XYVector</code>クラスに, 上記の例にある加算メソッド2つをそのままコピーして追加せよ. <code>main</code>メソッドには<code>static</code>な加算メソッドを動作テストするコードを追加すること. なお, 加算メソッド内では表示を行わず, <code>main</code>から<code>print()</code>メソッドを<em>呼び出して</em>表示すること(これ以降の課題も同様). (<em>追加した部分</em>のソースとテスト結果, 動作の説明をレポート)
+    <ul>
+    <li>注意: 加算メソッドの名前は両方とも同じ<code class="em">add</code>で良い. 変更する必要はない.
+
+<pre>void add(XYVector b) // 通常メソッド
+{
+    ...
+}
+
+static XYVector add(XYVector a, XYVector b) // staticメソッド
+{
+    ...
+}
+</pre>
+</li>
+
+    <li>動作させるためには, <em>引数なし</em>で, <code>x, y</code>をそれぞれゼロに初期化するコンストラクタを自作して追加する必要がある.</li>
+    <li>なお, 前回作成した引数2つのコンストラクタも, 上記の例にならって<code>this</code>を付けた上で, そのまま残しておくこと. ※Javaでは引数が異なれば同じ名前のメソッドを重複して作成できる.
+
+<pre>XYVector(double x, double y) // 引数2個のコンストラクタ
+{
+    ... // 例にならってthisを使う様に修正
+}
+
+XYVector() // 引数なしコンストラクタ
+{
+    ... // this.x, this.yをそれぞれゼロに初期化
+}
+</pre>
+</li>
+
+    </ul>
+</li>
+
+<p><em>[注意]</em> レポートに掲載するのは「追加した部分のソース」である. ソース全体を掲載するのではない.</p>
+
+<!--
+    <p>[負担軽減] コマンドライン引数は使わず, ソース中に値を直接, 埋め込んで良い.</p>
+-->
+
+<li><code>XYVector</code>クラスに, 以下の仕様を満たす<code>static</code>な減算メソッドを追加せよ. <code>main</code>メソッドにその動作をテストするコードも追加すること. 減算の動作テスト用に, 課題1とは別のインスタンスを用意すること. (追加した部分のソースとテスト結果をレポート)
+    <ul>
+    <li>名前は<code class="em">subtract</code>とする.</li>
+    <li>引数として<code>XYVector</code>クラスのインスタンスを二つ受け取る.</li>
+    <li>計算結果用の新しいインスタンスを用意する.</li>
+    <li>1番目のベクトルから2番目のベクトルを減算し, 計算結果を新しいインスタンスに格納する.</li>
+    <li>最後に計算結果のインスタンスを返す.</li>
+    </ul>
+    <p><em>[注意]</em> 課題1の<code>a, b, c</code>を使いまわしすると混乱するので, 新たに<code>d, e, f</code>を登場させること.</p>
+   <!--<p><em>[注意]</em> <code>main</code>にて, 減算メソッドを呼び出す<em>前と後</em>でそれぞれ1番目のベクトルと2番目のベクトルを表示し, 成分の値が<em>変化していない</em>ことを確認すること.</p>-->
+</li>
+
+<li><code>XYVector</code>クラスに以下の仕様を満たす<code>static</code>な距離計算メソッドを追加せよ. <code>main</code>メソッドにその動作をテストするコードも追加すること. 距離計算の動作テスト用に, 課題1・課題2とは別のインスタンスを二つ用意すること. (追加した部分のソースとテスト結果をレポート)
+    <ul>
+    <li>名前は<code class="em">calcDistance</code>とする.</li>
+    <li>引数として<code>XYVector</code>クラスのインスタンスを二つ受け取る.</li>
+    <li>1番目のベクトルで表される位置と, 2番目のベクトルで表される位置の間の距離を計算する.</li>
+    <li>距離計算のために減算を行う際には課題2の<code>static</code>減算メソッドを, また, ノルム(大きさ)の計算には前回<a href="http://jsuri1.info.kushiro-ct.ac.jp/~tenmo/java/04">テーマ04</a>の課題2で作成した<code>calcNorm</code>メソッドを<em>呼び出して</em>利用すること.</li>
+    <li>最後に計算結果の距離を返す. ※距離は<code>double</code>型の数値一つである. ベクトルではない.</li>
+    </ul>
+    <!--<p><em>[注意]</em> <code>main</code>にて, 距離計算メソッドを呼び出す<em>前と後</em>でそれぞれ1番目のベクトルと2番目のベクトルを表示し, 成分の値が<em>変化していない</em>ことを確認すること.</p>-->
+</li>
+
+<li>課題3の<code>calcDistance</code>メソッドからキーワード「<code>static</code>」のみを削除した場合, <code>main</code>での呼び出し方はどの様なコードになるか, つまり<code>main</code>側をどの様に書き換えたらコンパイルして実行できるか, <em>具体例</em>を作成して答えよ. また, その書き方が良くない理由を考察せよ. (<code>main</code>側の具体例と, その書き方が良くない理由をレポート)
+
+<ul>
+  <li><code>calcDistance</code>メソッド側は, キーワード「<code>static</code>」のみを取り除く. それ以外は<em>一切変更しない</em>.</li>
+  <li><code>main</code>側を, コンパイルして実行ができる様に, 変更する.</li>
+</ul>
+
+<p>ヒント: 主となるインスタンス, <code>this</code>のフィールド, 引数インスタンスのフィールド, 使われる/使われない</p>
+</li>
+
+<li>Java標準ライブラリで用意されており, これまで何度か使用してきた<code>Math.sqrt( )</code>は, 通常のメソッドと<code>static</code>メソッドのどちらと考えられるか, 理由を添えて答えよ. <!--さらに, 通常のメソッドと<code>static</code>メソッドの<em>使い分けの基準</em>(どの様な場合に通常のメソッドとし, どの様な場合に<code>static</code>メソッドとするか)について考察せよ. -->(理由と答えをレポート)
+    <p>注意: 呼び出し方の文法ではなく, <!--メソッド内での-->処理に使われる<em>データの流れ</em>(入出力)に注目すること.</p>
+
+    <p>ヒント: 主となるインスタンスの有無, 引数, 戻り値, 前回<a href="http://jsuri1.info.kushiro-ct.ac.jp/~tenmo/java/04">テーマ04</a>の課題5</p>
+
+<!-- <li>課題7より, プログラムの実行開始地点である<code>main</code>メソッドが<code>static</code>メソッドである理由を考察せよ. (レポート)</li> -->
+
+<!-- <li>これまでに作成した<code>XYVector</code>クラスに関して, 通常のメソッドと<code>static</code>メソッドを, (手続き指向・オブジェクト指向抜きで単に)メモリの使用効率の観点から比較・考察せよ. (レポート)</li> -->
+</li>
+
+</ol>
+
+<h3>レポート</h3>
+
+<ul>
+<li>内容: 課題中に指示されている通り. 必要な項目を全て記載しているか, 十分に確認すること.</li>
+</ul>
+
+
+
+</body></html>

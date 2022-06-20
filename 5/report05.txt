@@ -1,0 +1,70 @@
+課題１
+追加した部分：
+XYVector() {
+    this.x = 0;
+    this.y = 0;
+}
+
+mainで：
+c.print();    
+
+a.add(b);
+a.print();
+
+$ java XYVectorApp 
+x = 2.64
+y = 2.67
+
+
+課題２
+追加した部分：
+static XYVector substract(XYVector a, XYVector b) {
+    XYVector w = new XYVector();
+    w.x = a.x - b.x;
+    w.y = a.y - b.y;
+    return w;
+}
+
+mainで：
+XYVector d = XYVector.substract(a, b);
+d.print();
+
+実行結果：
+$ java XYVectorApp 
+x = 3.64
+y = 1.67
+
+
+課題３
+追加した部分：
+static double calcDistance(XYVector a, XYVector b) {
+    XYVector c = XYVector.substract(a, b);
+    double r = c.calcNorm();
+    return r;
+}
+
+mainで：
+double r = XYVector.calcDistance(a, b);
+System.out.println("Distance :" + r);
+
+実行結果：
+$ java XYVectorApp 
+Distance : 4.004809608458309
+
+課題４
+public static void main (String[] args) {
+    XYVector a = new XYVector(3.14, 2.17);
+    XYVector b = new XYVector(-0.5, 0.5);
+        
+    double r = a.calcDistance(a, b);
+    System.out.println("Distance : " + r);
+}
+a.calcDistanceのように書くとあるオブジェクト変数のクラスの中からメソッド呼び出すことになった。
+そうするとオブジェクト変数のフィルドの値が直接アクセスできる（thisが使える）。
+karena a.calcDistance artinya memanggil method dari suatu class, dimana field dari class itu sudah pasti diketahui.
+makanya tidak dibutuhkan object dari class(omo) itu sebagai parameter lagi.
+ketika dibuat seperti ini maka this tidak dapat digunakan 
+
+課題５ 
+math.sqrt() merupakan static method. 
+Hal ini dikarenakan static method dapat dipanggil meskipun di luar classnya sendiri (tidak membutuhkan object).
