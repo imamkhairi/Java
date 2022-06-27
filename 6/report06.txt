@@ -1,0 +1,129 @@
+課題２
+class Student
+{
+    int gakunen;
+    String bunnya;
+    String namae;
+    String jukyo;
+
+    Student(int gakunen, String bunnya, String namae, String jukyo) {
+        this.gakunen = gakunen;
+        this.bunnya = bunnya;
+        this.namae = namae;
+        this.jukyo = jukyo;
+    }
+
+    void shokai() {
+        System.out.println("私は"+ this.gakunen + "年" + this.bunnya + "の" + this.namae + "です。私の住居は" + this.jukyo + "です。" );
+    }
+
+    static void shokai(Student a) {
+        System.out.println("私は"+ a.gakunen + "年" + a.bunnya + "の" + a.namae + "さんです。私の住居は" + a.jukyo + "です。");
+    }
+}
+
+class StudentApp {
+    public static void main(String[] args) 
+    {
+        Student jotaro = new Student(4, "情報", "じょうたろう", "下宿");
+        Student josuke = new Student(3, "情報", "じょうすけ", "学寮");
+        jotaro.shokai();
+        josuke.shokai();
+        Student.shokai(jotaro);
+        Student.shokai(josuke);
+
+        System.exit(0);
+    }
+}
+
+実行結果：
+$ java StudentApp 
+私は4年情報のじょうたろうです。私の住居は下宿です。
+私は3年情報のじょうすけです。私の住居は学寮です。
+私は4年情報のじょうたろうさんです。私の住居は下宿です。
+私は3年情報のじょうすけさんです。私の住居は学寮です。
+
+
+課題３
+void hantei(Student a) {
+    if(this.jukyo.equals(a.jukyo)) {
+        System.out.println("私"+ this.namae + "と" + a.namae + "さんは仲間です.");
+    } else 
+    {
+        System.out.println("私"+ this.namae + "と" + a.namae + "さんは仲間ではありません.");
+    }
+}
+
+static void hantei(Student a, Student b){
+if(a.jukyo.equals(b.jukyo)) {
+    System.out.println(a.namae + "さんと" + b.namae + "さんは仲間です. \n");
+    } else 
+    {
+        System.out.println(a.namae + "さんと" + b.namae + "さんは仲間ではありません. \n");
+    }
+}
+
+Student josuke = new Student(3, "情報", "じょうすけ", "学寮");
+
+josuke.hantei(jotaro);
+Student.hantei(josuke, jotaro);
+
+kikaitaro.shokai();
+
+kikaitaro.hantei(josuke);
+Student.hantei(kikaitaro, josuke);
+
+実行結果：
+$ java StudentApp 
+私は4年情報のじょうたろうです。私の住居は下宿です。
+
+私は3年情報のじょうすけです。私の住居は学寮です。
+
+私じょうすけとじょうたろうさんは仲間ではありません.
+じょうすけさんとじょうたろうさんは仲間ではありません. 
+
+私は3年機械のきかいたろうです。私の住居は学寮です。
+
+私きかいたろうとじょうすけさんは仲間です.
+きかいたろうさんとじょうすけさんは仲間です. 
+
+通常版とstatic版の動作の違い：
+通常版ではmainからhanteiメソッドが呼び出されると, 「主」インスタンスと「従」インスタンスの, jukyoフィールドの値が比較される. 
+一方static版では「主」と「従」の関係がない。２つの引数としてオブジェクト変数を扱い、一つめの引数のjukyoフィルドと２つめの引数のjukyoフィルド比較される。
+
+課題４
+void shinkyu(){
+    this.gakunen ++;
+    System.out.println("私は" + (this.gakunen) + "年に進級しました!");
+}
+
+static void shinkyu(Student a){
+    a.gakunen ++;
+    System.out.println(a.namae + "さんは" + (a.gakunen) + "年に進級しました!");
+}
+
+jotaro.shinkyu();
+jotaro.shokai();
+
+Student.shinkyu(josuke);
+Student.shokai(josuke);
+
+実行結果：
+$ java StudentApp 
+私は4年情報のじょうたろうです。私の住居は下宿です。
+
+私は3年情報のじょうすけです。私の住居は学寮です。
+
+私は5年に進級しました!
+私は5年情報のじょうたろうです。私の住居は下宿です。
+
+じょうすけさんは4年に進級しました!
+私は4年情報のじょうすけさんです。私の住居は学寮です。
+
+通常版とstatic版の動作の違い：
+通常版ではmainからshinkyuメソッドが呼び出されると, オブジェクト変数のgakunenフィールドの値が変更させる. 
+一方static版では１つの引数としてオブジェクト変数を扱い、引数のgakunenフィルドの値が変更される。
+NTAR YANG INI CEK LAGI ISTILAH2NYA
+
+
+課題５
