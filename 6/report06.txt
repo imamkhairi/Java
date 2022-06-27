@@ -123,7 +123,185 @@ $ java StudentApp
 通常版とstatic版の動作の違い：
 通常版ではmainからshinkyuメソッドが呼び出されると, オブジェクト変数のgakunenフィールドの値が変更させる. 
 一方static版では１つの引数としてオブジェクト変数を扱い、引数のgakunenフィルドの値が変更される。
-NTAR YANG INI CEK LAGI ISTILAH2NYA
 
 
 課題５
+class Player {
+    String name;
+    int hp;
+    int att;
+    int lvl;
+    int basehp;
+
+    Player(String name, int hp, int att, int lvl) {
+        this.name = name;
+        this.hp = hp;
+        this.basehp = hp;
+        this.att = att;
+        this.lvl = lvl;
+    }
+
+    void status() {
+        System.out.println(
+            this.name + " status :" +
+            "\nlvl : " + this.lvl +            
+            "\nhp  : " + this.hp +
+            "\natt : " + this.att + "\n"
+            );
+    }
+
+    void attack(Player a) {
+        if(a.hp - this.att > 0) {
+            a.hp -= this.att;
+        } else {
+            a.hp = 0;
+        }
+        System.out.println(a.name + " is attacked by " + this.name + ". Damage : " + this.att + "\n");
+    }
+
+    void restoreHp() {
+        this.hp = this.basehp;
+    }
+
+    void lvlUp() {
+        System.out.println(this.name + " leveled up!");
+        restoreHp();
+        this.lvl ++;
+        this.hp += 5*lvl;
+        this.basehp = this.hp;
+        this.att += 3*lvl;
+    }
+}
+
+class Game {
+
+    static void win(Player a, Player b) {
+        if(a.hp == 0) {
+            System.out.println(b.name + " win!");
+            b.lvlUp();
+            b.status();
+        } else if(b.hp == 0) {
+            System.out.println(a.name + " win!");
+            a.lvlUp();
+            a.status();
+        }
+    }
+    
+    static void startGame(Player a, Player b){
+        int turn = 1;
+        a.status();
+        b.status();
+        while(a.hp > 0 && b.hp > 0) {
+            System.out.println("Turn " + turn + "------------");
+            if(turn % 2 == 1){
+                a.attack(b);
+            }
+            else {
+                b.attack(a);
+            }
+            turn ++;
+            a.status();
+            b.status();
+            System.out.println("End turn ----------\n\n");
+        }
+
+        Game.win(a,b);
+    }
+
+}
+
+class GameSimple{
+    public static void main(String[] args) {
+        Player player1 = new Player("Player1", 10, 6, 1);
+        Player player2 = new Player("Player2", 10, 4, 1);
+
+        Game.startGame(player1, player2);
+
+        System.exit(0);
+    }
+}
+
+実行結果：
+Player1 status :
+lvl : 1
+hp  : 10
+att : 6
+
+Player2 status :
+lvl : 1
+hp  : 10
+att : 4
+
+Turn 1------------
+Player2 is attacked by Player1. Damage : 6
+
+Player1 status :
+lvl : 1
+hp  : 10
+att : 6
+
+Player2 status :
+lvl : 1
+hp  : 4
+att : 4
+
+End turn ----------
+
+
+Turn 2------------
+Player1 is attacked by Player2. Damage : 4
+
+Player1 status :
+lvl : 1
+hp  : 6
+att : 6
+
+Player2 status :
+lvl : 1
+hp  : 4
+att : 4
+
+End turn ----------
+
+
+Turn 3------------
+Player2 is attacked by Player1. Damage : 6
+
+Player1 status :
+lvl : 1
+hp  : 6
+att : 6
+
+Player2 status :
+lvl : 1
+hp  : 0
+att : 4
+
+End turn ----------
+
+
+Player1 win!
+Player1 leveled up!
+Player1 status :
+lvl : 2
+hp  : 20
+att : 12
+
+説明：
+
+シンプルなターンベースの戦いゲームのようなである。
+ゲームのシステムはプレーヤーが順番に攻撃して、最後に生き残るプレーヤーは勝つ。
+勝ったプレーヤーのレベルが上がることにする。
+
+「Player」クラスのフィールドはプレーヤーの属性として扱われている。
+「status」メソッドはプレーヤーのステータスを表示する。
+「attack」メソッドは他の相手を攻撃する。攻撃するときは相手の「hp」フィールドがプレーヤーの「att」フィールドと引くことにする。もし相手の「hp」は０より大きかったら、そのままにする。一方、相手の「hp」は０より小さかったら、相手の「hp」は０になる。
+「restoreHp」メソッドはプレーヤーの「hp」を元の「basehp」に戻す。
+「lvlUp」メソッドはプレーヤーの「lvl」フィールドの値を上げるメソッドである。プレーヤーの他のフィールドの値も上げる。ただし、最初は「restoreHP」メソッドによるプレーヤーの「hp」を元の「basehp」に戻す。
+
+「Game」クラスはこのゲームがどのように動作するかを決定するものである。フィールド無で、いくつメソッドを扱う。
+「startGame」メソッドはゲームの動作を決定する。まずターンを１に設定する。ゲームは何れかプレーヤーが「hp」を０になるまで続く。最後に「win」メソッドを呼び出される。
+「win」メソッドは誰かが勝つを判定するメソッド。このメソッドの中に勝ったプレーヤーの「lvlUp」と「status」メソッドを呼び出される。
+
+「GameSimple」クラスにmainメソッドがある。
+「main」メソッドにまず二つオブジェクト変数を定義する。そして、ゲームを始めるために「gameStart」メソッドを呼び出す。
