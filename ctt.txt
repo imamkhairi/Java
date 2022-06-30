@@ -1,0 +1,3 @@
+web jouhou
+http://www.infogr.kushiro-ct.ac.jp:8080/info
+reset terus asu
