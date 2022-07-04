@@ -23,6 +23,5 @@ class StudentApp {
         jotaro.setItem(item);
         System.out.println(jotaro.getItem().getName() + " " + jotaro.getItem().getPrice()); 
         jotaro.shokai();
-
     }
 }

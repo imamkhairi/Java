@@ -125,11 +125,15 @@ class StudentApp {
 
         Item item = new Item();
         item.setName("pencil");
-        item.setPrice(-250);
+        item.setPrice(250);
         System.out.println(item.getName() +" " + item.getPrice());
 
     }
 }
+
+実行結果：
+$ java StudentApp
+pencil 250
 
 
 課題３
@@ -267,24 +271,16 @@ class StudentApp {
 }
 
 アイテムまるごとのアクセサーの動作説明:
-セッターは itu akan menerima nilai dari parameter berupa sebuah objek bertipe item. tentu saja semua nilai yang tersimpan pada instance yang ditunjuk objek ini juga akan dipassing.
-getter itu mengembalikan suatu objek bertipe item. semua nilai field yang tersimpan otomatis akan dikembalikan juga. 
+セッターは引数からItem型のオブジェクト変数をもらう。もちろん、このオブジェクト変数が指しているフィールドとメソッドも渡される。
+ゲッターの戻り値はItem型のオブジェクト変数である。このオブジェクト変数が指しているフィールドとメソッドも渡される。 
 
 
 課題４
- privateメソッドは「どの様な場合に使うべきか」
- 調査に用いた文献情報(著者・図書名・出版社・出版年・ページ範囲)(ウェブ不可)を示した上で, 自分の言葉でまとめ直すこと. 調査しても見つからない場合は, 自分の考察でも良い. (レポートに記載) 
- -> butuh resource gitu
-
- private method itu didefinisikan ketika ada sebuah method yang hanya dibutuhkan untuk diakses dalam class itu saja. (tidak butuh diakses langsung dari main)
+privateメソッドを使うのはあるメソッドがクラスの中からしか使わないとき。もしくはそのメソッドをクラスの外から直接使う必要ないとき。
 
 
 課題５
-staticフィールドについて調査して報告せよ. 
-調査に用いた文献情報(著者・図書名・出版社・出版年・ページ範囲)(ウェブ不可)を示した上で, 自分の言葉でまとめ直すこと. 調査しても見つからない場合は, 自分の考察でも良い. (レポートに記載) 
-
-ini dibuat ketika ingin membuat seperti sebuah definisi terhadap suatu nama variabel. contohnya math.pi yang akan memberikan nilai dari phi.
-
-教科書「クラス変数」
+staticフィールドを使うのは何かを定義をする必要がある時ある。たとえば、Mathクラスのpiの値の定義である。
+普通のフィールドと異なり、、オブジェクトのプロパティとして考えることがでる。
 
  
