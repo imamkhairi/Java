@@ -1,0 +1,237 @@
+<!--?xml version="1.0" encoding="utf-8"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>プログラミング言語IIIA(Java) テーマ07</title>
+<link rel="stylesheet" href="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIA(Java)%20%E3%83%86%E3%83%BC%E3%83%9E07_files/tenmo2008single.css" type="text/css" media="all">
+</head>
+
+<body>
+
+<h2>プログラミング言語IIIA(Java) テーマ07</h2>
+
+<h3>内容</h3>
+
+<p>C言語の「構造体」とJava等の「クラス」で大きく異なる機能が, オブジェクト指向プログラミングの重要な要素である「<em>情報隠蔽</em>」である. ※用語として他に「データ隠蔽」や「カプセル化」という呼び方もあり, これらが同じものか否か種々議論あるが, ここでは同一視して扱う.</p>
+
+<p>今回はこの情報隠蔽について, これまでに作成したプログラムを拡張して体験的に学習する. 今回の内容は後期に<em>GUI</em>(Graphical User Interface; グラフィカル・ユーザー・インターフェース)のプログラミングを行う際に重要な基礎知識となるため, しっかり理解しておいて欲しい. </p>
+
+<p>考え方: ×お前の物は俺の物 → <code>private</code>の壁で防御</p>
+
+<h3>フィールドの<code>private/public</code>化とアクセサーメソッド</h3>
+
+<p>これまでに皆さんが作成してきたJavaプログラムでは, フィールドの値を読み取ったり書き換えたりするのは, C言語の構造体と同様に<em>自由</em>であり, クラスの外部からもドット演算子を用いて自由にアクセスすることができた. しかし, この様な自由はまた, <em>責任</em>の所在, すなわちそのフィールドに関与するコードをソース中のあちこちに分散させ, バグの追求を困難にしてしまう. </p>
+
+<pre>class Koza // 銀行の預金口座(機能を提供する側)
+{
+    double riritsu;
+    int gankin;
+
+    Koza() {             // 引数無しコンストラクタ
+        riritsu = 0.002; // 利率は銀行側で決めたいのに, 
+    }
+}
+</pre>
+<pre>class KozaApp // 顧客(機能を使う側)
+{
+    public static void main(String[] args) {
+        Koza my_koza = new Koza();
+        my_koza.riritsu = 77.7; // 顧客が「勝手に」利率を変更し放題!!
+    }
+}
+</pre>
+
+<p>そこでオブジェクト指向プログラミングでは, <code>private</code>の壁でフィールドを外部から「<em>隠蔽</em>」し
+て守り, フィールドに直接アクセス(読み・書き)するコードをクラスの内部に限定する. こうすることで, 外部に見せたくないフィールドを隠したり,
+ フィールドの値を変更する(つまり責任を伴う)コードをこのクラスの中に限定できる. この, 
+フィールドを隠す・隠さないを指示する命令(修飾子)が, 「<code class="em">private</code>」と「<code class="em">public</code>」である. </p>
+
+<pre>class Koza
+{
+    private double riritsu; // private化
+    private int gankin;     // private化. これにより,
+
+    Koza() {
+        riritsu = 0.002; // クラス内部では自由にアクセスできるが
+    }
+}
+</pre>
+<pre>class KozaApp
+{
+    public static void main(String[] args) {
+        Koza my_koza = new Koza();
+        my_koza.riritsu = 77.7; // クラスの外部からはアクセスできなくなる(コンパイルエラーになる)
+    }
+}
+</pre>
+
+<p>ただし, <code>gankin</code>の様に, 利用者にもある程度の変更の自由を許可したい場合は, <code>private</code>で完全に隠蔽したままでは使い物にならないため, フィールドの値を読み取ったり書き換えたりできる<em>メソッド</em>を用意し, 外部からはこれを呼び出して使わせる. この, フィールドの出入り口となるメソッドを, それぞれ「<em>ゲッター</em>」(getter)「<em>セッター</em>」(setter)と呼び, 両者を合わせて「<em>アクセサー</em>」(accessor)と呼ぶ. </p>
+
+<p>※アクセサ「リー」ではないので注意. </p>
+
+<pre>class Koza
+{
+    private double riritsu; // privateフィールド
+    private int gankin;     // privateフィールド
+
+    Koza() {
+        riritsu = 0.002;    // 利率は銀行側で設定
+    }
+    int getGankin() {  // 元金のゲッター
+        return this.gankin; // 値を返すだけ
+    }
+    void setGankin(int gankin) { // 元金のセッター ※戻り値の型 void に注意
+    	if (gankin &gt;= 1 &amp;&amp; gankin &lt;= 10000000) { // 1円以上1千万円までに制限(ある程度の自由)
+	    this.gankin = gankin;
+        }
+    }
+    double getRiritsu() { // 預金口座の性質上, 利率はゲッターのみの提供とする
+        return this.riritsu;
+    }
+    // 利率のセッター無し == セット機能を提供しない == 外部からセットさせなくする
+}
+</pre>
+<pre>class KozaApp
+{
+    public static void main(String[] args) {
+        Koza my_koza = new Koza();
+        System.out.println("利率は" + my_koza.getRiritsu()); // 顧客は利率を知ることはできる
+        my_koza.setGankin(9801); // 元金に「直接」代入はできないので, セッターを呼び出して使う
+    }
+}
+</pre>
+
+<p>この様に情報隠蔽を行うことで, クラスを<em>作る側</em>(機能を提供する側)と<em>使う側</em>(機能を利用する側)を明確に分離でき, 大規模で複雑なソフトウェアの見通し良い作成や管理が可能となる. この情報隠蔽によるアクセス制限の考え方は, 現在, 各種アプリ等の作成時には必須の知識となっている. </p>
+
+<h3>課題</h3>
+
+<p>以下の課題のレポートは, レポートファイル「<code class="em">report07.txt</code>」を作成してアップロードにより提出すること.</p>
+
+<ol>
+
+<!-- --------------------------------------------------------------- -->
+
+<li><a href="http://jsuri1.info.kushiro-ct.ac.jp/~tenmo/java/06/">テーマ06</a>で作成した<code>Student</code>クラスのフィールドを<code>private</code>化し, アクセサーを追加せよ. ゲッターは対応するフィールドの値をそのまま返す(<code>return</code>)だけで良い. セッターではそれぞれ値の<em>チェック</em>を行い, 釧路高専本科の学生としてあり得ない値はセットできなくすること. <code>main</code>にはその機能(セットできる・できない)をテストする内容を記述せよ. (ソース全体, 実行結果, <em>セッターの動作説明</em>をレポート)
+
+<p>※今回は<cod>staticメソッドや仲間判定メソッド, 進級メソッド等は不要である(もしあれば削除せよ). </cod></p>
+
+<p>※セッターでの学年・分野・名前・住居の具体的な制限は以下の通り. 1年生の未配属状態は難しいので考慮しなくて良い.</p>
+<pre>学年は1～5だけ通す(引数の値をフィールドに代入する).
+分野は"情報", "機械", "電気", "電子", "建築"だけ通す. ※文字列の比較はequalsメソッドで行う.
+名前と住居には特に制限無し.
+</pre>
+
+    <p>※セッターの動作をテストするため, コンストラクタは<em>引数無し</em>コンストラクタのみとし, その引数無しコンストラクタの中で, フィールドに初期値として学年に<code class="em">0</code>, 分野に<code class="em">"未定"</code>, 名前に<code class="em">"未定"</code>, 住居に<code class="em">"未定"</code>を代入しておくこと. </p>
+
+<pre>// ↓このコンストラクタは消す. このコンストラクタがあると, mainから異常値が素通りしてしまうため.
+Student(int gakunen, String bunnya, String namae, String jukyo) {
+    this.gakunen = gakunen;
+    ...
+</pre>
+
+<pre>// このコンストラクタを作る.
+Student() {
+    thisの学年に0, thisの分野に"未定", thisの名前に"未定", thisの住居に"未定"を代入
+</pre>
+
+    <p>※<code>main</code>からセットできる・できないの動作テストでは, セット後に自己紹介メソッドを呼び出して確認する.</p>
+
+<pre>例えば
+学年を6にして, 自己紹介させてみる. →どうなるか?
+学年を4にして, 自己紹介させてみる. →どうなるか?
+分野を"化学"にして, 自己紹介させてみる. →どうなるか?
+分野を"情報"にして, 自己紹介させてみる. →どうなるか?
+</pre>
+
+<p>※今回ゲッターやセッターは個別に作ること. まとめて同時にはしない.</p>
+<pre>// ----------------ダメな例----------------
+void set○○(int gakunen, String bunnya, String namae) { ... }
+             ~~~~~~~~~~~  ~~~~~~~~~~~~  ~~~~~~~~~~~~多すぎ
+int get○○()
+{
+    return this.gakunen;
+    return this.bunnya;
+    return this.namae; // returnの連発はそもそも無理
+}
+</pre>
+</li>
+
+<!-- --------------------------------------------------------------- -->
+
+<li><code>Student</code>クラスとは<em>別に</em>, (高専生が持っていそうな)アイテムを表す<code>Item</code>クラスを定義せよ. フィールドには少なくとも<code>String</code>型の, アイテムの「名前」を含め, アイテムの名前のアクセサーを定義すること. その他のフィールドやアクセサー, 値の制限などは自分で自由に決めて良い(例えば重さや価格など). <code>main</code>には<code>Item</code>クラスの機能をテストする内容を記述せよ. (<em>****自分で決めた仕様****</em>, ソース, 実行結果をレポート. <em>動作説明は不要</em>)
+  <p>[注意] ここでの名前はアイテムの名前である. <em>学生の名前ではない</em>. </p>
+
+  <p>※混乱するので, アイテムの名前のフィールド名を<code>item</code>にしないこと.</p>
+<pre>class Item
+{
+    private String item; // これは混乱するのでやめよう. 「namae」にすると良い.
+</pre>
+</li>
+
+<!-- --------------------------------------------------------------- -->
+
+<li><code>Student</code>クラスに<code>private</code>なアイテムを<em>持たせ</em>(have, has), アイテムまるごとのアクセサーを追加せよ. 具体的には, <code>Student</code>クラスに, <code>Item</code>型のフィールド<code>item</code>を追加する. <code>main</code>にはその機能をテストする内容を記述せよ. (ソース全体, 実行結果, <em>アイテムまるごとのアクセサーの動作説明</em>をレポート)
+
+<p>ヒント: <code>Item</code>型のフィールド<code>item</code>はオブジェクト変数なので, <code>Item</code>クラスのインスタンスを指すポインタ(参照)となる. コンストラクタでの初期値は <code class="em">null</code> (全部小文字)とすること.</p>
+
+<p>ヒント: <code>main</code>側では, まず<code>Item</code>型のインスタンスを生成し, それを<code>Student</code>のアイテム<em>セッター</em>に引数として与える. その後, 自己紹介させてみる.</p>
+
+<p>[注意] ここで追加するアイテムのアクセサーは, アイテム「まるごと」のセッターやゲッターである. アイテムの名前や価格等の属性を個別にゲット/セットするのではない. </p>
+<pre>class Student
+{
+    void setItem(String namae) { ... }
+                 ~~~~~~これでは間違い
+    String getItem() { ... }
+    ~~~~~~ これも間違い
+</pre>
+
+<p>ヒント: 自己紹介メソッドも修正する必要がある. アイテムを持っていたら(つまり<code>null</code>でなければ), その名前等を表示する様にする.</p>
+<pre>void shokai() {
+    System.out.println("私は" + this.gakunen + "年" + this.bunnya + "分野の" + this.namae + "です.");
+
+    // --------ここから注目--------
+    if (this.item != null) { // このif文が無いと NullPointerException が発生する
+        System.out.println("私は" + this.item.getNamae() + "を持っています.");
+</pre>
+</li>
+
+<!-- --------------------------------------------------------------- -->
+
+<li>フィールドと同様に, <em>メソッド</em>やコンストラクタにも<code>private/public</code>を指定できる. 一般にメソッドは<code>public</code>とするが, <code class="em">private</code>メソッドを使うべき場合もある. <code class="em">private</code>メソッドは「どの様な場合に使うべきか」, 調査して報告せよ. 調査に用いた文献情報(著者・図書名・出版社・出版年・ページ範囲)(ウェブ不可)を示した上で, <em>自分の言葉</em>でまとめ直すこと. 調査しても見つからない場合は, 自分の考察でも良い. (レポートに記載)
+
+  <p>[注意] <code>private</code>「メソッド」である. <code>private</code>フィールドではない.</p>
+  
+  <p>****大切なのでもう一度**** <code>private</code>フィールドではない. <code>private</code>フィールドの説明を書いたら間違いである.</p>
+
+<pre>// メソッドには普通はpublicを付ける.
+// ほとんどのメソッドは, クラスの外側から「呼び出して」使いたいから.
+public  int メソッド名() { ... }
+</pre>
+<pre>// それでは, クラスの外側から呼び出せないprivateメソッドは, どの様な場合に使うべきか?
+private int メソッド名() { ... }
+</pre>
+</li>
+
+<!-- --------------------------------------------------------------- -->
+
+<li>前回までのテーマ内容ではあるが, <code>static</code>メソッドの他に, <code class="em">static</code>フィールドという変数も存在する. <code>static</code>フィールドについて調査して報告せよ. 調査に用いた文献情報(著者・図書名・出版社・出版年・ページ範囲)(ウェブ不可)を示した上で, 自分の言葉でまとめ直すこと. 調査しても見つからない場合は, 自分の考察でも良い. (レポートに記載)
+
+<pre>// 前回までのテーマでしつこくやったstaticメソッド
+static int メソッド名() { ... }
+</pre>
+<pre>// それでは, フィールドにstaticを付けるとどうなるか? どの様な用途が考えられるか?
+static int フィールド名;
+</pre>
+</li>
+
+</ol>
+
+<h3>レポート</h3>
+
+<ul>
+<li>内容: 課題中に指示されている通り. 必要な項目を全て記載しているか, 十分に確認すること.</li>
+</ul>
+
+
+
+</body></html>
