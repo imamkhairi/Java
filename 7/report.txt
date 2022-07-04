@@ -1,0 +1,276 @@
+4J 08 イマムカイリルビス　テーマ07　レポート
+
+課題１
+class Student
+{
+    private int gakunen;
+    private String bunnya;
+    private String namae;
+    private String jukyo;
+
+    Student() {
+        this.gakunen = 0;
+        this.bunnya = "未定";
+        this.namae = "未定";
+        this.jukyo = "未定";
+    }
+
+    void shokai() {
+        System.out.println("私は"+ this.gakunen + "年" + this.bunnya + "の" + this.namae + "です。私の住居は" + this.jukyo + "です。\n" );
+    }
+
+    static void shokai(Student a) {
+        System.out.println("私は"+ a.gakunen + "年" + a.bunnya + "の" + a.namae + "さんです。私の住居は" + a.jukyo + "です。");
+    }
+
+    int getGakunen() {
+        return this.gakunen;
+    }
+
+    void setGakunen(int gakunen) {
+        if(gakunen >= 1 && gakunen <= 5) {
+            this.gakunen = gakunen;
+        }
+    }
+
+    String getBunnya() {
+        return this.bunnya;
+    }
+
+    void setBunnya(String bunnya) {
+        if(bunnya.equals("情報") || 
+           bunnya.equals("機械") || 
+           bunnya.equals("電気") || 
+           bunnya.equals("電子") ||  
+           bunnya.equals("建築")) {
+            this.bunnya = bunnya;
+        }
+    }
+
+    String getNamae() {
+        return this.namae;
+    }
+
+    void setNamae(String namae) {
+        this.namae = namae;
+    }
+
+    String getJukyo() {
+        return this.jukyo;
+    }
+
+    void setJukyo(String jukyo) {
+        this.jukyo = jukyo;
+    }
+}
+
+class StudentApp {
+    public static void main(String[] args) {
+        Student jotaro = new Student();
+        jotaro.setNamae("じょうたろう");
+        jotaro.setGakunen(4);
+        jotaro.setBunnya("情報");
+        jotaro.setJukyo("下宿");
+        jotaro.shokai();
+
+        Student josuke = new Student();
+        josuke.setGakunen(6);
+        josuke.setBunnya("化学");
+        josuke.setNamae("じょうすけ");
+        josuke.setJukyo("学寮");
+        josuke.shokai();
+    }
+}
+
+実行結果：
+$ java StudentApp 
+私は4年情報のじょうたろうです。私の住居は下宿です。
+
+私は0年未定のじょうすけです。私の住居は学寮です。
+
+セッターの動作説明:
+引数から値をもらう。もし、チェックがあれば、まずチェックを行う。最後に引数の値がフィルドに渡され、フィルドに保存される。
+
+課題２
+class Item {
+    private String name;
+    private int price;
+
+    Item() {
+        this.name = "未定";
+        this.price = 0;
+    }
+
+    String getName() {
+        return this.name;
+    }
+
+    void setName(String name) {
+        this.name = name;
+    }
+
+    int getPrice() {
+        return this.price;
+    }
+
+    void setPrice(int price) {
+        if(price > 0) {
+            this.price = price;
+        }
+    }
+}
+
+class StudentApp {
+    public static void main(String[] args) {
+
+        Item item = new Item();
+        item.setName("pencil");
+        item.setPrice(-250);
+        System.out.println(item.getName() +" " + item.getPrice());
+
+    }
+}
+
+
+課題３
+class Item {
+    private String name;
+    private int price;
+
+    Item() {
+        this.name = "未定";
+        this.price = 0;
+    }
+
+    String getName() {
+        return this.name;
+    }
+
+    void setName(String name) {
+        this.name = name;
+    }
+
+    int getPrice() {
+        return this.price;
+    }
+
+    void setPrice(int price) {
+        if(price > 0) {
+            this.price = price;
+        }
+    }
+}
+
+class Student
+{
+    private int gakunen;
+    private String bunnya;
+    private String namae;
+    private String jukyo;
+    private Item item;
+
+    Student() {
+        this.gakunen = 0;
+        this.bunnya = "未定";
+        this.namae = "未定";
+        this.jukyo = "未定";
+        this.item = null;
+    }
+
+    void shokai() {
+        System.out.println("私は"+ 
+            this.gakunen + "年" + 
+            this.bunnya + 
+            "の" + 
+            this.namae + 
+            "です。私の住居は" + 
+            this.jukyo + 
+            "です" );
+        if(this.item != null) {
+            System.out.println("私は" + 
+            this.item.getName() + 
+            "を持っています.");
+        }
+    }
+
+    static void shokai(Student a) {
+        System.out.println("私は"+ a.gakunen + "年" + a.bunnya + "の" + a.namae + "さんです。私の住居は" + a.jukyo + "です。");
+    }
+
+    int getGakunen() {
+        return this.gakunen;
+    }
+
+    void setGakunen(int gakunen) {
+        if(gakunen >= 1 && gakunen <= 5) {
+            this.gakunen = gakunen;
+        }
+    }
+
+    String getBunnya() {
+        return this.bunnya;
+    }
+
+    void setBunnya(String bunnya) {
+        if(bunnya.equals("情報") || 
+           bunnya.equals("機械") || 
+           bunnya.equals("電気") || 
+           bunnya.equals("電子") ||  
+           bunnya.equals("建築")) {
+            this.bunnya = bunnya;
+        }
+    }
+
+    String getNamae() {
+        return this.namae;
+    }
+
+    void setNamae(String namae) {
+        this.namae = namae;
+    }
+
+    String getJukyo() {
+        return this.jukyo;
+    }
+
+    void setJukyo(String jukyo) {
+        this.jukyo = jukyo;
+    }
+
+    Item getItem() {
+        return this.item;
+    }
+    
+    void setItem(Item item) {
+        this.item = item;
+    }
+}
+
+class StudentApp {
+    public static void main(String[] args) {
+        Student jotaro = new Student();
+        jotaro.setNamae("じょうたろう");
+        jotaro.setGakunen(4);
+        jotaro.setBunnya("情報");
+        jotaro.setJukyo("下宿");
+        jotaro.shokai();
+
+        Item item = new Item();
+        item.setName("pencil");
+        item.setPrice(250);
+
+        jotaro.setItem(item);
+        System.out.println(jotaro.getItem().getName() + " " + jotaro.getItem().getPrice()); 
+        jotaro.shokai();
+
+    }
+}
+
+アイテムまるごとのアクセサーの動作説明:
+セッターは itu akan menerima nilai dari parameter berupa sebuah objek bertipe item. tentu saja semua nilai yang tersimpan pada instance yang ditunjuk objek ini juga akan dipassing.
+getter itu mengembalikan suatu objek bertipe item. semua nilai field yang tersimpan otomatis akan dikembalikan juga. 
+
+課題４
+ privateメソッドは「どの様な場合に使うべきか」
+ 調査に用いた文献情報(著者・図書名・出版社・出版年・ページ範囲)(ウェブ不可)を示した上で, 自分の言葉でまとめ直すこと. 調査しても見つからない場合は, 自分の考察でも良い. (レポートに記載) 
+ -> 
