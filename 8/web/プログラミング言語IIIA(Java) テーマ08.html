@@ -1,0 +1,376 @@
+<!--?xml version="1.0" encoding="utf-8"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>プログラミング言語IIIA(Java) テーマ08</title>
+<link rel="stylesheet" href="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIA(Java)%20%E3%83%86%E3%83%BC%E3%83%9E08_files/tenmo2008single.css" type="text/css" media="all">
+</head>
+
+<body>
+
+<h2>プログラミング言語IIIA(Java) テーマ08</h2>
+
+<p>このテーマ以降, デフォルトで, フィールドは<code>private</code>とし, クラスとコンストラクタとメソッドは<code>public</code>とすること. ※クラスの<code>public</code>指定は前回直接扱っていないが, 「他のクラスから使えるクラス」として理解して欲しい.</p>
+
+<pre>public class クラス名 {
+~~~~~~指定する
+    private フィールド
+    ~~~~~~~指定する
+    public コンストラクタ
+    ~~~~~~指定する
+    public メソッド
+    ~~~~~~指定する
+}
+</pre>
+
+<h3>内容</h3>
+
+<p>オブジェクト指向プログラミングで重要となる要素の一つに, 「<em>クラスの継承</em>」がある. この機能を使うことで, 処理の対象にしたい「<em>もの</em>」と「<em>もの</em>」の<em>関係</em>を, より系統的にモデル化できる.</p>
+
+<p>例えば, GUI (Graphical User Interface)で使われる画面上の「ボタン」は, 
+小さい「ウィンドウ」(画面上の枠)に「押せる」(またはタップできる)という機能を追加したものである. さらに「チェックボタン」は, 
+「ボタン」にON/OFFの状態を選択できる機能を追加したもの, またさらに「ラジオボタン」は, 
+「チェックボタン」に複数のチェックボタンの中でただ一つのみON状態にできる機能を追加したもの, というように, 
+継承によりソフトウェアを系統化して構成できる.</p>
+
+<p>今回はこの「クラスの継承」について, 体験的に学習する. </p>
+
+<pre>// クラス継承ツリーの例. 
+ウィンドウ -+- ボタン ------------+- チェックボタン -+- ラジオボタン
+            |                     |
+            |                     +- アイコン画像付きボタン
+            |
+            +- 1行テキスト入力欄 -+- 複数行テキスト入力欄
+            |                     |
+            |                     +- パスワード入力欄(********)
+            |
+            +- タブ付きウィンドウ
+</pre>
+
+<h3>クラスの継承</h3>
+
+<p>Javaでクラスの継承を行うには, クラスの定義時に, キーワード「<code class="em">extends</code>」を用いて親となるクラスを指定する.</p>
+
+<p>以下に継承の例を示す. ここでは例として, 楽曲データを管理するシステム<!--ジュークボックス-->に入れる「曲データ」クラスを<em>既に</em>定義して利用していた所に, <em>新たに</em>歌詞データも<em>追加</em>した「カラオケ曲データ」を扱う必要が出てきた, という状況を考える. その場合, 以下の様にカラオケ曲クラスで「歌詞」フィールドを追加し, 曲クラスの機能を<em>拡張</em>(extend)する. </p>
+
+<pre>public class Song // 曲クラスの定義
+{
+    private String name;   // 曲名
+    private String artist; // アーティスト名
+    private int duration;  // 演奏時間(単位:秒)
+}
+</pre>
+<pre>public class KaraokeSong extends Song // カラオケ曲クラスの定義
+{
+    private String lyrics; // 歌詞(かなり長い文字列)を追加
+}
+</pre>
+
+<p>メソッドも含めた具体的な例を以下に示す. 曲クラスでは各種ゲッターと表示メソッド(<code>print</code>)を提供している.</p>
+
+<pre>public class Song // 曲データを表すクラス
+{
+    private String name;   // 曲名
+    private String artist; // アーティスト名
+    private int duration;  // 演奏時間(単位:秒)
+
+    public Song(String name, String artist, int duration)
+    {
+        this.name = name;
+        this.artist = artist;
+        this.duration = duration;
+    }
+
+    public String getName() { return this.name; }
+    public String getArtist() { return this.artist; }
+    public int getDuration() { return this.duration; }
+    // セッターは作らない(=後から変更させない)仕様とした
+
+    public void print()
+    {
+        System.out.println("曲名: " + this.name);
+        System.out.println("アーティスト名: " + this.artist);
+        System.out.println("演奏時間: " + this.duration + "(秒)");
+    }
+}
+</pre>
+
+<p>カラオケ曲クラスでは, 表示メソッドを<em>再定義</em>して, カラオケ曲データとして相応しい内容に上書きして<em>変更</em>している. <em>その他は</em>曲クラスの機能を<em>そのまま</em>継承している. なお, ここでは歌詞データは長く, 入力にコストがかかるため, セッターを用意することで, 後から入力することも可能, という仕様としている. </p>
+
+<pre>public class KaraokeSong extends Song // カラオケ曲データを表すクラス
+{
+    // **** ここに name, artist, duration は書かないのがポイント ****
+    private String lyrics; // 歌詞(かなり長い文字列) 追加
+
+    // 歌詞の初期値が与えられていない場合のコンストラクタ
+    public KaraokeSong(String name, String artist, int duration)
+    {
+        super(name, artist, duration); // super( )でSongのコンストラクタを呼び出せる
+        this.lyrics = null;
+    }
+    // 歌詞の初期値が与えられている場合のコンストラクタ
+    public KaraokeSong(String name, String artist, int duration, String lyrics)
+    {
+        this(name, artist, duration); // this( )で「歌詞の初期値が与えられていない場合」の
+                                      // コンストラクタを呼び出して標準の初期設定をしたあと
+        this.lyrics = lyrics;         // 歌詞を設定
+    }
+    
+    // **** name, artist, durationのゲッターは, ここに書かなくてもそのまま使える ****
+
+    public String getLyrics() { return this.lyrics; } // 追加
+    public void setLyrics(String lyrics)              // 追加
+    {
+        this.lyrics = lyrics;
+        System.out.println("「" + this.getName() + "」の歌詞が「" +
+                           lyrics + "」に設定されました. ");
+    }
+
+    public void print() // 元のprintの機能を****変更****
+    {
+        super.print(); // super.を使うとSongの同名メソッドを呼び出せる
+        if (this.lyrics == null) {
+            System.out.println("歌詞: 未設定");
+        } else {
+            System.out.println("歌詞: " +
+                               this.lyrics.substring(0, 10) + "..."); // 長いので先頭10文字のみ表示
+        }
+    }
+}
+</pre>
+
+<p>以下に曲クラスとカラオケ曲クラスを<em>同時に</em>用いる<code>main</code>の例を示す. この例では, 初期状態では<code>song2</code>に歌詞データを設定せず, 後から<code>setLyrics</code>で設定している. </p>
+
+<pre>public class KaraokeSongApp
+{
+    public static void main(String[] args)
+    {
+        Song song1 = new Song("ダン・ダン ドゥビ・ズバー!", "Dream5+ブリー隊長", 315);
+        KaraokeSong song2 = new KaraokeSong("ようかい体操第一", "Dream5", 350);
+
+        song1.print();
+        System.out.println("----------------------------------------");
+        song2.print();
+        System.out.println("----------------------------------------");
+
+        song2.setLyrics("ヨーでる"); // 本来はかなり長い文字列(ここに掲載できない)
+        System.out.println("----------------------------------------");
+        song2.print();
+    }
+}
+</pre>
+
+<p>※曲名等引用:<br>[1] Dream5+ブリー隊長, ダン・ダン ドゥビ・ズバー!. エイベックス・ミュージック・クリエイティヴ, 2014.<br>[2] Dream5, Break Out/ようかい体操第一. エイベックス・マーケティング, 2014.</p>
+
+<pre>曲名: ダン・ダン ドゥビ・ズバー!
+アーティスト名: Dream5+ブリー隊長
+演奏時間: 315(秒)
+----------------------------------------
+曲名: ようかい体操第一
+アーティスト名: Dream5
+演奏時間: 350(秒)
+歌詞: 未設定
+----------------------------------------
+「ようかい体操第一」の歌詞が「ヨーでる」に設定されました. 
+----------------------------------------
+曲名: ようかい体操第一
+アーティスト名: Dream5
+演奏時間: 350(秒)
+歌詞: ヨーでる ...
+</pre>
+
+<!--
+<p>※ 2014年現在, 曲の例がかなり古くなっています(以前, 皆さんの先輩から募集したものです). → 差し替えて欲しい曲がある人はぜひ天元(<code>tenmo@kushiro-ct.ac.jp</code>)宛てに送ってください. </p>
+-->
+
+<h3>専門用語(要暗記)</h3>
+
+<ul>
+
+<li>クラスを継承する場合, 親となるクラスを「<em>スーパークラス</em>」(superclass), 子となるクラスを「<em>サブクラス</em>」(subclass)と呼ぶ. また, このようなクラス間の関係を「<em>IS-A関係</em>」と呼ぶ. 一般に, サブクラスの方が属性や機能が多くなる(<em>直感と逆</em>なので注意). </li>
+
+<pre>public class KaraokeSong extends Song // 英語の語順でそのまま読める. 
+{
+    // カラオケ曲クラスは, 曲クラスを, 拡張する. 
+    // 元になるSongがスーパークラスで, 新しいKaraokeSongがサブクラス
+    // サブクラスであるKaraokeSongクラスで, 歌詞データ関連の属性や機能を追加している
+}
+</pre>
+
+<ul>
+<li>○ カラオケ曲データ IS-A 曲データ. (カラオケ曲データというものは曲データである)</li>
+<li>× 曲データ IS-A カラオケ曲データ. (曲データというものはカラオケ曲データである→成り立たないので×)</li>
+</ul>
+
+<li>また, <a href="http://jsuri1.info.kushiro-ct.ac.jp/~tenmo/java/07">テーマ07</a>の課題3で作成した高専生クラスとアイテムクラスのように, あるクラスの<em>フィールド</em>としてあるクラスのインスタンスを「持つ」関係は「<em>HAS-A関係</em>」と呼ぶ. この様な関係は<em>IS-A関係ではない</em>. IS-A関係とHAS-A関係を区別できるようにしておくこと. </li>
+
+<pre>public class Student  // 高専生は,
+{
+    private Item item; // アイテムを持つ. 
+}
+</pre>
+
+<ul>
+<li>○ 高専生 HAS-A アイテム. (高専生はアイテムを持つ)</li>
+<li>× 高専生 IS-A アイテム. (高専生というものはアイテムである→成り立たないので×)</li>
+<li>× 高専生 IS-A 曲. (高専生というものは曲データである→成り立たないので×)</li>
+<li>○ 高専生 HAS-A 曲. (高専生は曲データを持つ→これは有り. ※お気に入りの曲等として「持つ」.)</li>
+</ul>
+
+<li>スーパークラスのメソッドについて, サブクラスで同じ名前のメソッドを<em>再定義</em>して上書きすることを, メソッドの「<em>オーバーライド</em>」(override)と呼ぶ.<!-- <a href="../06/">テーマ06</a>の「オーバーロード」(overload)とカタカナ的に非常に似ているが, 英語的にはまったくの別物である. これらを区別できるようにしておくこと. --></li>
+
+<li><!--クラスの継承を「<em>インヘリタンス</em>」(inheritance)と呼ぶ.  -->なお, コンストラクタは<em>継承されない</em>ので, サブクラスでは独自のコンストラクタを定義する必要がある. </li>
+
+</ul>
+
+<h3>サブクラスからのスーパークラスのメソッドの呼出し</h3>
+
+<ul>
+<li>サブクラスのコンストラクタから, スーパークラスの<em>コンストラクタ</em>を呼び出すには, 「<code class="em">super</code><code>(〜);</code>」と書く. </li>
+
+<pre>public KaraokeSong(String name, String artist, int duration)
+{
+    super(name, artist, duration); // super( )を使うとSongのコンストラクタを呼び出せる
+    ...
+}
+</pre>
+
+<li>同じクラス内で, あるコンストラクタから他の<em>コンストラクタ</em>を呼び出すには, 「<code class="em">this</code><code>(〜);</code>」と書く. </li>
+
+<pre>public KaraokeSong(String name, String artist, int duration, String lyrics)
+{
+    this(name, artist, duration); // this( )を使うとKaraokeSongのコンストラクタを呼び出せる
+    ...
+}
+</pre>
+
+<li>サブクラスのメソッドから, スーパークラスの<em>同名メソッド</em>を呼び出すには, 「<code class="em">super.</code><code>メソッド名(〜);</code>」と書く. </li>
+
+<pre>public void print() // 元のprintの機能を変更
+{
+     super.print(); // super.を使うとSongの同名メソッドを呼び出せる
+     ...
+}
+</pre>
+</ul>
+
+<h3>課題</h3>
+
+<p>以下の課題のレポートは, レポートファイル「<code class="em">report08.txt</code>」を作成してアップロードにより提出すること.</p>
+
+<ol>
+
+<li>【準備】これまでに作成した高専生クラスは複雑に成り過ぎてしまったため, 「継承」の実習を目的として, 改めて以下の仕様を満たすシンプルな高専生クラス(<code class="em">Student.java</code>)を用意せよ. また, その動作をテストする<code>main</code> (<code class="em">StudentApp.java</code>)も作成せよ. (ソース, 実行結果をレポートファイルに貼り付け)</li>
+
+<ul>
+<li>フィールド</li>
+    <ul>
+    <li>学年 … 整数型</li>
+    <li>分野 … 文字列型</li>
+    <li>名前 … 文字列型</li>
+    </ul>
+<li>メソッド</li>
+    <ul>
+    <li>コンストラクタ(学年, 分野, 名前) ※引数3つ</li>
+    <li>※今回, 引数なしコンストラクタは不要→削除すること</li>
+    <li>学年のゲッター</li>
+    <li>分野のゲッター</li>
+    <li>名前のゲッター</li>
+    <li>※今回, セッターは不要→削除すること</li>
+    <li>自己紹介 … 学年, 分野, 名前を表示</li>
+    </ul>
+</ul>
+
+<li>課題1の高専生クラスから<em>継承</em>させて, 以下の仕様を満たす通学生クラス(<code class="em">HomeStudent.java</code>)を作成せよ. 自己紹介は, <em>スーパークラスのフィールドをゲット</em>して, 通学手段と一緒にまとめて表示すること. また, 通学生クラスの動作をテストする<code>main</code> (<code class="em">HomeStudentApp.java</code>)も作成せよ. <code>main</code>には<code>HomeStudent</code>のみ登場させること. (ソース, 実行結果, ***動作説明***をレポートファイルに貼付け)</li>
+
+<ul>
+<li>追加フィールド</li>
+    <ul>
+    <li>通学手段 … 文字列型 (値は"バス", "鉄道", "自転車"など)</li>
+    </ul>
+<li>追加メソッド</li>
+    <ul>
+    <li>コンストラクタ(学年, 分野, 名前, 通学手段) ※引数4つ</li>
+    <li>通学手段のゲッター</li>
+    <li>自己紹介 … 学年, 分野, 名前, 通学手段を表示</li>
+    </ul>
+</ul>
+
+</ol>
+<ol start="3">
+
+<li>課題1の高専生クラスから<em>継承</em>させて, 以下の仕様を満たす寮生クラス(<code class="em">DormStudent.java</code>)を作成せよ. また, その動作をテストする<code>main</code> (<code class="em">DormStudentApp.java</code>)も作成せよ. (ソースと実行結果をレポートファイルに貼り付け)</li>
+
+<ul>
+<li>追加フィールド</li>
+    <ul>
+    <li>同室者 … <em>寮生型</em>(<code>DormStudent</code>型) ※<code>String</code>型ではないので注意!!</li>
+    </ul>
+<li>追加メソッド</li>
+    <ul>
+    <li>コンストラクタ(学年, 分野, 名前) ※引数3つ</li>
+    <li>同室者のゲッター ※戻り値は<em>寮生型</em>(<code>DormStudent</code>型)</li>
+    <li>同室者のセッター ※引数は<em>寮生型</em>(<code>DormStudent</code>型)</li>
+    <li>自己紹介 … 学年, 分野, 名前, 同室者「<em>の名前</em>」を表示 ※同室者が<code>null</code>の場合は「なし」と表示</li>
+    </ul>
+</ul>
+
+<p>[アドバイス] 高専生と寮生の関係はIS-Aであるが, ここでの寮生と寮生の関係は, 前回の高専生とアイテムの関係と同じHAS-Aである. </p>
+
+</ol>
+<ol start="4">
+
+<li>課題3で作成した寮生クラスでは, 同室者のセットを片方(一人分)だけしか行わないと, データ構造に矛盾が起こる. これを, 
+片方の同室者をセットするだけで, 自動的にもう片方の同室者もセットされ, 相互参照となるように改造せよ. また, その動作をテストする<code>main</code>も作成せよ. (<code>setDoshitsusha</code>メソッドのみのソースと, 実行結果をレポートファイルに貼り付け)</li>
+
+    <p>[ヒント] セッターの引数として新しくやって来た同室者「<em>の同室者</em>」に, 私(<code class="em">this</code>)を代入する. <code>this</code>を単独で使うのがポイント. </p>
+
+    <p>※新しくやってきた同室者には, まだ同室者はいない, と仮定して良い.</p>
+
+<img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIA(Java)%20%E3%83%86%E3%83%BC%E3%83%9E08_files/2016-06-23-dorm.png" width="480">
+
+<!-- <li>寮生と通学生が両方登場する総合的なテスト用<code>main</code>を作成せよ. (ソース, 実行結果, 考察をレポートファイルに貼付け) -->
+
+<li>曲データとカラオケ曲データや, 高専生と通学生の様に, <em>IS-A関係</em>にあるクラスを自由に作成せよ. 実在するもの, しないもの, しそうなものなど, 何でも良い. (***自分で決めた設定***, ソース, 実行結果をレポートファイルに貼り付け)</li>
+
+    <p>[ヒント] 自分の身の回りの物事や, 興味のある物事で, 何らかの属性が増えていたり, 機能が増えている関係を考えると良い. 自分の好きなゲームやアニメ等をモチーフにしても良い.</p>
+
+    <p>[アドバイス] この世に一つしかない物事はクラスには向かない. 例えば, ある特定の高専生<em>個人</em>はクラスではなくインスタンスである. 「○○というもの」の様に, 「<em>というもの</em>」を付加して考えてみて, 違和感がない物事をクラスにしてみよう. </p>
+
+    <p>[注意] 高専生とアイテムのようなHAS-A関係のクラスでは不可である. 実際にコーディングに取り掛かる前に, 自分のアイデアがIS-A関係を満たしているか, IS-Aの<em>文を書いて</em>良く検討してみること. 周りの友人にも確認してみること. 2段階以上の継承関係を構築できると素晴らしい. </p>
+
+    <p>[注意] 課題3, 4の寮生はIS-A関係とHAS-A関係の両方を含むため, 改造のベースには適さない. </p>
+
+    <p>※IS-A関係を満たしていれば十分なので, 壮大な計画を考えるより, 締切を優先すること. </p>
+
+<!--<p>[アドバイス] 例年, 携帯電話・スマホを題材にする人が多いが, ほとんど正しくない. 例えば, 企業としてのdocomoと, docomoの特定機種の関係は, IS-A関係ではない. 特定の機種と, その後継機種の様に, <em>何らかの属性や機能が増えた関係</em>を考えること. </p>-->
+
+</ol>
+
+<h3>レポート</h3>
+
+<ul>
+<li>内容: 課題中に指示されている通り. 必要な項目を全て記載しているか, 十分に確認すること.</li>
+</ul>
+
+<h3>参考文献</h3>
+
+<p>今回の説明で用いた曲データとカラオケ曲データの例は, 以下の書籍でRuby言語で記述されているコードを元に, <!--天元が-->Javaに翻訳したものである. Rubyは<em>日本発祥</em>の
+オブジェクト指向プログラミング言語の一つで, Ruby on Railsとして, ウェブアプリの開発等に広く利用されている. 
+卒研や卒業後を視野に入れ, 自分で勉強しておいて損は無い言語の一つである. (※しかし2022年現在, Rubyと立ち位置が近かった<em>Python</em>が, 世界をほぼ征服し尽くしてしまっている.)</p>
+<ul>
+<li>D. Thomas, C. Fowler and A. Hunt, プログラミングRuby第2版 言語編. まつもとゆきひろ監訳, 田和 勝訳, オーム社, 2006.</li>
+</ul>
+
+<!--
+<h3>上級者向けの話題</h3>
+
+<ul>
+<li>スーパークラスで<code>public</code>だったメソッドを, サブクラスで<code>private</code>としてオーバーライドすると, 何が起こるか. 何の目的で使えるか. </li>
+<li>継承とは関係ないが, コンストラクタを<code>private</code>にすることもできる. この場合, 何が起こるか. 何の目的で使えるか. </li>
+</ul>
+-->
+
+
+
+</body></html>

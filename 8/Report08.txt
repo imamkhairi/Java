@@ -1,0 +1,117 @@
+4J 08 イマムカイリルビス　テーマ08　レポート
+
+課題１
+public class Student {
+    private int gakunen;
+    private String bunnya;
+    private String namae;
+
+    public Student(int gakunen, String bunnya, String namae) {
+        this.gakunen = gakunen;
+        this.bunnya = bunnya;
+        this.namae = namae;
+    }
+
+    int getGakunen() {
+        return this.gakunen;
+    }
+
+    String getBunnya() {
+        return this.bunnya;
+    }
+
+    String getNamae() {
+        return this.namae;
+    }
+
+    void shokai() {
+        System.out.println("私は" + this.gakunen + "年" + this.bunnya + "の" + this.namae + "です。");
+    }
+}
+
+public class StudentApp {
+    public static void main(String[] args) {
+        Student Alpha = new Student(3, "情報", "Alpha");
+        Alpha.shokai();
+    }
+}
+
+実行結果：
+$ java StudentApp 
+私は3年情報のAlphaです。
+
+
+課題２
+public class HomeStudent extends Student {
+    private String shudan;
+
+    public HomeStudent(int gakunen, String bunnya, String namae, String shudan) {
+        super(gakunen, bunnya, namae);
+        this.shudan = shudan;
+    }
+
+    String getShudan() {
+        return this.shudan;
+    }
+
+    void shokai() {
+        super.shokai();
+        System.out.println("私は" + this.shudan + "で学校に通っています。");
+    }
+}
+
+public class HomeStudentApp {
+    public static void main (String[] args) {
+        HomeStudent Beta = new HomeStudent(4, "機械", "Beta", "自転車");
+        Beta.shokai();
+    }
+}
+
+実行結果：
+$ java HomeStudentApp 
+私は4年機械のBetaです。 ===> ganti namanya nanti jadi bravo
+私は自転車で学校に通っています。
+
+動作説明：
+。。。。
+
+
+課題３
+public class DormStudent extends Student {
+    private DormStudent doshitu;
+
+    public DormStudent(int gakunen, String bunnya, String namae) {
+        super(gakunen, bunnya, namae);
+        this.doshitu = null;
+    }
+
+    public DormStudent getDoshitu() { 
+        return this.doshitu;
+    }
+
+    public void setDoshitu(DormStudent doshitu) {
+        this.doshitu = doshitu;
+    }
+
+    public void shokai() {
+        super.shokai();
+        if(doshitu != null) {
+            System.out.println("私の同室者は" + this.doshitu.getNamae() + "です。\n");
+        } else {}
+    }
+}
+
+public class DormStudentApp {
+    public static void main(String[] args) {
+        DormStudent Charlie = new DormStudent(4, "建築", "Charlie");
+        DormStudent Bravo = new DormStudent(4, "電子", "Bravo");
+        DormStudent Alpha = new DormStudent(4, "情報", "Alpha");
+
+        Charlie.setDoshitu(Bravo);
+
+        Charlie.shokai();
+        Alpha.shokai();        
+    }
+}
+
+no ini ulang cp paste lagi!
