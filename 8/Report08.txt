@@ -118,6 +118,13 @@ public class DormStudentApp {
     }
 }
 
+実行結果：
+$ java DormStudentApp 
+私は4年建築のCharlieです。
+私の同室者はBravoです。
+
+私は4年情報のAlphaです。
+
 
 課題４
 public void setDoshitsu(DormStudent doshitsu) {
@@ -398,3 +405,146 @@ public class GameSimple {
         Game.statGame(slime, player1);
     }
 }
+
+
+実行結果：
+$ java GameSimple 
+Name    : Player 1
+level   : 1
+Hp      : 15
+Attack  : 5
+Element : null
+----------------------
+
+Name    : Sword
+Attack  : 3
+Element : fire
+----------------------
+
+Player 1 equipped with Sword
+Name    : Player 1
+level   : 1
+Hp      : 15
+Attack  : 8
+Element : fire
+Weapon  : Sword
+----------------------
+
+Name    : Slime
+level   : 1
+Hp      : 20
+Attack  : 3
+Element : water
+Drop Exp : 6
+----------------------
+
+Game Start! 
+Turn 1------------
+Slime attacked by Player 1
+
+Name    : Player 1
+level   : 1
+Hp      : 15
+Attack  : 8
+Element : fire
+Weapon  : Sword
+
+Name    : Slime
+level   : 1
+Hp      : 12
+Attack  : 3
+Element : water
+Drop Exp : 6
+
+End turn ----------
+
+
+Turn 2------------
+Player 1 attacked bySlime
+
+Name    : Player 1
+level   : 1
+Hp      : 12
+Attack  : 8
+Element : fire
+Weapon  : Sword
+
+Name    : Slime
+level   : 1
+Hp      : 12
+Attack  : 3
+Element : water
+Drop Exp : 6
+
+End turn ----------
+
+
+Turn 3------------
+Slime attacked by Player 1
+
+Name    : Player 1
+level   : 1
+Hp      : 12
+Attack  : 8
+Element : fire
+Weapon  : Sword
+
+Name    : Slime
+level   : 1
+Hp      : 4
+Attack  : 3
+Element : water
+Drop Exp : 6
+
+End turn ----------
+
+
+Turn 4------------
+Player 1 attacked bySlime
+
+Name    : Player 1
+level   : 1
+Hp      : 9
+Attack  : 8
+Element : fire
+Weapon  : Sword
+
+Name    : Slime
+level   : 1
+Hp      : 4
+Attack  : 3
+Element : water
+Drop Exp : 6
+
+End turn ----------
+
+
+Turn 5------------
+Slime attacked by Player 1
+
+Name    : Player 1
+level   : 1
+Hp      : 9
+Attack  : 8
+Element : fire
+Weapon  : Sword
+
+Name    : Slime
+level   : 1
+Hp      : 0
+Attack  : 3
+Element : water
+Drop Exp : 6
+
+End turn ----------
+
+
+Slime has been killed!
+Player 1 win!
+Player leveled up!
+Name    : Player 1
+level   : 2
+Hp      : 23
+Attack  : 14
+Element : fire
+Weapon  : Sword
