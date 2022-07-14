@@ -20,5 +20,4 @@ public class GameSimple {
     
         Game.statGame(slime, player1);
     }
-    
 }

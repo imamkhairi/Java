@@ -145,6 +145,256 @@ $ java DormStudentApp
 私の同室者はCharlieです。
 
 課題５
-bikin kyk game gitu ada monster sama player
-player punya item yang ningkatin status gitu
-end.
+public class Entity {
+    private String name;
+    private int hp;
+    private int attack;
+    private int level;
+    private String element;
+    private int basehp;
+
+    public Entity(String name, int hp, int attack, int level, String element) {
+        this.name = name;
+        this.hp = hp;
+        this.attack = attack;
+        this.level = level;
+        this.element = element;
+        this.basehp = hp;
+    }
+
+    public Entity(String name, int hp, int attack, int level) {
+        this.name = name;
+        this.hp = hp;
+        this.attack = attack;
+        this.level = level;
+        this.element = null;
+        this.basehp = hp;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public int getHp() {
+        return this.hp;
+    }
+
+    public int getAttack() {
+        return this.attack;
+    }
+
+    public int getLevel() {
+        return this.level;
+    }
+    
+    public String getElement() {
+        return this.element;
+    }
+
+    public int getBaseHp() {
+        return basehp;
+    }
+
+    public void getStatus() {
+        System.out.println(
+              "Name    : " + this.name + 
+            "\nlevel   : " + this.level + 
+            "\nHp      : " + this.hp + 
+            "\nAttack  : " + this.attack + 
+            "\nElement : " + this.element
+        );
+    }
+
+    public void attacked(int attack) {
+        if(this.hp - attack >= 0) {
+            this.hp = this.hp - attack;
+        } else {
+            this.hp = 0;
+        }
+    }
+
+    private void restoreHp() {
+        this.hp = this.basehp;
+    }
+
+    public void setHp(int hp) {
+        this.restoreHp();
+        this.hp += hp;
+    }
+
+    public void setElement(String element) {
+        this.element = element;
+    }
+
+    public void setAttack(int attack) {
+        this.attack += attack;
+    }
+
+    public void setLevelUp() {
+        this.level ++;
+    }
+
+    public void setBaseHp(int hp) {
+        this.basehp = hp;
+    }
+
+    public boolean isKilled() {
+        if(this.hp == 0) {
+            System.out.println(this.getName() + " has been killed!");
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+public class Monster extends Entity {
+    int dropExp;
+    Monster(String name, int hp, int attack, int level, String element, int dropExp) {
+        super(name, hp, attack, level, element);
+        this.dropExp = dropExp;
+    }
+
+    public void attackPlayer(Player player) {
+        System.out.println(player.getName() + " attacked by" + this.getName() + "\n");
+        player.attacked(this.getAttack());
+    }
+
+    public int getDropExp() {
+        return dropExp;
+    }
+    
+    public void getStatus() {
+        super.getStatus();
+        System.out.println(
+            "Drop Exp : " + this.dropExp
+        );
+    }
+
+    public boolean isKilled(Player player) {
+        if(super.isKilled()) {
+            player.setExp(this.dropExp);
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+public class Player extends Entity {
+    private Item weapon;
+    private int exp;
+
+    Player(String name, int hp, int attack, int level) {
+        super(name, hp, attack, level);
+        this.weapon = null;
+        this.exp = 0;
+    }
+
+    public Item getWeapon() {
+        return this.weapon;
+    }
+
+    public void setWeapon(Item weapon) {
+        this.weapon = weapon;
+        this.setElement(weapon.getElement());
+        this.setAttack(weapon.getAtt());
+        System.out.println(this.getName() + " equipped with " + this.weapon.getName());
+    }
+
+    public void attackMonster(Monster monster) {
+        System.out.println(monster.getName() + " attacked by " + this.getName() + "\n");
+        monster.attacked(this.getAttack());
+    }
+
+    public void getStatus() {
+        super.getStatus();
+        if(weapon != null) {
+            System.out.println(
+                "Weapon  : " + this.weapon.getName()
+            );
+        }
+    }
+
+    public int getExp() {
+        return this.exp;
+    }
+
+    public void setExp(int dropExp) {
+        this.exp += dropExp;
+    }
+
+    public void lvlUp() {
+        if(exp >= 5) {
+            System.out.println("Player leveled up!");
+            this.setLevelUp();
+            this.setHp(this.getLevel()*4);
+            this.setBaseHp(this.getHp());
+            this.setAttack(this.getLevel()*3);
+            this.exp -= 5;
+            
+            this.getStatus();
+        }
+    }
+
+}
+
+public class Game {
+    static void statGame(Monster monster, Player player) {
+        int turn = 1;
+        System.out.println("Game Start! ");
+
+        while(monster.getHp() > 0 && player.getHp() > 0) {
+            System.out.println("Turn " + turn + "------------");
+            if(turn % 2 == 1) {
+                player.attackMonster(monster);
+            } else {
+                monster.attackPlayer(player);
+            }
+            turn ++;
+
+            player.getStatus();
+            System.out.println();
+            
+            monster.getStatus();
+            System.out.println();
+            
+            System.out.println("End turn ----------\n\n");
+        }
+
+        Game.win(monster, player);
+        player.lvlUp();
+    }
+
+    static void win (Monster monster, Player player) {
+        if(monster.isKilled(player)) {
+            System.out.println(player.getName() + " win!");
+        } else if (player.isKilled()) {
+            System.out.println(monster.getName() + " win!");
+        }
+    }
+}
+
+public class GameSimple {
+    public static void main(String[] args) {
+        Player player1 = new Player("Player 1", 15, 5, 1);
+        Item sword = new Item("Sword", "fire", 3);
+        Monster slime = new Monster("Slime", 20, 3, 1, "water", 6);
+
+        player1.getStatus();
+        System.out.println("----------------------\n");
+
+        sword.getStatus();
+        System.out.println("----------------------\n");
+
+        player1.setWeapon(sword);
+        
+        player1.getStatus();
+        System.out.println("----------------------\n");
+        
+        slime.getStatus();
+        System.out.println("----------------------\n");
+    
+        Game.statGame(slime, player1);
+    }
+}
