@@ -12,7 +12,7 @@ public class DormStudent extends Student {
 
     public void setDoshitsu(DormStudent doshitsu) {
         this.doshitsu = doshitsu;
-        doshitsu.setDoshitsu(this);
+        doshitsu.doshitsu = this;
     }
 
     public void shokai() {

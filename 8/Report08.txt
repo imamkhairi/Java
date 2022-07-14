@@ -73,30 +73,34 @@ $ java HomeStudentApp
 私は自転車で学校に通っています。
 
 動作説明：
-。。。。
+HomeStudentクラスはStudentクラスから継承されているので、Studentクラスのフィールドとメソッドを全部もらう。
+だから、追加したいフィールドとメソッドだけ追加するだけで十分である。
+コンストラクタにsuperキーワードをスーパークラスを呼び出し、スーパークラスに定義されていないフィールドを追加した。
+同様にshokaiメソッドもsuperキーワードを使って、そしてshudanフィールドを表示するため再定義する。
+main関数で新しいオブジェクト変数を作って、shokaiメソッドを呼び出される。
 
 
 課題３
 public class DormStudent extends Student {
-    private DormStudent doshitu;
+    private DormStudent doshitsu;
 
     public DormStudent(int gakunen, String bunnya, String namae) {
         super(gakunen, bunnya, namae);
-        this.doshitu = null;
+        this.doshitsu = null;
     }
 
-    public DormStudent getDoshitu() { 
-        return this.doshitu;
+    public DormStudent getDoshitsu() { 
+        return this.doshitsu;
     }
 
-    public void setDoshitu(DormStudent doshitu) {
-        this.doshitu = doshitu;
+    public void setDoshitsu(DormStudent doshitsu) {
+        this.doshitsu = doshitsu;
     }
 
     public void shokai() {
         super.shokai();
-        if(doshitu != null) {
-            System.out.println("私の同室者は" + this.doshitu.getNamae() + "です。\n");
+        if(doshitsu != null) {
+            System.out.println("私の同室者は" + this.doshitsu.getNamae() + "です。\n");
         } else {}
     }
 }
@@ -107,11 +111,40 @@ public class DormStudentApp {
         DormStudent Bravo = new DormStudent(4, "電子", "Bravo");
         DormStudent Alpha = new DormStudent(4, "情報", "Alpha");
 
-        Charlie.setDoshitu(Bravo);
+        Charlie.setDoshitsu(Bravo);
 
         Charlie.shokai();
         Alpha.shokai();        
     }
 }
 
-no ini ulang cp paste lagi!
+
+課題４
+public void setDoshitsu(DormStudent doshitsu) {
+    this.doshitsu = doshitsu;
+    doshitsu.doshitsu = this;
+}
+
+public class DormStudentApp {
+public static void main(String[] args) {
+    DormStudent Charlie = new DormStudent(4, "建築", "Charlie");
+    DormStudent Bravo = new DormStudent(4, "電子", "Bravo");
+    
+    Charlie.setDoshitsu(Bravo);
+
+    Charlie.shokai();
+    Bravo.shokai();  
+}
+}
+
+$ java DormStudentApp
+私は4年建築のCharlieです。
+私の同室者はBravoです。
+
+私は4年電子のBravoです。
+私の同室者はCharlieです。
+
+課題５
+bikin kyk game gitu ada monster sama player
+player punya item yang ningkatin status gitu
+end.
