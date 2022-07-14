@@ -22,31 +22,42 @@ public class Game {
         }
 
         Game.win(monster, player);
+        player.lvlUp();
     }
 
-    static void win(Monster monster, Player player) {
-        if(monsterKilled(monster, player)) {
+    static void win (Monster monster, Player player) {
+        if(monster.isKilled(player)) {
             System.out.println(player.getName() + " win!");
-            player.lvlUp();
-        } else if(playerKilled(player)) {
+        } else if (player.isKilled()) {
             System.out.println(monster.getName() + " win!");
         }
     }
 
-    static boolean monsterKilled(Monster monster, Player player) {
-        if(monster.getHp() == 0) {
-            player.setExp(monster.getDropExp());
-            return true;
-        } else {
-            return false;
-        }
-    }
 
-    static boolean playerKilled(Player player) {
-        if(player.getHp() == 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
+    // static void win(Monster monster, Player player) {
+    //     if(monsterKilled(monster, player)) {
+    //         System.out.println(player.getName() + " win!");
+    //         player.lvlUp();
+    //     } else if(playerKilled(player)) {
+    //         System.out.println(monster.getName() + " win!");
+    //     }
+    // }
+
+    // static boolean monsterKilled(Monster monster, Player player) {
+    //     if(monster.getHp() == 0) {
+    //         player.setExp(monster.getDropExp());
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
+
+    // static boolean playerKilled(Player player) {
+    //     if(player.getHp() == 0) {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 }

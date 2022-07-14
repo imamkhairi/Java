@@ -49,9 +49,9 @@ public class Player extends Entity {
             this.setBaseHp(this.getHp());
             this.setAttack(this.getLevel()*3);
             this.exp -= 5;
+            
+            this.getStatus();
         }
-
-        this.getStatus();
     }
 
 }

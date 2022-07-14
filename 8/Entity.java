@@ -90,4 +90,13 @@ public class Entity {
     public void setBaseHp(int hp) {
         this.basehp = hp;
     }
+
+    public boolean isKilled() {
+        if(this.hp == 0) {
+            System.out.println(this.getName() + " has been killed!");
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

@@ -21,4 +21,12 @@ public class Monster extends Entity {
         );
     }
 
+    public boolean isKilled(Player player) {
+        if(super.isKilled()) {
+            player.setExp(this.dropExp);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
