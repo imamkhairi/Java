@@ -14,7 +14,7 @@ public class ClassRoom {
             this.studentArray[sizeActual] = newStudent;
             sizeActual++;
         } else {
-            System.out.println("Student number limit exceeded.");
+            System.out.println("Student number limit is exceeded.");
             System.out.println(newStudent.getNamae() + " is not inserted. \n");
         }
     }

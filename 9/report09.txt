@@ -1,0 +1,202 @@
+4J 08 イマムカイリルビス　テーマ09　レポート
+
+課題１
+public class ArrayListInt {
+    private int max;
+    private int[] array;
+    private int used;
+
+    public ArrayListInt() {
+        this.max = 5;
+        this.array = new int[max];
+        this.used = 0;
+    }
+
+    public void add(int value) {
+        if(this.used < 5) {
+            this.array[used] = value;
+            used++;
+        } else {
+            System.out.println("Limit exceeded.");
+            System.out.println(value + " is not inserted.");
+        }
+    }
+
+    public int size() {
+        return this.used;
+    }
+
+    public int get(int index) {
+        return this.array[index];
+    }
+
+    public void print() {
+        for (int i = 0; i < this.size(); i ++) {
+            System.out.println(this.array[i]);
+        }
+    }
+} 
+
+public class ArrayListIntApp {
+    public static void main (String[] args) {
+        ArrayListInt a = new ArrayListInt();
+        a.add(314); 
+        a.add(217); 
+        a.add(173);
+        a.add(1);
+        a.add(2);
+        a.add(3);
+        a.print();   
+    }
+}
+
+実行結果：
+$ java ArrayListIntApp
+Limit exceeded.
+3 is not inserted.
+314
+217
+173
+1
+2
+
+
+課題２
+public class ClassRoom {
+    private int sizeMax;
+    private Student[] studentArray;
+    private int sizeActual;
+
+    public ClassRoom() {
+        this.sizeMax = 5;
+        this.studentArray = new Student[this.sizeMax];
+        this.sizeActual = 0;
+    }
+
+    public void add(Student newStudent) {
+        if(sizeActual < sizeMax) {
+            this.studentArray[sizeActual] = newStudent;
+            sizeActual++;
+        } else {
+            System.out.println("Student number limit is exceeded.");
+            System.out.println(newStudent.getNamae() + " is not inserted. \n");
+        }
+    }
+
+    public int size() {
+        return this.sizeActual;
+    }
+
+    public Student get(int index) {
+        return this.studentArray[index];
+    }
+
+    public void shokai() {
+        for(int i = 0; i < this.size(); i++) {
+            this.studentArray[i].shokai();
+        }
+    }
+}
+
+public class ClassRoomApp {
+    public static void main(String[] args) {
+        HomeStudent alan = new HomeStudent(4, "情報", "Alan", "自転車");
+        DormStudent beth = new DormStudent(4, "情報", "Beth");
+        DormStudent claire = new DormStudent(4, "情報", "Claire");
+        HomeStudent dwi = new HomeStudent(4, "情報", "Dwi", "自転車");
+        HomeStudent eli = new HomeStudent(4, "情報", "Eli", "自転車");
+        HomeStudent freya = new HomeStudent(4, "情報", "Freya", "自転車");
+
+        ClassRoom j4 = new ClassRoom();
+        j4.add(alan);
+        j4.add(beth);
+        j4.add(claire);
+        j4.add(dwi);
+        j4.add(eli);
+        j4.add(freya);
+
+        beth.setDoshitsu(claire);
+
+        j4.shokai();
+    }
+}
+
+
+課題３
+呼び出されるメソッドは、オブジェクト変数がどのクラスであるかに依存する。
+だから、オーバライドしたスーパークラスのメソッドが呼び出された。
+
+
+課題４
+Javaにはc言語のようにポインタはありませんが、referencesがある。
+ｃ言語のポインタのようにJavaのreferencesに対して演算を行うことができない。
+演算ができるようになると、コードの純なん柔軟性が増やすと同時に、より危険ななものになる。
+もし、ユーザーからの入力を受け、ユーザーが正しいポインターの値を入力しなかった場合、データがないメモリにアクセスするため、コードはエラーになる。
+
+https://www.geeksforgeeks.org/is-there-any-concept-of-pointers-in-java/
+https://softwareengineering.stackexchange.com/questions/141834/how-is-a-java-reference-different-from-a-c-pointer
+
+c言語の例：
+#include <stdio.h>
+
+int main()
+{
+    int a[3] = {1,2,3};
+    
+    int *p = &a[1];
+    printf("address %p \n", &a[1]);
+    printf("value %d \n", a[1]);
+    printf("pointer address %p \n", p);
+    printf("pointer value %d \n", *p);
+    
+    printf("\n");
+    p++;
+    printf("address %p \n", &a[2]);
+    printf("value %d \n", a[2]);
+    printf("pointer address %p \n", p);
+    printf("pointer value %d \n", *p);
+    
+    printf("\n");
+    p++;
+    printf("address %p \n", &a[3]);
+    printf("value %d \n", a[3]);
+    printf("pointer address %p \n", p);
+    printf("pointer value %d \n", *p);
+
+    return 0;
+}
+実行結果：
+address 0x7ffdcf64cee0 
+value 2 
+pointer address 0x7ffdcf64cee0 
+pointer value 2 
+
+address 0x7ffdcf64cee4 
+value 3 
+pointer address 0x7ffdcf64cee4 
+pointer value 3 
+
+address 0x7ffdcf64cee8 
+value -833376768 
+pointer address 0x7ffdcf64cee8 
+pointer value -833376768 
+
+Javaの例：
+public class MyClass {
+    public static void main(String args[]) {
+      int[] a = new int[2];
+      a[0] = 0;
+      a[0] = 1;
+      
+      int b = 2;
+
+      System.out.println(a[2]);
+    }
+}
+
+実行結果：
+Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 2 out of bounds for length 2
+	at MyClass.main(MyClass.java:9)
+
+c言語では、配列のサイズを越えてアクセスしようとすると、コードは実行可能である。しかし、おかしな結果になった、そこにはデータが保存されていないのである。
+一方、javaでは、配列のサイズを越えてアクセスしようとすると、ファイルが実行不可能になります。

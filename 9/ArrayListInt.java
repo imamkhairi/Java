@@ -15,7 +15,7 @@ public class ArrayListInt {
             used++;
         } else {
             System.out.println("Limit exceeded.");
-            System.out.println(value + " is not inserted");
+            System.out.println(value + " is not inserted.");
         }
     }
 
