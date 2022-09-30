@@ -1,3 +1,4 @@
 web jouhou
 http://www.infogr.kushiro-ct.ac.jp:8080/info
 reset terus asu
+"http.proxy": "http://157.114.16.93:8080"
