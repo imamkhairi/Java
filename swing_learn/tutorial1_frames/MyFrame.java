@@ -1,4 +1,4 @@
-package swing_learn.tutorial1_panels;
+package swing_learn.tutorial1_frames;
 
 import javax.swing.JFrame;
 import javax.swing.ImageIcon;

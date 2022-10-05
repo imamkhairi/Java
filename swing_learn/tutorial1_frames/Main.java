@@ -1,4 +1,4 @@
-package swing_learn.tutorial1_panels;
+package swing_learn.tutorial1_frames;
 
 public class Main {
     public static void main(String[] args) {
