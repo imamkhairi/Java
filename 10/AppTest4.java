@@ -4,16 +4,21 @@ import java.awt.event.*;
 
 public class AppTest4 extends JFrame {
     private JButton button;
+    private int count;
 
     public AppTest4() {
         super();
 
-        this.button = new JButton("Button1");
+        this.count = 0;
+
+        this.button = new JButton("Off");
         this.button.setFocusable(false);
         this.button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                this.button.setText("clicked");
+                count ++;
+                if(count%2 == 1) button.setText("On");
+                else button.setText("Off");
             }
         });
 
