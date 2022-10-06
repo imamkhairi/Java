@@ -1,0 +1,255 @@
+<!--?xml version="1.0" encoding="utf-8"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>プログラミング言語IIIB(Java) テーマ10</title>
+<link rel="stylesheet" href="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E10_files/tenmo2008single.css" type="text/css" media="all">
+</head>
+
+<body>
+
+<h2>プログラミング言語IIIB(Java) テーマ10</h2>
+
+<h3>内容 ... GUI(Graphical User Interface; グラフィカル・ユーザー・インターフェース)</h3>
+
+<p>Javaには, C言語と異なり, <em>標準で</em>GUIを扱うためのライブラリ「Swing」が含まれている. 
+Javaで作成したプログラムはCPUやOSに依存しないため, Swingを用いたGUIプログラムは, 
+LinuxでもWindowsでもMacでもそのまま動作する. 後期はこのSwingを用いて, オブジェクト指向でGUIプログラムを開発していく.</p>
+
+<!--
+<p>Swingを用いたGUIプログラムには</p>
+<ul>
+<li>アプリケーション ... 独立した<em>ウィンドウ</em>を表示して動作するGUIプログラム</li>
+<li>アプレット ... ウェブ<em>ブラウザ</em>内で動作するGUIプログラム</li>
+</ul>
+<p>の2種類がある. 本授業では最初にGUIアプリケーションの作り方を学習し, その後, その知識を基に, アプレットを作る方法を取り扱う. アプリケーション, アプレット共に, これまでに学習したJavaの<em>基礎知識</em>を理解していないとプログラムの作成が困難であるため, 前回までの内容を十分に復習しておく必要がある.</p>
+-->
+
+<p>JavaでGUIを扱うためのライブラリはAWTに始まり, Swing, SWT, JavaFX等々, これまで20年余りのJavaの歴史と共に様々な栄枯盛衰があった末に, 2022年現在ではSwingがJava開発環境に<em>標準で含まれ</em>, かろうじて生き残っている. 初心者が特別な追加設定なしで使用できることから, この授業ではSwingを採用している.</p>
+
+<p>またこの授業は, Swingの使い方を学習することが目的ではなく, 前期で学習した<em>オブジェクト指向の考え方</em>を, GUIやグラフィックスで<em>楽しみながら</em>定着させるのが目的である. そのため常にオブジェクト指向を念頭において, 課題やレポート作成に取り組んでみて欲しい.</p>
+
+<!--
+<p>また, ※Swingは膨大な量の機能を持っており, 残念ながら本授業でその全てを網羅する事はできない. ぜひ授業で習った内容以上の事柄を自分で調べ, 実際にプログラムを組み, 技術向上に挑戦してみて欲しい.</p>
+-->
+
+<!--
+<p>注意: Javaバージョン1.1以前より搭載されているGUIライブラリはAWT(Abstract Window Toolkit)と呼ばれるもので, 本授業で扱うJavaバージョン1.2以降のSwingとは異なる. ところが, MicrosoftとSun Microsystems(Javaを開発した企業)の間で争いが起こり, MicrosoftのInternet ExplorerとSwingアプレットの相性が悪くなった事等から, 書籍によってはAWTを用いたGUIプログラミングを採用している. そのため, 自習のため参考書やネット上を探す際には, 誤った混用をしない様, AWTとSwingの<em>区別</em>に良く注意して欲しい.</p>
+-->
+
+<h3><code>JFrame</code>クラス</h3>
+
+<p>GUIアプリケーションは, Swingに含まれる「<code>JFrame</code>クラス」を<em>継承</em>して定義する. 以下にその手順を示す. (<code>JFrame</code>はJavaで予め用意されているクラスである. 自分で定義するクラスではない. ) 下記のUML図は, <code>AppTest1</code>クラスは<code>JFrame</code>クラスを継承する, ということを表現している.</p>
+
+<center>
+<img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E10_files/2007-07-05-AppTest1.png">
+</center>
+
+<ol>
+
+<li>ソースの先頭で「<code class="">javax.swing.*</code>」を<code class="em">import</code>する. ここでは<code>import</code>文は, C言語でライブラリ関数を使用する際の<code>#include</code>文に相当すると考えて良い.</li>
+<pre>import javax.swing.*;
+</pre>
+
+<li><code>JFrame</code>クラスを継承し, 以下の仕様を満たすクラスを定義する. ここでは例として, クラス名を<code>AppTest1</code>としている. なお, UMLクラス図におけるプラス記号は<code class="em">public</code>を, アンダーラインは<code class="em">static</code>を意味する. (戻り値の型は記載されていないため<code>void</code>である.) また引数の書式がJavaとは異なる特殊な形式(変数名, コロン, 型)となっているため, 各自でJava形式に書き直してコーディングしてみて欲しい.<p></p>
+
+    <p>
+    </p><table>
+    <tbody><tr><th>UML表記</th><th>内容</th></tr>
+    <tr><td><code>+AppTest1()</code></td><td>コンストラクタ</td></tr>
+    <tr><td><code>+<u>main(args: String[])</u></code></td><td><code>main</code>メソッド</td></tr>
+    </tbody></table>
+    <p></p>
+
+    <dl>
+    <dt><code>AppTest1()</code>の処理内容
+    </dt><dd><ol>
+        <li>スーパークラスのコンストラクタを呼び出す. 引数なし.</li>
+        </ol>
+    </dd><dt><code>main(args: String[])</code>の処理内容
+    </dt><dd><ol>
+        <li><code>AppTest1</code>クラスのインスタンスを<code class="em">new</code>で生成する. 引数なし.</li>
+        <li>手順1のインスタンスに対して<code class="em">setSize</code>メソッドを呼び出す. 引数はウィンドウの<em>幅</em>と<em>高さ</em>. 単位はドット(ピクセル).</li>
+        <li>手順1のインスタンスに対して<code class="em">setLocation</code>メソッドを呼び出す. 引数はウィンドウ左上角の<em>x座標</em>と<em>y座標</em>. 画面左上角が(0,0)である.</li>
+        <li>手順1のインスタンスに対して<code class="em">setVisible</code>メソッドを呼び出す. 引数は<code class="em">true</code>.</li>
+        </ol>
+    </dd></dl>
+
+</li></ol>
+
+<center>
+<img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E10_files/2006.11.21_AppTest1.png">
+<p>※外枠・最小化・最大化・閉じるボタン等はOS環境に依るため, このスクリーンショットと同一になるとは限らない.</p>
+</center>
+
+<p>なお, このプログラムには(現段階では)終了機能が無いため, ウィンドウを閉じてもプログラムが終了しない場合がある. プログラムを終了させるには, 起動させたターミナルからCtrl+Cで強制終了させる.</p>
+
+<h3>JButtonクラス</h3>
+
+<p>上記の方法でウィンドウを作ることはできた. しかし, そのウィンドウにGUIの<em>部品</em>を置いて<em>操作</em>を可能にしないと, アプリケーションとして機能しない.</p>
+
+<p>操作可能なGUI部品の最も基本的なものは<em>ボタン</em>である. 画面上に仮想的なボタンを表示し, それをマウスで「押す」ことにより, ユーザーが様々な処理をコンピューターに直感的に命令できるようにする.</p>
+
+<p>Swingではこの機能を実現するための部品として, <code>JButton</code>クラスが用意されている. <code>JButton</code>クラスの基本的な利用方法を以下に示す. (<code>JButton</code>はJavaで予め用意されているクラスである. 自分で定義するクラスではない. )</p>
+
+<ol>
+
+<li><code>javax.swing.*</code>を<code>import</code>する.</li>
+
+<li><code>JFrame</code>クラスを継承して, 以下の仕様を満たすクラスを定義する. ここでは例としてクラス名を<code>AppTest2</code>としている.</li>
+
+    <p>
+    </p><table>
+    <tbody><tr><th>UML表記</th><th>内容</th></tr>
+    <tr><td><code>-button: JButton</code></td><td>ボタン</td></tr>
+    <tr><td><code>+AppTest2()</code></td><td>コンストラクタ</td></tr>
+    <tr><td><code>+<u>main(args: String[])</u></code></td><td><code>main</code>メソッド</td></tr>
+    </tbody></table>
+    <p></p>
+
+    <dl>
+    <dt><code>AppTest2()</code>の処理内容
+    </dt><dd><ol>
+        <li>スーパークラスのコンストラクタを呼び出す. 引数なし.</li>
+        <li><code>JButton</code>クラスのインスタンスを生成して<em>フィールド</em><code>this.button</code>に代入する. 引数はボタンの表面の<em>文字列</em>.</li>
+        <li>スーパークラスの<code class="em">getContentPane</code>メソッドを呼び出し, その結果に対して, さらに<code class="em">add</code>メソッドを呼び出す. <code>add</code>の引数はフィールドの<code>this.button</code>とする. <code>getContentPane</code>は<code>JFrame</code>クラスのメソッドであり, ボタン等の部品を配置できる, 見えない「枠」を返す. その枠に, ボタンをはめている. <code>getContentPane</code>の詳細は次回学習する.</li>
+<pre>ヒント: super.getContentPane().add( ... );
+</pre>
+        </ol>
+    </dd><dt><code>main(String[])</code>の処理内容
+    </dt><dd><code>AppTest1</code>と同様. ※ただし「2」に変更するのを忘れずに!!
+    </dd></dl>
+
+</ol>
+
+<center>
+<img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E10_files/2006.11.21_AppTest2.png">
+</center>
+
+<p>完成したプログラムを実行するとウィンドウにボタンが表示される. マウスでクリックするとボタンが「押せる」.</p>
+
+<h3><code>ActionListener</code>インターフェース</h3>
+
+<p>上記の方法でウィンドウ上にボタンを置くことはできた. しかし, そのボタンが<em>押された</em>時に, 何らかの処理を行うようにプログラムする必要がある. ボタンが押された等の「出来事」を「<em>イベント</em>」と呼ぶ. イベントが発生した時に, それに反応して何らかの処理を行う方法を以下に示す.</p>
+
+<ol>
+
+<li><code>java.awt.*</code>を<code>import</code>する.</li>
+<li><code>java.awt.event.*</code>を<code>import</code>する.</li>
+<li><code>javax.swing.*</code>を<code>import</code>する.</li>
+
+<li><code>JFrame</code>クラスを継承して, 以下の仕様を満たすクラスを定義する. また, このクラスには<code>ActionListener</code>インターフェースを実装させる(<em>インターフェースを実装させる方法は次の節</em>に説明あり). ここでは例としてクラス名を<code>AppTest3</code>としている.</li>
+
+    <p>
+    </p><table>
+    <tbody><tr><th>UML表記</th><th>内容</th></tr>
+    <tr><td><code>-button: JButton</code></td><td>ボタン</td></tr>
+    <tr><td><code>+AppTest3()</code></td><td>コンストラクタ</td></tr>
+    <tr><td><code>+actionPerformed(e: ActionEvent)</code></td><td>ボタンが押された時に処理を行うメソッド</td></tr>
+    <tr><td><code>+<u>main(args: String[])</u></code></td><td><code>main</code>メソッド</td></tr>
+    </tbody></table>
+    <p></p>
+
+    <dl>
+    <dt><code>AppTest3()</code>の処理内容
+    </dt><dd><ol>
+        <li><code>getContentPane</code>して<code>this.button</code>を<code>add</code>する所までは<code>AppTest2</code>と同じ.</li>
+        <li>フィールドの<code>this.button</code>に対して, <code class="em">addActionListener</code>メソッドを呼び出す. 引数は<code class="em">this</code>とする. 「<code>this.button</code>が押されとき<em>, このインスタンス</em>(<code>this</code>)が対処します」という意味である.</li>
+        </ol>
+    </dd><dt><code>actionPerformed(e: ActionEvent)</code>の処理内容
+    </dt><dd><ol>
+    <li>引数のオブジェクト<code>e</code>に対して<code class="em">getSource</code>メソッドを呼び出し, その戻り値がフィールドの<code>this.button</code>と<code>==</code>で等しかった場合, <code>System.out.println</code>で標準出力に文字列を出力する. 「もしイベントの<em>発生源</em>がフィールドの<code>this.button</code>だったら」という判定を行っている. ※将来的に, 今回の<code>button</code>以外にもさらに別の部品が追加される事を想定して判定している.</li>
+        </ol>
+    </dd><dt><code>main(args: String[])</code>の処理内容
+    </dt><dd><code>AppTest1</code>と同様. 
+    </dd></dl>
+</ol>
+
+<center>
+<img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E10_files/2006.11.21_AppTest3.png">
+</center>
+
+<p>マウスでボタンをクリックすると, 起動したターミナルに文字列が表示される.</p>
+
+<h3>インターフェースとその実装</h3>
+
+<p>インターフェースとは, スーパークラスになること専用の, クラスの一種である. インターフェースはJavaで<em>複数</em>のクラスを継承したい場合に利用する. Javaは単一継承しかできないため(スーパークラスは一つに限る), 主要な機能を通常の継承で継承し, 付加的な機能をインターフェースで追加する様にして用いる.</p>
+
+<center>
+<img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E10_files/2006.11.22_uml_interface.png">
+</center>
+
+<p>インターフェースの継承を特に, 「インターフェースの<em>実装</em>」と呼ぶ. インターフェースを実装するクラスは, クラス定義の先頭で「<code class="em">implements</code> インターフェース名」と書き, クラス内にメソッドの本体を書く. ただし, 実装したクラスでは, 予めインターフェース側で決めてある名前のメソッドを, <em>必ず定義</em>しなければならない.</p>
+
+<p><code>ActionListener</code>は, 「ボタンが押された」等のイベントの処理用に, Swingで予め用意されているインターフェースの一つである. ウィンドウに関する様々な機能は<code>JFrame</code>から継承し, イベントを処理する機能のみを<code>ActionListener</code>から継承している.</p>
+<pre>// 例: AppTest3はJFrameクラスを継承し, かつ, ActionListenerインターフェースを実装する. 
+public class AppTest3 extends JFrame implements ActionListener
+{
+    public void actionPerformed(ActionEvent e) // メソッド本体の定義
+    {
+        // 「イベント」が起きた場合に行う処理の具体的な内容を書く
+    }
+}
+</pre>
+
+<h3>課題</h3>
+
+<p>以下の課題のレポートは, レポートファイル<code class="em">report10.txt</code>を作成してアップロードにより提出すること. レポートファイルの1行目には<em>出席番号・名前・テーマ番号</em>を忘れずに記入すること.</p>
+
+<ol>
+
+<li>上記の説明に従って, 実際にGUIアプリケーション<code>AppTest1</code>〜<code>AppTest3</code>を作成して実行し, 期待通りに動作することを確認せよ. (<code>AppTest1, AppTest2, AppTest3</code><em>それぞれ</em>完了した段階で, 素晴らしいと感じた仕組み等をレポート. 特になしは不可.)</li>
+    <p>注意: <code>JFrame</code>, <code>JButton</code>等は, Javaで予め用意されているクラスである. 自分で作成するものではない.</p>
+    <p>注意: 主なエラーはスペルミスと予想される. エラー時はまずスペルを厳重にチェックすること.</p>
+    <p>注意: 今回は<code>main</code>も同一のクラス内に書く.</p>
+
+<li><a href="http://jfutaya1.info.kushiro-ct.ac.jp/doc/javase7/docs/ja/api/index.html">Java API仕様</a>や参考図書から<code>JButton</code>クラスの<code class="em">setText</code>メソッドの使い方を調査し, <code>AppTest3</code>でボタンが押された時に, そのボタンに表示されている文字列を変更するプログラム「<code class="em">AppTest4</code>」を作成せよ. (調査した結果および, ソース中の改造した場所(where), 改造した内容(how), その場所を選んだ理由(why)をレポート)</li>
+  <p>ヒント: Java API仕様の左下の「すべてのクラス」から<code>JButton</code>を探し, 右中央から<code>setText</code>を探す. ブラウザの「<em>ページを検索</em>」機能を使うと便利(Google等のウェブ検索ではない).</p>
+  <p>注意: 理由が「ここに書くとボタンの文字列が変わるから」では不可(理由になっていない). その場所が実行される「<em>タイミング</em>(いつ)」について考えてみると良い.</p>
+
+<!--
+<li>今回の締切りまでに可能な範囲内で, <code>AppTest4</code>をさらに自由に改造し, <code class="em">AppTest5</code>を作成せよ. (ソース全体をレポートファイルに貼り付け, ユーザー向けの解説と, 開発者向けの解説を記入)
+    <ul>
+    <li>ユーザー向けの解説: そのGUIプログラムを起動して<u>使う人</u>に向けた説明. 自分の家族を想定すると良い.</li>
+    <li>開発者向けの解説: そのGUIプログラムのソースを読み, 理解し, <u>改修や保守をする人</u>に向けた説明. 同級生や後輩を想定すると良い.</li>
+    </ul>
+    <p>注意: 今後, 何度も自由改造課題があるため, 締切に間に合わないような壮大な改造は必要はない.</p>
+    <p>ヒント: 複数の部品の配置は次回以降の課題となるので, 必須ではない. 現段階でどうしても複数の部品を配置したい場合は, 「<code>null</code>レイアウト」と呼ばれる方法を各自で調べてみると良い. 以下, 概略:</p>
+
+    <ol>
+    <li><code>getContentPane</code>メソッドの戻り値に対して, <code class="em">setLayout</code>メソッドを呼び出す. <code>setLayout()</code>の引数は<code class="em">null</code>.</li>
+    <li>部品を生成した後, その部品に対して<code class="em">setBounds</code>メソッドを呼び出す. <code>setBounds()</code>の引数は, その部品の左上の<em>x座標</em>, <em>y座標</em>, <em>幅</em>, <em>高さ</em>である.</li>
+    <li>通常通り, <code>getContentPane</code>メソッドの戻り値に対して, <code>add</code>メソッドを呼び出す. 引数は手順2の部品である.</li>
+    <li>配置したい部品の個数分だけ, 手順2, 3を繰り返す.</li>
+    </ol>
+
+</li>
+-->
+
+<li><code>AppTest4</code>をさらに自由に改造し, 「<code>null</code>レイアウト」という方法で複数の部品を配置する<code class="em">AppTest5</code>を作成せよ. (ソース全体をレポートファイルに貼り付け)
+
+<p>注意: 今後, 何度も自由改造課題があるため, 締切に間に合わないような壮大な改造は必要はない.</p>
+<p>複数の部品を「<code>null</code>レイアウト」で配置する手順は以下の通り:</p>
+
+<ol>
+<li><code>getContentPane</code>メソッドの戻り値に対して, <code class="em">setLayout</code>メソッドを呼び出す. <code>setLayout()</code>の引数は<code class="em">null</code>.</li>
+<li><code>JButton</code>などの部品を生成した後, その部品インスタンスに対して<code class="em">setBounds</code>メソッドを呼び出す. <code>setBounds()</code>の引数は, その部品の左上の<em>x座標</em>, <em>y座標</em>, <em>幅</em>, <em>高さ</em>である.</li>
+<li><code>getContentPane</code>メソッドの戻り値に対して, <code>add</code>メソッドを呼び出す. 引数は手順2後の部品である.</li>
+<li>配置したい部品の個数分だけ, 手順2, 3を繰り返す.</li>
+</ol>
+
+</li>
+
+<li>初めてGUIプログラムを作成した感想や疑問点, 今後GUIに関して具体的にやってみたい点等を述べよ. (レポートに記入. 特になしは不可.)</li>
+
+</ol>
+
+<h3>レポート</h3>
+
+<ul>
+<li>内容: 課題中に指示されている通り. 必要な項目を全て記載しているか, 十分に確認すること.</li>
+</ul>
+
+
+
+</body></html>
