@@ -37,5 +37,4 @@ public class MyFrame extends JFrame{
         this.setLayout(null);
         this.setVisible(true);
     }
-    
 }

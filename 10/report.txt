@@ -1,0 +1,18 @@
+AppTest1 
+
+memunculkan windows menggunakan Jframe yang di extends dari ...
+untuk setting nya tinggal menggunakan method yang tersedia 
+
+
+AppTest2
+
+untuk membuat button awalnya harus dibuat dulu field button untuk classnya
+lalu di constructor baru dideklarasikan dan dimasukkan ke dalam frame menggunakan add
+pada tahap ini belum bisa mendapatkan input dari button
+
+AppTest3 
+
+setelah bisa membuat button lalu digunakan actionlistener agar bisa mendapatkan input dari click
+untuk menggunakan itu harus melakukan implement thd interface dari actionlistener
+karena interface maka class yang mengimplementasikan itu harus melakukan override thd methodnya
+sehingga ketika hanya passing this terhadap addActionListener compiler akan mengetahui apa method yang harus dieksekusi
