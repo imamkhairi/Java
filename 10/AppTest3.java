@@ -17,14 +17,10 @@ public class AppTest3 extends JFrame implements ActionListener{
         //     public void actionPerformed(ActionEvent e) {
         //         System.out.println("clicked");
         //     }
-        // }); 
-        // Ini harus ketika tidak implements ActionListener
+        // });
         super.getContentPane().add(this.button);
         
-        this.setSize(500, 500);
-        this.setLocation(10,10);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setVisible(true);
+        
     }
 
     @Override
@@ -35,7 +31,10 @@ public class AppTest3 extends JFrame implements ActionListener{
     }
     
     public static void main(String[] args) {
-        new AppTest3();
+        AppTest3 myFrame = new AppTest3();
+        myFrame.setSize(500, 500);
+        myFrame.setLocation(10,10);
+        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        myFrame.setVisible(true);
     }
-
 }

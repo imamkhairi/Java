@@ -1,18 +1,73 @@
+4J 08 イマムカイリルビス　テーマ10　レポート
+
+課題１
 AppTest1 
-
-memunculkan windows menggunakan Jframe yang di extends dari ...
-untuk setting nya tinggal menggunakan method yang tersedia 
-
+ウィドウを表すためにJFrameを継承したクラスを使った。
+mainメソッドにAppTest1クラスのインスタンスを生成し、プログラムを実行したら、ウィンドウをGUIのウィンドウ表せるようになった。
+JFrameから与えられたメソッドでウィンドウを設定することができる。
 
 AppTest2
-
-untuk membuat button awalnya harus dibuat dulu field button untuk classnya
-lalu di constructor baru dideklarasikan dan dimasukkan ke dalam frame menggunakan add
-pada tahap ini belum bisa mendapatkan input dari button
+ウィンドウと同じようにボタンを作るにはJButtonクラスを使った。
+AppTest2コンストラクタにJButtonクラスのインスタンスを生成して、this.buttonに代入した。
+しかし、この段階でボタンからクリック入力にまだ反応できない。
 
 AppTest3 
+ボタンからクリック入力を反応するためにはswingのインターフェースを実装することは必要である。
+あるクラスにインターフェースを実装したら、そのくらすで実装されたインターフェースのメソッドをオーバライドが必要である。
+インターフェースでそもそもそのメソッドを定義していないからだ。
+だから、addActionListenerにthisを渡したら、オーバライドされたメソッドを実行させる。
 
-setelah bisa membuat button lalu digunakan actionlistener agar bisa mendapatkan input dari click
-untuk menggunakan itu harus melakukan implement thd interface dari actionlistener
-karena interface maka class yang mengimplementasikan itu harus melakukan override thd methodnya
-sehingga ketika hanya passing this terhadap addActionListener compiler akan mengetahui apa method yang harus dieksekusi
+課題２
+JButton.setTextというメソッドはボタンに表示する文字を設定するメソッドである。
+ボタンで表示された文字を書き換えるためにsetTextメソッドはActionListenerから実装されたメソッドの中に書かなければならない。
+そのメソッドはボタンを押された時に何が起こるのを決めるからだ。
+
+課題３
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class AppTest5 extends JFrame implements ActionListener{
+    private JButton button1;
+    private JButton button2;
+
+
+    public AppTest5() {
+        super();
+
+        this.button1 = new JButton("Button1");
+        this.button1.setBounds(10, 10, 100, 40);
+        this.button1.addActionListener( 
+            // e -> System.out.println("button1 pressed")
+            this
+            );
+        this.button2 = new JButton("Button2");
+        this.button2.setBounds(10, 60, 100, 40);
+        this.button2.addActionListener(
+            // e -> System.out.println("button2 is pressed")
+            this    
+        );
+
+        this.add(button1);
+        this.add(button2);
+        this.setSize(700, 700);
+        this.setLocation(20,20);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLayout(null);
+        this.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed (ActionEvent e){
+        if(e.getSource() == this.button1) System.out.println("Button1");
+        else if (e.getSource() == this.button2) System.out.println("Button2");
+    }
+    public static void main(String args[]){
+        new AppTest5();
+    }
+
+}
+
+課題４
+GUIを作れるJavaクラスがあったら、いろいろなものを作れるようになった。
+自分はゲームを作りたいと思う。そのために、いくつかJavaで作ったゲームの動画を見ました。
