@@ -1,0 +1,187 @@
+<!--?xml version="1.0" encoding="utf-8"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>プログラミング言語IIIB(Java) テーマ11</title>
+<link rel="stylesheet" href="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E11_files/tenmo2008single.css" type="text/css" media="all">
+</head>
+
+<body>
+
+<h2>プログラミング言語IIIB(Java) テーマ11</h2>
+
+<h3><code>JLabel</code>クラス</h3>
+
+<p>文字列等, 単に説明やメッセージを<em>表示</em>するためのGUI部品で, 入力を行うことはできない. コンストラクタやメソッドは<code>JButton</code>クラスとほぼ同様である.</p>
+
+<pre>private JLabel label1;
+this.label1 = new JLabel("Now loading..."); // コンストラクタの引数で文字列を与える
+                                            // もちろんあとから .setText( ) も可能
+super.getContentPane().add(this.label1);
+</pre>
+
+<h3><code>JPanel</code>クラスとレイアウト・マネージャ</h3>
+
+<p><code>JFrame</code>クラスのみでは複数の部品を配置することができない(図1). <code>null</code>レイアウトを使えば部品毎に座標を指定して配置することもできるが, 部品数が多くなると手間が掛かり過ぎて面倒である. また, <code>null</code>レイアウトではウィンドウの大きさの変化や解像度(ピクセル数)の違いに対応できない, 融通の効かないアプリとなる. そこでSwingでは, 複数の部品を自動配置するための機能として, <code class="em">JPanel</code>クラスと<em>レイアウトマネージャ</em>が用意されている(図2).</p>
+
+<center>
+<p><img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E11_files/without_panel.png"><br>
+<font size="-1">図1: 前回までの状態. 部品を一つしか配置できない.</font></p>
+</center>
+
+<center>
+<p><img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E11_files/with_panel.png"><br>
+<font size="-1">図2: パネルを用いて複数の部品を配置した状態.</font></p>
+</center>
+
+<p><code>JPanel</code>は複数の部品を一つに<em>まとめる</em>役割を果たす. <code>JPanel</code>のインスタンスに対し, まとめたい部品を<em>次々</em>と<code class="em">add</code>することにより, パネルに複数の部品を追加できる. そして最後に, その<em>パネル</em>を<code>JFrame</code>の<code>contentPane</code>に追加する(図3). 以下に例を示す.</p>
+
+<pre>JPanel panel1 = new JPanel(); // JPanelはローカル変数で良い
+panel1.add(this.button1); // パネルに対してボタン1を追加
+panel1.add(this.button2); // パネルに対してボタン2を追加
+panel1.add(this.button3); // パネルに対してボタン3を追加
+
+super.getContentPane().add(panel1); // contentPaneに対してパネルを追加
+// なお, contentPaneは, JFrameに予め内蔵(HAS-A関係)されている外枠専用のパネル
+</pre>
+
+<center>
+<p><img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E11_files/content.png"><br>
+<font size="-1">図3: 点線枠が<code>contentPane</code></font></p>
+</center>
+
+<p>なお, パネルに部品を追加した際に部品が配置される<em>位置</em>は, レイアウトマネージャが決定する. レイアウトマネージャは部品の<em>配置</em>を管理するクラスで, 配置の方法が異なる様々な種類が用意されている. レイアウトマネージャを設定するにはパネルの<code class="em">setLayout</code>メソッドを用いる. 以下に例を示す.</p>
+
+<pre>FlowLayout flow1 = new FlowLayout(); // ローカル変数で良い
+panel1.setLayout(flow1);
+</pre>
+
+<p>以下に, 配置方法が異なる2種類のレイアウトマネージャを紹介する.</p>
+
+<h3><code>FlowLayout</code>クラス</h3>
+
+<p>部品を<code>add</code>した順番に, <em>左から右へ</em>並べる最も基本的なレイアウトマネージャである. パネルの横幅が部品すべてを横1行に並べるのに足りない場合は, 必要に応じて自動的に改行される.</p>
+
+<pre>FlowLayout flow1 = new FlowLayout(); // ローカル変数で良い
+panel1.setLayout(flow1); // panelにaddする「前」にこれが必要
+
+panel1.add(this.label1);
+panel1.add(this.button1);
+panel1.add(this.button2);
+</pre>
+
+<center>
+<p><img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E11_files/with_panel.png"><br>
+</p></center>
+
+<h3><code>BorderLayout</code>クラス</h3>
+
+<p>部品を「東・西・南・北・中央」で指定して配置する. 東(EAST)が右, 西(WEST)が左, 南(SOUTH)が下, 北(NORTH)が上, 中央はCENTERである(図4).</p>
+
+<center>
+<p><img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E11_files/border.png"><br>
+<font size="-1">図4: ボーダーレイアウトの配置位置</font></p>
+</center>
+
+<p>部品の配置位置は, <code>add</code>メソッドの<em>第2引数</em>として, <!--<code>BorderLayout</code>クラスの-->定数を与えて指定する. 特に何も指定しないと中央となる. なお, 同じ位置に何度も<code>add</code>すると<em>上書き</em>して配置されるため, 先に<code>add</code>した部品が隠れてしまうので注意が必要である.</p>
+
+<pre>BorderLayout border1 = new BorderLayout(); // ローカル変数で良い
+panel1.setLayout(border1); // panelにaddする「前」にこれが必要
+
+panel1.add(this.button1, BorderLayout.WEST); // ボタン1を左(WEST)に配置
+panel1.add(this.button2, BorderLayout.EAST); // ボタン2を右(EAST)に配置
+panel1.add(this.label1, BorderLayout.SOUTH); // ラベル1を下(SOUTH)に配置
+</pre>
+
+<h3><code>JPanel</code>及びレイアウトマネージャの使用上の注意</h3>
+
+<ul>
+<li>パネルのインスタンスはイベント処理に使用しないためローカル変数で良い.</li>
+<li>レイアウトマネージャのインスタンスも同様にローカル変数で良い.</li>
+<li>【重要】<!--ラベルのインスタンスをフィールドにするかローカル変数にするかは, 貴方の作りたいアプリ次第.<br />→-->そもそもローカル変数とフィールドの違いは理解できているか? →<a href="http://jsuri1.info.kushiro-ct.ac.jp/~tenmo/java/03/">前期IIIAテーマ03</a></li>
+<li>レイアウトマネージャの設定はパネルに部品を<em>追加(add)する前</em>に行う. addの後に設定しても意味がない.</li>
+<pre>panel1.setLayout(flow1); // これが先
+                         // パネルでの部品の配置方法を先に決めてから
+
+panel1.add(this.label1); // 部品をパネルに追加する
+panel1.add(this.button1);
+panel1.add(this.button2);
+
+super.getContentPane().add(panel1); // 最後にパネルをcontentPaneに追加する
+</pre>
+<li><em>[厳重注意]</em> レイアウトマネージャのインスタンスの使い回しは出来ない. エラーとはならないが, 正常動作しなくなる. 複数のパネルがある場合はレイアウトマネージャのインスタンスも<em>それぞれ</em>用意する必要がある.</li>
+<pre>panel1.setLayout(flow1);
+panel2.setLayout(flow1); // ダメな例. flow1を使い回ししている.
+
+panel2.setLayout(flow2); // これが正解.
+</pre>
+<li><em>[厳重注意]</em> 部品の配置がどれほど複雑となっても, <code>contentPane</code>に対する<code>add</code>は<em>1回</em>に限る. 2回以上<code>add</code>すると正常動作しなくなる.</li>
+<pre>super.getContentPane().add(panel1);
+super.getContentPane().add(panel2); // 2回以上のadd禁止. panel1が隠れて消えてしまう.
+</pre>
+<li>パネル自身も部品であるから, パネルの<em>中に</em>他のパネルを入れることが可能である. これをパネルの<em>入れ子</em>と呼ぶ.</li>
+<pre>panel2.add(this.button1);
+panel2.add(this.button2);
+
+panel1.add(panel2); // ここに注目
+panel1.add(this.label1); // この場合, panel1にはpanel2とlabel1が入る
+
+super.getContentPane().add(panel1);
+</pre>
+
+<li>前回<a href="http://jsuri1.info.kushiro-ct.ac.jp/~tenmo/java/10/">テーマ10</a>で紹介した「<code>null</code>レイアウト」は, レイアウトマネージャを「<em>無効</em>」にする事を意味する. これにより, 座標を指定する手間は掛かるが, 完全に自由に部品を配置することはできる. しかし, 部品のサイズと位置を固定するため, 画面サイズの変化やデバイスのバリエーションに対応できない, 融通の効かないアプリとなってしまう.</li>
+
+</ul>
+
+<h3>課題</h3>
+
+<p>以下の課題のレポートは, レポートファイル<code class="em">report11.txt</code>を作成してアップロードにより提出すること. レポートファイルの1行目には<em>出席番号</em>・<em>名前</em>・<em>回</em>を忘れずに記入すること.</p>
+
+<ol>
+
+<li>練習: <code>JFrame</code>と<code>JPanel</code>, <code class="em">FlowLayout</code>を利用し, 三つ以上の適当な部品(ボタンやラベルなど)を配置するプログラムを作成せよ. (ソースをレポート)</li>
+
+<p>※配置するだけで良い. 反応するなどの機能は付けなくても良い.</p>
+
+<li>練習: <code>JFrame</code>と<code>JPanel</code>, <code class="em">BorderLayout</code>を利用し, 三つ以上の適当な部品を配置するプログラムを作成せよ. (ソース, <em>どこにどうやって何を配置したか</em>, をレポート)</li>
+
+<p>※配置するだけで良い. 反応するなどの機能は付けなくても良い.</p>
+<!--<p>※レポートには<u>課題1との違い</u>を重点的に記入すること.</p>-->
+
+<li>入れ子の練習: 複数のパネルとレイアウトマネージャを「入れ子」で組み合わせた<em>複雑</em>なウィンドウを作成せよ. ファイル名は<code class="em">ComplexFrame.java</code>とせよ. (ソース, <em>どこにどうやって何を配置したか</em>, をレポート)</li>
+  <ul>
+  <li>入れ子構造を誤らないために, 実際にコーディングに取り掛かる前に, まず紙や作図ツールで図1〜図4のような<em>構成図</em>を描いて計画を立てると良い.</li>
+  <li>部品の複雑な配置のみで良い. 反応するなどの機能は付けなくても良い.</li>
+  <li>部品がボタンとラベルだけでは寂しいと感じたら, 自分で調査してテキスト入力欄など他の部品を入れてみても良い. (ただし, 今回のテーマからは逸脱するため, そこに時間を掛ける必要はない.)</li>
+  <li>「課題4とは分けて」レポートすること.</li>
+  </ul>
+
+  <!--
+  <li>自由作品: ボタンやラベルを駆使して<em>自由</em>にGUIプログラムを作成せよ. 計算やゲーム, 占い等, 何らかの<em>意味のある</em>機能を持たせること. ファイル名は<code class="em">FreeFrame1.java</code>とせよ. (ソース, <u>ユーザー向け解説</u>, 開発者向け解説をレポート)</li>
+  <ul>
+  <li>課題3と異なり, 必ずしも部品配置の複雑さはなくても良い. <em>機能</em>に重点を置いて挑戦して欲しい.</li>
+  <li>例: 三つのボタンがあり, 各ボタンを押すとそのボタンの文字列がランダムに変化し, 特定の組み合わせに揃うとラベルに祝賀のメッセージを表示する.</li>
+  <li>授業でまだ扱っていない部品を自分で調べて使っても良いが, これからも何度も自由作品があるため, 壮大な計画とはせず, 今回の締切までにできる範囲の内容とせよ.</li>
+  <li><code>FreeFrame1.java</code>が長くなり過ぎる場合は, <em>GUI以外</em>の計算等の処理部分を自作の別クラスに分けると良い.</li>
+  </ul>
+  -->
+
+  <li>【調査報告】<code>FlowLayout</code>や<code>BorderLayout</code>の他に, どのようなレイアウトマネージャーがあるか, <em>少なくとも2つ</em>, 調査・<em>実行</em>して報告せよ. レポートには必ず<em>引用元</em>(書籍情報やサイト名, URLなど)も示すこと.<!--書籍の場合はまとめるだけで良いが, ウェブの場合は少なくとも一つ<em>実際に動作させ</em>, そのソースをレポートすること.--> (レイアウトマネージャ名, 機能の概要, 実行したソースをレポート)</li>
+
+  <ul>
+  <li>この授業の実習環境では Swing および AWT の各種レイアウトマネージャを使うことができる.</li>
+  <li>おすすめ: <code>BoxLayout</code>, <code>GridLayout</code>, <code>GridBagLayout</code></li>
+  <li>書籍やウェブサイトによっては<code>JFrame</code>からの継承の仕方, コンストラクタの書き方, <code>main</code>の書き方などが, この<em>授業の作法</em>とは異なる場合がある. その場合は, 今回の調査結果を今後の課題で活用するため, テーマ10の説明を改めて確認し, この授業の作法に合わせた<em>プログラムの書き方</em>で実行すること.</li>
+  </ul>
+
+</ol>
+
+<h3>レポート</h3>
+
+<ul>
+<li>内容: 課題中に指示されている通り. 必要な項目を全て記載しているか, 十分に確認すること.</li>
+</ul>
+
+
+
+</body></html>
