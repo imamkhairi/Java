@@ -1,4 +1,4 @@
-package swing_learn.tutorial25_2Danimation;
+// package swing_learn.tutorial25_2Danimation;
 
 import java.awt.*;
 
