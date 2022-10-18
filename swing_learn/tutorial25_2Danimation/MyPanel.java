@@ -21,15 +21,15 @@ public class MyPanel extends JPanel implements ActionListener{
         this.setBackground(Color.GRAY);
 
         enemy = new ImageIcon("swing_learn\\tutorial25_2Danimation\\small.png").getImage();
-        backgroundImage = new ImageIcon("swing_learn\\tutorial25_2Danimation\\bg.png").getImage();
+        backgroundImage = new ImageIcon("swing_learn\\tutorial25_2Danimation\\team.png").getImage();
         timer = new Timer(10, this);
         // 2 argument -> delay, ActionListener
         timer.start();
     }
 
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
 
-        super.paint(g); // supaya method ini mengeksekusi apa yang jadi awalnya (paint background)
+        super.paintComponent(g); // supaya method ini mengeksekusi apa yang jadi awalnya (paint background)
 
         Graphics2D g2D = (Graphics2D)g;
         g2D.drawImage(backgroundImage,0,0,null);

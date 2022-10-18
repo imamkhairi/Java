@@ -1,4 +1,4 @@
-public class Player extends Entity {
+public class Player extends Pet {
     private Item weapon;
     private int exp;
 

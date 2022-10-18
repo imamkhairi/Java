@@ -1,5 +1,6 @@
 package game;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import java.awt.*;
 
@@ -25,6 +26,8 @@ public class GamePanel extends JPanel implements Runnable{
     int playerY = 100;
     int playerSpeed = 10;
 
+    Image bg;
+
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.GRAY);
@@ -33,6 +36,7 @@ public class GamePanel extends JPanel implements Runnable{
         // intinya improve game rendering performance
         this.addKeyListener(keyH);
         this.setFocusable(true);
+        this.bg = new ImageIcon("game\\team.png").getImage();
     }
 
     public void startGameThread() {
@@ -125,7 +129,8 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
 
         Graphics2D g2D = (Graphics2D)g;
-
+        
+        g2D.drawImage(bg, 0, 0, null);
         g2D.setColor(Color.WHITE);
         g2D.fillRect(playerX, playerY, 120, 120);
         g2D.dispose();

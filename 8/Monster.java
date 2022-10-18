@@ -1,4 +1,4 @@
-public class Monster extends Entity {
+public class Monster extends Pet {
     int dropExp;
     Monster(String name, int hp, int attack, int level, String element, int dropExp) {
         super(name, hp, attack, level, element);
