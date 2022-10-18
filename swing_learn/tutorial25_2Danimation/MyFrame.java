@@ -12,7 +12,7 @@ public class MyFrame extends JFrame{
         panel = new MyPanel();
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.add(panel);
+        this.getContentPane().add(panel);
         this.pack();
         this.setLocationRelativeTo(null); // supaya windownya muncul di tengah
         this.setVisible(true);

@@ -2,7 +2,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import java.awt.*;
-import java.awt.event.*;
 
 public class GamePanel extends JPanel implements Runnable{
     private final int tileSize = 120;
@@ -15,7 +14,7 @@ public class GamePanel extends JPanel implements Runnable{
     private Thread gameThread;
     private KeyHandler keyH = new KeyHandler();
 
-    // Player Location
+    // Player Location (delete)
     private int playerX = 100;
     private int playerY = 100;
     private int playerSpeed = 10;
@@ -27,16 +26,24 @@ public class GamePanel extends JPanel implements Runnable{
     private Image backgroundImage; 
 
     // Point 
-    Point imageCorner;
     Point prevPt;
-    
-    // check clicked or not
-    boolean imageClicked = false;
+    Point[] setTeam;
+
+    final int setTeamX = 370;
+    final int setTeamY = 540;
+    final int maxPetsNumber = 5;
+    final int selectionX = 370;
+    final int selectionY = 770;
+    final int maxSelection = 3;
+
+    // Checkin clicked
 
 
     // test
     Pet[] entity;
-    int selectedPet;
+    Pet[] petSelection;
+    public int selectedPet = -1;
+    public int selectedSelection = -1;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -46,21 +53,31 @@ public class GamePanel extends JPanel implements Runnable{
         this.addKeyListener(keyH);
         this.setFocusable(true);
 
-        this.backgroundImage = new ImageIcon("PRumble/res/setup.png").getImage();
+        this.backgroundImage = new ImageIcon("D:\\Kosen\\Java\\PRumble\\res\\setup.png").getImage();
 
         // set pet
-        imageCorner = new Point(100, 0);
-        ClickListener clickListener = new ClickListener();
-        DragListener dragListener = new DragListener();
+        ClickListener clickListener = new ClickListener(this);
+        DragListener dragListener = new DragListener(this);
         
         this.addMouseListener(clickListener);
         this.addMouseMotionListener(dragListener);
         
-        entity = new Pet[5];
+        // Point
+        setTeam = new Point[this.maxPetsNumber];
+        for(int i = 0; i < this.maxPetsNumber; i ++) {
+            setTeam[i] = new Point(this.setTeamX + 180*i, this.setTeamY);
+        }
 
-        entity[0] = new Pet(500, 0);
-        entity[1] = new Pet(800, 0);
-        entity[2] = new Pet(200, 0);
+        entity = new Pet[this.maxPetsNumber];
+        petSelection = new Pet[this.maxSelection];
+
+        for(int i = 0; i < this.maxPetsNumber - 1; i ++) {
+            entity[i] = new Pet((int)setTeam[i].getX(), (int)setTeam[i].getY(), this); //180 masih bisa ganti
+        }
+
+        for(int i = 0; i < this.maxSelection; i ++) {
+            petSelection[i] = new Pet(this.selectionX + 180*i, this.selectionY, this);
+        }
     }
 
     public void startGameThread() {
@@ -127,52 +144,15 @@ public class GamePanel extends JPanel implements Runnable{
         Graphics2D g2 = (Graphics2D)g;
 
         g2.drawImage(backgroundImage, 0, 0, null);
-        for(int i = 0; i <= 2; i++) {
-            entity[i].getImageIcon().paintIcon(this, g2, entity[i].getX(),entity[i].getY());
+        for(int i = 0; i < this.maxPetsNumber - 1; i++) {
+            entity[i].draw(g2);
+        }
+        for(int i = 0; i < this.maxSelection; i++) {
+            petSelection[i].draw(g2);
         }
 
         g2.setColor(Color.WHITE);
         g2.fillRect(playerX, playerY, 120, 120);
         g2.dispose();
-    }
-    
-    private class ClickListener extends MouseAdapter{
-        public void mousePressed(MouseEvent e) {
-            prevPt = e.getPoint();
-            int x = (int)prevPt.getX();
-            int y = (int)prevPt.getY();
-            for(int i = 0; i <= 2; i++){ // 1 di sini masih bisa diganti
-                if(x >= entity[i].getX() && x <= entity[i].getX() + entity[i].getWidth()){
-                    if(y >= entity[i].getY() && y <= entity[i].getY() + entity[i].getHeight()){
-                        selectedPet = i;
-                        System.out.println(selectedPet);
-                    }
-                }
-
-            }
-        }
-        public void mouseReleased(MouseEvent e) {
-            imageClicked = false;
-            selectedPet = -1;
-            System.out.println(selectedPet);
-        }
-
-    }
-
-    private class DragListener extends MouseMotionAdapter{
-        public void mouseDragged(MouseEvent e) {
-            for(int i = 0; i <= 2; i ++){
-                if(selectedPet == i){
-                    Point currentPt = e.getPoint();
-        
-                    entity[i].getPoint().translate(
-                        (int)(currentPt.getX() - prevPt.getX()), 
-                        (int)(currentPt.getY() - prevPt.getY())
-                    );
-        
-                    prevPt = currentPt;
-                }
-            }
-        }
     }
 }

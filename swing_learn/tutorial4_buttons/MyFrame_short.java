@@ -16,7 +16,7 @@ public class MyFrame_short extends JFrame {
     MyFrame_short() {
         
         ImageIcon icon = new ImageIcon("D:\\高専\\Java\\swing_learn\\tutorial4_buttons\\small.png");
-        ImageIcon icon2 = new ImageIcon("D:\\高専\\Java\\swing_learn\\tutorial4_buttons\\label.png");
+        ImageIcon icon2 = new ImageIcon("D:\\高専\\Java\\swing_learn\\tutorial4_buttons\\labl.png");
 
         label = new JLabel();
         label.setIcon(icon2);

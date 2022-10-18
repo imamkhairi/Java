@@ -20,7 +20,7 @@ public class MyPanel extends JPanel implements ActionListener{
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT)); // karena pakai pack() di frame nya
         this.setBackground(Color.GRAY);
 
-        enemy = new ImageIcon("swing_learn\\tutorial25_2Danimation\\small.png").getImage();
+        enemy = new ImageIcon("D:\\Kosen\\Java\\swing_learn\\tutorial25_2Danimation\\small.png").getImage();
         backgroundImage = new ImageIcon("swing_learn\\tutorial25_2Danimation\\team.png").getImage();
         timer = new Timer(10, this);
         // 2 argument -> delay, ActionListener
@@ -30,7 +30,7 @@ public class MyPanel extends JPanel implements ActionListener{
     public void paintComponent(Graphics g) {
 
         super.paintComponent(g); // supaya method ini mengeksekusi apa yang jadi awalnya (paint background)
-
+        
         Graphics2D g2D = (Graphics2D)g;
         g2D.drawImage(backgroundImage,0,0,null);
         g2D.drawImage(enemy, x, y,null);
