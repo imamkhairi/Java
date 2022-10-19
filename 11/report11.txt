@@ -1,0 +1,385 @@
+4J 08 イマムカイリルビス　テーマ11　レポート
+
+1. 
+import javax.swing.*;
+import java.awt.*;
+
+public class PracticeFlowLayout extends JFrame{
+
+    private JPanel panel1;
+    private JPanel panel2;
+    private JButton button1;
+    private JButton button2;
+    
+    PracticeFlowLayout() {
+        super();
+
+        this.panel1 = new JPanel();
+        this.panel1.setPreferredSize(new Dimension(420,420));
+        this.panel1.setBackground(Color.GRAY);
+
+        this.panel2 = new JPanel();
+        this.panel2.setPreferredSize(new Dimension(100,50));
+        this.panel2.setBackground(Color.BLUE);
+
+        this.button1 = new JButton("button1");
+        this.button1.addActionListener(
+            e -> {
+                System.out.println("Button1 pressed");
+                this.panel2.setBackground(Color.RED);
+            }
+        );
+
+        this.button2 = new JButton("button2");
+        this.button2.addActionListener(
+            e -> {
+                System.out.println("Button2 pressed");
+                this.panel2.setBackground(Color.YELLOW);
+            }
+        );
+
+        this.panel1.setLayout(new FlowLayout());
+        this.panel1.add(this.panel2);
+        this.panel1.add(this.button1);
+        this.panel1.add(this.button2);
+
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        // this.setSize(500,500);
+        this.add(panel1);
+        this.pack();
+        this.setVisible(true);
+    }
+    
+    public static void main(String[] args) {
+        new PracticeFlowLayout();
+    }
+}
+
+
+2. 
+import javax.swing.*;
+import java.awt.*;
+
+
+public class PracticeBorderLayout extends JFrame{
+
+    private JButton button1;
+    private JPanel northPanel;
+    private JPanel southPanel;
+    private JPanel eastPanel;
+    private JPanel westPanel;
+    private boolean colorized;
+
+    PracticeBorderLayout() {
+        super();
+
+        this.colorized = false;
+
+        this.northPanel = new JPanel();
+        this.northPanel.setPreferredSize(new Dimension(50,50));
+
+        this.southPanel = new JPanel();
+        this.southPanel.setPreferredSize(new Dimension(50,50));
+
+        this.westPanel = new JPanel();
+        this.westPanel.setPreferredSize(new Dimension(50,50));
+
+        this.eastPanel = new JPanel();
+        this.eastPanel.setPreferredSize(new Dimension(50,50));
+        
+        this.button1 = new JButton("Click me!");
+        this.button1.addActionListener(e -> colorize());
+        
+        JPanel panel1 = new JPanel();
+        // panel1.setBackground(Color.WHITE);
+        panel1.setPreferredSize(new Dimension(420,420));
+        panel1.setLayout(new BorderLayout(3,3));
+
+        panel1.add(this.northPanel, BorderLayout.NORTH);
+        panel1.add(this.southPanel, BorderLayout.SOUTH);
+        panel1.add(this.eastPanel, BorderLayout.EAST);
+        panel1.add(this.westPanel, BorderLayout.WEST);
+        panel1.add(this.button1, BorderLayout.CENTER);
+
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.getContentPane().add(panel1);
+        this.pack();
+        this.setVisible(true); 
+    }
+    
+    public static void main(String[] args){
+        new PracticeBorderLayout();
+    }
+
+    private void colorize() {
+        if(!this.colorized) {
+            this.northPanel.setBackground(new Color(0xFF00FF));
+            this.southPanel.setBackground(new Color(255,0,0));
+            this.westPanel.setBackground(Color.ORANGE);
+            this.eastPanel.setBackground(Color.YELLOW);
+            this.colorized = true;
+        } else {
+            this.northPanel.setBackground(null);
+            this.southPanel.setBackground(null);
+            this.westPanel.setBackground(null);
+            this.eastPanel.setBackground(null);
+            this.colorized = false;
+        }
+        
+    }
+}
+
+3. Ulang copy lagi
+import javax.swing.*;
+import java.awt.*;
+
+public class ComplexFrame extends JFrame {
+
+    private JLabel redLabel;
+    private JLabel greenLabel;
+    private JLabel blueLabel;
+    private JLabel resutlLabel;
+
+    private JSlider redSlider;
+    private JSlider greenSlider;
+    private JSlider blueSlider;
+
+    private JButton buttonSubmit;
+    private JButton buttonTest;
+
+    private int redValue;
+    private int greenValue;
+    private int blueValue;
+
+
+    ComplexFrame() {
+        super();
+
+        JPanel basePanel = new JPanel();
+        basePanel.setLayout(new BorderLayout(5,5));
+        basePanel.setPreferredSize(new Dimension(420,500));
+        // basePanel.setBackground(Color.CYAN);
+
+        //RED
+        this.redSlider = new JSlider(0, 255, 0);
+        this.redSlider.setPreferredSize(new Dimension(130, 350));
+        this.redSlider.setPaintTicks(true);
+        this.redSlider.setMajorTickSpacing(85);
+        this.redSlider.setPaintLabels(true);
+        this.redSlider.setOrientation(SwingConstants.VERTICAL);
+        this.redSlider.addChangeListener(e -> {
+            this.redLabel.setText("R = " + this.redSlider.getValue());
+            resutlLabel.setBackground(new Color(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue()));
+        });
+
+        this.redLabel = new JLabel();
+        this.redLabel.setText("R = " + this.redSlider.getValue());
+        
+        JPanel redPanel = new JPanel();
+        redPanel.setPreferredSize(new Dimension(130, 400));
+        redPanel.setLayout(new FlowLayout());
+        redPanel.add(redSlider);
+        redPanel.add(redLabel);
+
+        //GREEN
+        this.greenSlider = new JSlider(0, 255, 0);
+        this.greenSlider.setPreferredSize(new Dimension(130, 350));
+        this.greenSlider.setPaintTicks(true);
+        this.greenSlider.setMajorTickSpacing(85);
+        this.greenSlider.setPaintLabels(true);
+        this.greenSlider.setOrientation(SwingConstants.VERTICAL);
+        this.greenSlider.addChangeListener(e -> {
+            this.greenLabel.setText("G = " + this.greenSlider.getValue());
+            resutlLabel.setBackground(new Color(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue()));
+        });
+
+        this.greenLabel = new JLabel();
+        this.greenLabel.setText("G = " + this.greenSlider.getValue());
+        
+        JPanel greenPanel = new JPanel();
+        greenPanel.setPreferredSize(new Dimension(130, 400));
+        greenPanel.setLayout(new FlowLayout());
+        greenPanel.add(greenSlider);
+        greenPanel.add(greenLabel);
+
+        //BLUE
+        this.blueSlider = new JSlider(0, 255, 0);
+        this.blueSlider.setPreferredSize(new Dimension(130, 350));
+        this.blueSlider.setPaintTicks(true);
+        this.blueSlider.setMajorTickSpacing(85);
+        this.blueSlider.setPaintLabels(true);
+        this.blueSlider.setOrientation(SwingConstants.VERTICAL);
+        this.blueSlider.addChangeListener(e -> {
+            this.blueLabel.setText("B = " + this.blueSlider.getValue());
+            resutlLabel.setBackground(new Color(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue()));
+        });
+
+        this.blueLabel = new JLabel();
+        this.blueLabel.setText("B = " + this.greenSlider.getValue());
+        
+        JPanel bluePanel = new JPanel();
+        bluePanel.setPreferredSize(new Dimension(130, 400));
+        bluePanel.setLayout(new FlowLayout());
+        bluePanel.add(blueSlider);
+        bluePanel.add(blueLabel);
+
+        //RESULT
+        this.buttonSubmit = new JButton("Sumbit");
+        this.buttonSubmit.setPreferredSize(new Dimension(100, 50));
+        this.buttonSubmit.setFocusable(false);
+        this.buttonSubmit.addActionListener(e -> {
+            System.out.println(
+            "R = "+ this.redSlider.getValue() + 
+            "\nG = " + this.greenSlider.getValue() +
+            "\nB = " + this.blueSlider.getValue()
+            );
+            System.out.println("0x" + 
+            Integer.toHexString(this.redSlider.getValue()) + 
+            Integer.toHexString(this.greenSlider.getValue()) + 
+            Integer.toHexString(this.blueSlider.getValue())
+            );
+        });
+
+        this.resutlLabel = new JLabel();
+        resutlLabel.setPreferredSize(new Dimension(60, 90));
+        resutlLabel.setBackground(Color.BLACK);
+        resutlLabel.setOpaque(true);
+
+        JPanel resultPanel = new JPanel();
+        resultPanel.setPreferredSize(new Dimension(420, 100));
+        resultPanel.setLayout(new FlowLayout());
+        // resultPanel.add(buttonTest);
+        resultPanel.add(resutlLabel);
+        resultPanel.add(buttonSubmit);
+
+
+
+        basePanel.add(redPanel, BorderLayout.WEST);
+        basePanel.add(greenPanel, BorderLayout.CENTER);
+        basePanel.add(bluePanel, BorderLayout.EAST);
+        basePanel.add(resultPanel, BorderLayout.SOUTH);
+
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setTitle("Color Picker");
+        this.getContentPane().add(basePanel);
+        this.pack();
+        this.setResizable(false);
+        this.setVisible(true);
+    }
+    public static void main(String[] args) {
+        new ComplexFrame();
+    }
+}
+(ソース, どこにどうやって何を配置したか, をレポート) ini benerin lagi
+３のJPanelを使って、それぞれのJPanelの中にJSliderとJSliderの値を表示するJLabelを入れた。
+using 3 panel which contain a slider and a label to show the value of the slider.
+FlowLayoutを使ってJPanelを作成し、JSliderがJLabelの上に位置するように幅を設定した。
+those panel using FlowLayout and set the widht so slider located above the label
+これらの３つのパネルの他に、結果をプレビューするためのJLabelとJButtonを含むJPanelがもう一つある。
+Beside of those 3 panel, there is one other panel that contain a label to preview the result, and a submit button ...
+最後に、BorderLayoutを使用している別のパネルに挿入された。
+Finally, those panel inserted into another panel that use borderLayout
+
+
+4. mungkin ini masih bisa dikasih kegunaan gitu
+Box setLayoutimport javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
+
+import java.awt.*;
+
+public class PracticeBoxLayout extends JFrame{
+    PracticeBoxLayout() {
+        super();
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(800, 600);
+        this.setLocationRelativeTo(null);
+        this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.LINE_AXIS));
+        // 2 parameter -> container apa yang akan dimanage dg box layout ini
+        //                axis where the component will be lay out
+
+        JLabel label = new JLabel("label");
+        JButton button = new JButton("Button");
+
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.CYAN);
+        panel.setSize(new Dimension(300, 300));
+        panel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+
+        // JTextField textField = new JTextField();
+        JButton button1 = new JButton("Button1");
+        JButton button2 = new JButton("Button2");
+
+        // panel.add(textField);
+        panel.add(Box.createVerticalGlue());
+        panel.add(button1);
+        panel.add(Box.createRigidArea(new Dimension(0,50)));
+        panel.add(button2);
+        panel.add(Box.createVerticalStrut(45));
+
+        this.add(Box.createRigidArea(new Dimension(50,50)));
+        this.add(label);
+        this.add(Box.createRigidArea(new Dimension(50,50)));
+        this.add(button);
+        this.add(Box.createRigidArea(new Dimension(50,50)));
+        this.add(panel);
+
+        this.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new PracticeBoxLayout();
+    }
+}
+
+GridLayout
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.*;
+
+public class PracticeGridLayout extends JFrame{
+    private JButton[] button;
+    
+    PracticeGridLayout() {
+        super();
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        this.button = new JButton[9];
+
+        this.button[0] = new JButton("button1");
+        this.button[1] = new JButton("button2");
+        this.button[2] = new JButton("button3");
+        this.button[3] = new JButton("button4");
+        this.button[4] = new JButton("button5");
+        this.button[5] = new JButton("button6");
+        this.button[6] = new JButton("button7");
+        this.button[7] = new JButton("button8");
+        this.button[8] = new JButton("button9");
+
+        JPanel panel = new JPanel();
+        panel.setSize(new Dimension(500, 500));
+        panel.setLayout(new GridLayout(3,3, 5,5));
+        for(int i = 0; i < 9; i++) {
+            panel.add(this.button[i]);
+        }
+
+        this.getContentPane().add(panel);
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+    }
+    public static void main(String[] args) {
+        new PracticeGridLayout();
+    }    
+}
+(レイアウトマネージャ名, 機能の概要, 実行したソースをレポート)
+URL

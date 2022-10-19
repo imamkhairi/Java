@@ -13,12 +13,6 @@ public class ComplexFrame extends JFrame {
     private JSlider blueSlider;
 
     private JButton buttonSubmit;
-    private JButton buttonTest;
-
-    private int redValue;
-    private int greenValue;
-    private int blueValue;
-
 
     ComplexFrame() {
         super();
@@ -108,12 +102,6 @@ public class ComplexFrame extends JFrame {
             );
         });
 
-        // this.buttonTest = new JButton("Test");
-        // this.buttonTest.setPreferredSize(new Dimension(100, 50));
-        // this.buttonTest.setFocusable(false);
-        // this.buttonTest.addActionListener(e -> {
-        //     resutlLabel.setBackground(new Color(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue()));
-        // });
 
         this.resutlLabel = new JLabel();
         resutlLabel.setPreferredSize(new Dimension(60, 90));
