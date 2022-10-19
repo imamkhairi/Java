@@ -24,7 +24,7 @@ public class PracticeGridLayout extends JFrame{
 
         JPanel panel = new JPanel();
         panel.setSize(new Dimension(500, 500));
-        panel.setLayout(new GridLayout(3,3, 5,5));
+        panel.setLayout(new GridLayout(3,2, 5,5));
         for(int i = 0; i < 9; i++) {
             panel.add(this.button[i]);
         }

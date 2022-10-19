@@ -1,7 +1,5 @@
 4J 08 イマムカイリルビス　テーマ11　レポート
 
-ULANG COPY SOURCE CODE LAGI
-
 1. 
 import javax.swing.*;
 import java.awt.*;
@@ -136,7 +134,7 @@ BorderLayoutのために、1つの場所に1つのJPanelを作成しました。
 ベースJPanelに他のJPanelを追加するとき、パラメータで配置場所を決めた。
 BorderLayoutのCenterにボタンを1つ追加し、このボタンがクリックされるとパネル全体が色づけるようにした。
 
-3. Ulang copy lagi
+3.
 import javax.swing.*;
 import java.awt.*;
 
@@ -152,12 +150,6 @@ public class ComplexFrame extends JFrame {
     private JSlider blueSlider;
 
     private JButton buttonSubmit;
-    private JButton buttonTest;
-
-    private int redValue;
-    private int greenValue;
-    private int blueValue;
-
 
     ComplexFrame() {
         super();
@@ -247,6 +239,7 @@ public class ComplexFrame extends JFrame {
             );
         });
 
+
         this.resutlLabel = new JLabel();
         resutlLabel.setPreferredSize(new Dimension(60, 90));
         resutlLabel.setBackground(Color.BLACK);
@@ -284,8 +277,22 @@ FlowLayoutを使ってJPanelを作成し、JSliderがJLabelの上に位置する
 最後に、BorderLayoutを使用している別のパネルに挿入された。
 
 
-4. mungkin ini masih bisa dikasih kegunaan gitu
-Box setLayoutimport javax.swing.BorderFactory;
+4.
+BoxLayout
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
+
+import java.awt.*;
+
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -342,7 +349,13 @@ public class PracticeBoxLayout extends JFrame{
     }
 }
 
+FlowLayoutと同じようにある軸に対して部品を置かれている。
+しかし、FlowLayoutだと横に並べるだけでなく、縦も可能。
+スペーシングと位置を設定するために、RigidAreanとかGlueなどの部品を作ることもできる。
+
+
 GridLayout
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -383,5 +396,7 @@ public class PracticeGridLayout extends JFrame{
         new PracticeGridLayout();
     }    
 }
-(レイアウトマネージャ名, 機能の概要, 実行したソースをレポート)
-URL
+GridLayoutのコンストラクタにいくつの引数を渡した。
+この引数でGridの置き方を決める
+
+https://examples.javacodegeeks.com/java-swing-layouts-example/
