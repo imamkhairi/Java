@@ -20,8 +20,8 @@ public class MyPanel extends JPanel implements ActionListener{
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT)); // karena pakai pack() di frame nya
         this.setBackground(Color.GRAY);
 
-        enemy = new ImageIcon("D:\\Kosen\\Java\\swing_learn\\tutorial25_2Danimation\\small.png").getImage();
-        backgroundImage = new ImageIcon("swing_learn\\tutorial25_2Danimation\\team.png").getImage();
+        enemy = new ImageIcon("swing_learn/tutorial25_2Danimation/small.png").getImage();
+        backgroundImage = new ImageIcon("swing_learn/tutorial25_2Danimation/team.png").getImage();
         timer = new Timer(10, this);
         // 2 argument -> delay, ActionListener
         timer.start();
