@@ -1,5 +1,7 @@
 4J 08 イマムカイリルビス　テーマ11　レポート
 
+ULANG COPY SOURCE CODE LAGI
+
 1. 
 import javax.swing.*;
 import java.awt.*;
@@ -129,6 +131,10 @@ public class PracticeBorderLayout extends JFrame{
         
     }
 }
+BorderLayoutを使って、ベースとして一つのJPanelを作成。
+BorderLayoutのために、1つの場所に1つのJPanelを作成しました。
+ベースJPanelに他のJPanelを追加するとき、パラメータで配置場所を決めた。
+BorderLayoutのCenterにボタンを1つ追加し、このボタンがクリックされるとパネル全体が色づけるようにした。
 
 3. Ulang copy lagi
 import javax.swing.*;
@@ -273,13 +279,9 @@ public class ComplexFrame extends JFrame {
 }
 (ソース, どこにどうやって何を配置したか, をレポート) ini benerin lagi
 ３のJPanelを使って、それぞれのJPanelの中にJSliderとJSliderの値を表示するJLabelを入れた。
-using 3 panel which contain a slider and a label to show the value of the slider.
 FlowLayoutを使ってJPanelを作成し、JSliderがJLabelの上に位置するように幅を設定した。
-those panel using FlowLayout and set the widht so slider located above the label
 これらの３つのパネルの他に、結果をプレビューするためのJLabelとJButtonを含むJPanelがもう一つある。
-Beside of those 3 panel, there is one other panel that contain a label to preview the result, and a submit button ...
 最後に、BorderLayoutを使用している別のパネルに挿入された。
-Finally, those panel inserted into another panel that use borderLayout
 
 
 4. mungkin ini masih bisa dikasih kegunaan gitu
