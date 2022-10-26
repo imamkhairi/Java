@@ -14,7 +14,6 @@ public class App2 extends JFrame implements ActionListener{
         basePanel.setLayout(new BorderLayout());
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
-        buttonPanel.setBackground(Color.CYAN);
         
 
         this.submitButton = new JButton("Submit");
@@ -56,7 +55,7 @@ public class App2 extends JFrame implements ActionListener{
 
     private void checkRadioButton() {
         if(this.rb1.isSelected()) System.out.println("work");
-        if(this.rb2.isSelected()) System.out.println("staying");
-        if(this.rb3.isSelected()) System.out.println("uni");
+        if(this.rb2.isSelected()) System.out.println("kosen");
+        if(this.rb3.isSelected()) System.out.println("university");
     }
 }
