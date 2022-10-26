@@ -1,6 +1,0 @@
-Bikin frame
-bikin panel
-tambahin tread ke panel (pake interface Runnable)
-coba gambar sesuatu (untuk bikin game loop)
-bikin KeyHandler (input KeyHandler)
-setting FPS
