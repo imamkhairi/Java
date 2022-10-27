@@ -1,1 +1,43 @@
 pikirkan button apa yang ingin dieksekusi untuk actionlistener
+
+     java.lang.Object
+        java.awt.Component
+            java.awt.Container
+                java.awt.Window
+                    java.awt.Frame
+                        javax.swing.JFrame 
+
+    java.lang.Object
+        java.awt.Component
+            java.awt.Container
+                javax.swing.JComponent
+                    javax.swing.AbstractButton
+                        javax.swing.JButton 
+
+    java.lang.Object
+        java.awt.Component
+            java.awt.Container
+                javax.swing.JComponent
+                    javax.swing.JLabel 
+
+     java.lang.Object
+        java.awt.Component
+            java.awt.Container
+                javax.swing.JComponent
+                    javax.swing.JPanel 
+
+     java.lang.Object
+        java.awt.Component
+            java.awt.Container
+                javax.swing.JComponent
+                    javax.swing.AbstractButton
+                        javax.swing.JToggleButton
+                            javax.swing.JCheckBox 
+
+     java.lang.Object
+        java.awt.Component
+            java.awt.Container
+                javax.swing.JComponent
+                    javax.swing.AbstractButton
+                        javax.swing.JToggleButton
+                            javax.swing.JRadioButton 

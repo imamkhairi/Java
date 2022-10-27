@@ -1,0 +1,130 @@
+<!--?xml version="1.0" encoding="utf-8"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>プログラミング言語IIIB(Java) テーマ13</title>
+<link rel="stylesheet" href="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E13_files/tenmo2008single.css" type="text/css" media="all">
+</head>
+
+<body>
+
+<h2>プログラミング言語IIIB(Java) テーマ13</h2>
+
+<h3>ファイルの読込み</h3>
+
+<p>読み込みたいファイルの名前を与えて<code class="em">FileReader</code>クラスのインスタンスを生成し, それを<code class="em">BufferedReader</code>クラスのインスタンスで包む(HAS-A関係).</p>
+
+<p>その後, <code>BufferedReader</code>クラスの<code class="em">readLine</code>メソッドで, ファイルの内容を1行ずつ読み込んでいく. <code>readLine</code>メソッドはファイルの最後に到達すると<code>null</code>を返すので, 戻り値が<code>null</code>になったらループを終了する.</p>
+
+<p>最後に<code class="em">close</code>メソッドでファイルを閉じる.</p>
+
+<p>※<code>FileReader</code>クラスはファイルからの<em>1文字単位</em>での読込みを担当し, <code>BufferedReader</code>クラスはそれを<em>バッファリング</em>して1行ごとにまとめて読み込む, というように役割分担がなされている.</p>
+
+<p>なお, <code class="em">try &amp; catch</code>による例外処理機構については前期のJava言語の学習では扱っていないが, <em>実行中のエラー処理</em>の定石として覚え, 以下の例を真似て利用してみて欲しい. <code class="em">try</code>ブロック中で実行時エラー(ファイルが無い, ファイルが壊れている, 開く権限が無い等)が発生すると, <code class="em">catch</code>ブロックが実行される仕組みになっている.</p>
+
+<pre>import java.io.*; // 要インポート文追加
+
+// ----ファイルを読み込みたいメソッドの中で----
+try
+{
+                                // ↓ここにファイル名を与える.
+    FileReader fr = new FileReader("test.txt"); // ファイルを開く.
+    BufferedReader br = new BufferedReader(fr);
+    String buf;
+    while ((buf = br.readLine()) != null) // 1行読み込み, それがnullでなければ,
+    {
+        System.out.println(buf); // bufを処理する(この例では表示するだけ).
+    }
+    br.close();
+    fr.close(); // ファイルを閉じる.
+
+    // closeを個別に2回呼び出す事の必要性について, 世の中に様々な流儀があるが,
+    // 個別に2回呼び出しても問題ないことが確認されているため, ここでは個別に2回行う流儀を採用する.
+}
+catch (IOException e) // もしファイル入出力でエラーが起きたら,
+{
+    System.out.println("ファイル読み込みエラー");
+    System.exit(1); // 実行終了
+}
+</pre>
+
+<h3>ファイルの書込み</h3>
+
+<p>基本的な構成は読込みと同様である. <code class="em">FileWriter</code>クラスのインスタンスを<code class="em">BufferedWriter</code>クラスのインスタンスで包み, <code class="em">write</code>メソッドでファイルに文字列を書き込む. 最後に<code>close</code>メソッドでファイルを閉じる. エラー処理の方法も読込みと同様である.</p>
+
+<pre>FileWriter fw = new FileWriter("test.txt"); // ファイルを開く.
+BufferedWriter bw = new BufferedWriter(fw);
+bw.write("じゅもん");                       // ファイルに書き込む.
+bw.close();
+fw.close();                                 // ファイルを閉じる.
+</pre>
+
+<p>この様に, Javaでのファイル入出力は, バッファとなる配列の用意やポインタ操作, バッファオーバーフローへの配慮が不要なため, C言語での<code>fopen, fgets</code>等を用いたファイル入出力よりも, 遥かに扱いが容易, かつ, 安全である.</p>
+
+<p>また, ここで紹介した<code>FileReader</code>等の他にも画像ファイル(GIF, JPEG, PNG等)の入出力や, 
+URL指定によるネットワーク経由でのファイル取得, インスタンスのファイルへの保存と復元(シリアライズ機能)など, 
+C言語と比べて近代的な機能が標準で多数用意されているので, 興味があればぜひ挑戦してみて欲しい.</p>
+
+<h3>課題</h3>
+
+<p>以下の課題のレポートは, レポートファイル<code class="em">report13.txt</code>を作成してアップロードにより提出すること. レポートファイルの1行目には<em>出席番号・名前・回</em>を忘れずに記入すること.</p>
+
+<ol>
+
+<li>コマンドライン引数で指定されたファイルを読み込み, そのまま端末ウィンドウ上(標準出力)に表示するプログラムを作成せよ. <code>main</code>のみで作成して良い. (ソースをレポート)
+
+<p>※GUIプログラムではなく, 前期に作成した様な, 端末ウィンドウ上で動作するキャラクタベースのプログラムである. 前期を思い出して欲しい.</p>
+
+<p>※GUIプログラム「<em>ではない</em>」ので, <code>JFrame</code>, <code>implements</code>, <code>getContentPane()</code>, <code>actionPerformed()</code>などは一切不要である.</p>
+
+<pre>import java.io.*; // インポート文はプログラムの最初に
+public class CatTest {
+    public static void main(String[] args) { // いきなり main を書いてOK.
+        // ここに上の説明からファイル読み込みのコードをコピペして貼る.
+        // ファイル名には args[0] に格納されている文字列を使う.
+    }
+}
+</pre>
+<pre>動作テスト用の test.txt を同じディレクトリに作成しておいて,
+$ javac CatTest.java
+$ java CatTest test.txt
+</pre>
+</li>
+
+<li>課題1のプログラムをもとに, ファイルから1行読み込むごとに<em>改行コード</em>を挿入することで, <em>1つのとても長い文字列</em>を作り, 最後に一度だけ表示する様に改造せよ. 実行結果は課題1と同じである. (ソースをレポート)
+<pre>// 読込みのwhileループの前に, 文字列allを用意しておく. 中身は空文字列(ダブルクォート2個).
+
+// そうしておいて, ループの中で,
+all += buf;                                  // 1行分の文字列をallに追加
+all += System.getProperty("line.separator"); // 改行文字をallに追加
+// ループの中ではbufをprintlnしない(削除).
+
+// ループ終了後, allをprintlnする.
+</pre></li>
+
+<li>最初のコマンドライン引数で指定されたファイルを読み込み, その内容をそのまま, 次のコマンドライン引数で指定されたファイルに書き込むプログラムを作成せよ. <code>main</code>のみで作成して良い. (ソースをレポート)
+
+<pre>public class CopyTest {
+    public static void main(String[] args) {
+        // ファイル読込みのコード
+        // 読み込むファイルのファイル名には args[0] に格納されている文字列を使う.
+        // ファイル書込みのコード
+        // 書き込むファイルのファイル名には args[1] に格納されている文字列を使う.
+    }
+}
+</pre>
+<pre>$ java CopyTest src.txt dst.txt
+</pre>
+</li>
+
+</ol>
+
+<h3>レポート</h3>
+
+<ul>
+<li>内容: 課題中に指示されている通り. 必要な項目を全て記載しているか, 十分に確認すること.</li>
+</ul>
+
+
+
+</body></html>

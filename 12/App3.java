@@ -135,14 +135,30 @@ public class App3 extends JFrame {
     }
 
     private class PlayerTrait extends JPanel {
-        private final String[] traits = {"Fast Reader", "Speed Demon", "Smoker", "Obese"};
-        private JCheckBox[] checkBox;
+        private final String[][] traits = {{"Fast Reader", "Speed Demon"}, 
+                                            {"Smoker", "Obese"}};
+        private JCheckBox[][] checkBox;
 
         public PlayerTrait() {
-            this.checkBox = new JCheckBox[this.traits.length];
-            for(int i = 0; i < this.traits.length; i ++) {
-                this.checkBox[i] = new JCheckBox(this.traits[i]);
-                this.add(checkBox[i]);
+            this.setLayout(new GridLayout(this.traits.length, this.traits.length));
+            this.checkBox = new JCheckBox[this.traits.length][this.traits.length];
+            this.instantiateTraits(this.traits[0], this.traits[1], this.checkBox);
+            this.addToPanel(this, traits[0], traits[1], this.checkBox);
+        }
+
+        private void instantiateTraits(String[] positive, String[] negative, JCheckBox[][] traitCheckBox) {
+            for(int i = 0; i < positive.length; i ++) {
+                for(int j = 0; j < negative.length; j ++) {
+                    traitCheckBox[i][j] = new JCheckBox(this.traits[i][j]);
+                }
+            }
+        }
+
+        private void addToPanel(JPanel panel, String[] positive, String[] negative, JCheckBox[][] traitCheckBox) {
+            for(int i = 0; i < positive.length; i ++) {
+                for(int j = 0; j < negative.length; j ++) {
+                    panel.add(traitCheckBox[j][i]);
+                }
             }
         }
     }
