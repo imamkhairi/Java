@@ -70,10 +70,7 @@ public class App1 extends JFrame implements ActionListener{
         }
         return result;
     }
-// 00
-// 01
-// 10
-// 11
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == this.judge) {

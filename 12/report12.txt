@@ -1,43 +1,519 @@
-pikirkan button apa yang ingin dieksekusi untuk actionlistener
+4J 08 イマムカイリルビス　テーマ13　レポート
 
-     java.lang.Object
-        java.awt.Component
-            java.awt.Container
-                java.awt.Window
-                    java.awt.Frame
-                        javax.swing.JFrame 
+課題１
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
-    java.lang.Object
-        java.awt.Component
-            java.awt.Container
-                javax.swing.JComponent
-                    javax.swing.AbstractButton
-                        javax.swing.JButton 
+public class App1 extends JFrame implements ActionListener{
 
-    java.lang.Object
-        java.awt.Component
-            java.awt.Container
-                javax.swing.JComponent
-                    javax.swing.JLabel 
+    private JCheckBox cb1, cb2;
+    private JButton judge;
+    private JLabel label;
+    
+    public App1() {
+        super();
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-     java.lang.Object
-        java.awt.Component
-            java.awt.Container
-                javax.swing.JComponent
-                    javax.swing.JPanel 
+        JPanel basePanel = new JPanel();
+        basePanel.setPreferredSize(new Dimension(300, 300));
+        
+        JPanel checkBoxPanel = new JPanel();
+        checkBoxPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        // basePanel.setBackground(Color.CYAN);
 
-     java.lang.Object
-        java.awt.Component
-            java.awt.Container
-                javax.swing.JComponent
-                    javax.swing.AbstractButton
-                        javax.swing.JToggleButton
-                            javax.swing.JCheckBox 
+        this.cb1 = new JCheckBox("数学が得意");
+        this.cb1.setFont(new Font("Monaco", Font.PLAIN, 25));
+        gbc.gridy = 0;
+        gbc.gridx = 0;
+        checkBoxPanel.add(this.cb1, gbc);
 
-     java.lang.Object
-        java.awt.Component
-            java.awt.Container
-                javax.swing.JComponent
-                    javax.swing.AbstractButton
-                        javax.swing.JToggleButton
-                            javax.swing.JRadioButton 
+        this.cb2 = new JCheckBox("英語が得意", true);
+        this.cb2.setFont(new Font("Monaco", Font.PLAIN, 25));
+        gbc.gridy = 1;
+        gbc.gridx = 0;
+        checkBoxPanel.add(this.cb2, gbc);
+
+        this.judge = new JButton("Submit");
+        this.judge.addActionListener(this);
+        gbc.gridy = 2;
+        gbc.gridx = 0;
+        checkBoxPanel.add(this.judge, gbc);
+        
+        this.label = new JLabel();
+        this.label.setFont(new Font("Monaco", Font.PLAIN, 25));
+        gbc.gridy = 3;
+        gbc.gridx = 0;
+        checkBoxPanel.add(label,gbc);
+
+        basePanel.add(checkBoxPanel);
+
+
+        this.getContentPane().add(basePanel);
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+    }
+    
+    public static void main(String[] args) {
+        new App1();
+    }
+
+    private int judgeCheckBox() {
+        int result = -1;
+        if(this.cb1.isSelected() && this.cb2.isSelected()) {
+            result = 1;
+        } else if(this.cb1.isSelected() && !this.cb2.isSelected()) {
+            result = 2;
+        } else if(!this.cb1.isSelected() && this.cb2.isSelected()) {
+            result = 3;
+        } else {
+            result = 4;
+        }
+        return result;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == this.judge) {
+            if(judgeCheckBox() == 1) this.label.setText("Nice"); 
+            else if(judgeCheckBox() == 2) this.label.setText("Math");
+            else if(judgeCheckBox() == 3) this.label.setText("Eng");
+            else if(judgeCheckBox() == 4) this.label.setText("None");
+        }
+    }
+
+}
+
+まずあるメソッドで何がチェックされたかを確認する。複数のチェックボックスにチェックを入れる可能性があるため、そのメソッドはこの可能性も考慮する。
+その結果によってsubmitボタンを押したら、文字を表示する。
+
+
+課題２
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class App2 extends JFrame implements ActionListener{
+    private JRadioButton rb1, rb2, rb3;
+    private JButton submitButton;
+    
+    public App2() {
+        super();
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        JPanel basePanel = new JPanel();
+        basePanel.setLayout(new BorderLayout());
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout());
+        
+
+        this.submitButton = new JButton("Submit");
+        this.submitButton.addActionListener(this);
+
+        this.rb1 = new JRadioButton("就職");
+        this.rb1.setFont(new Font("Monaco", Font.PLAIN, 20));
+        this.rb2 = new JRadioButton("専攻科に進学");
+        this.rb2.setFont(new Font("Monaco", Font.PLAIN, 20));
+        this.rb3 = new JRadioButton("大学編入", true);
+        this.rb3.setFont(new Font("Monaco", Font.PLAIN, 20));
+
+        ButtonGroup buttonGroup = new ButtonGroup();
+        buttonGroup.add(this.rb1);
+        buttonGroup.add(this.rb2);
+        buttonGroup.add(this.rb3);
+
+        buttonPanel.add(this.rb1);
+        buttonPanel.add(this.rb2);
+        buttonPanel.add(this.rb3);
+
+        basePanel.add(buttonPanel, BorderLayout.CENTER);
+        basePanel.add(submitButton, BorderLayout.SOUTH);
+        
+        this.getContentPane().add(basePanel);
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+    }
+    public static void main(String[] args) {
+        new App2();
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == this.submitButton) {
+            checkRadioButton();
+        }
+    }
+
+    private void checkRadioButton() {
+        if(this.rb1.isSelected()) System.out.println("work");
+        if(this.rb2.isSelected()) System.out.println("kosen");
+        if(this.rb3.isSelected()) System.out.println("university");
+    }
+}
+
+まずあるメソッドで何がチェックされたかを確認する。その結果によってsubmitボタンを押したら、文字を表示する。
+
+
+課題３
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+
+import java.awt.*;
+import java.awt.event.*;
+
+public class App3 extends JFrame implements ActionListener{
+
+    // private PlayerStatusOption[] PlayerStatusOption;
+    private PlayerName playerName;
+    private PlayerStatus playerStatus;
+    private PlayerClass playerClass;
+    private PlayerTrait playerTrait;
+    private OperationButton operationButton;
+
+    App3() {
+        super();
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel basePanel = new JPanel();
+        basePanel.setPreferredSize(new Dimension(500,500));
+        basePanel.setLayout(new GridBagLayout());
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        
+        this.playerName = new PlayerName();
+        this.playerStatus = new PlayerStatus(this);
+        this.playerClass = new PlayerClass();
+        this.playerTrait = new PlayerTrait();
+        this.operationButton = new OperationButton(this, this.playerName, this.playerClass, this.playerStatus, this.playerTrait);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        basePanel.add(playerName, gbc);
+        gbc.gridy = 1;
+        basePanel.add(playerClass, gbc);
+        gbc.gridy = 2;
+        basePanel.add(playerStatus, gbc);
+        gbc.gridy = 3;
+        basePanel.add(playerTrait,gbc);
+        gbc.gridy = 4;
+        basePanel.add(operationButton,gbc);
+
+        this.getContentPane().add(basePanel);
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+    }
+    
+    public static void main(String[] args) {
+        new App3();
+    }
+
+    private class PlayerName extends JPanel {
+        private JTextField textField;
+        private JLabel label;
+        public PlayerName() {
+            // this.setPreferredSize(new Dimension(300, 50));
+            this.label = new JLabel();
+            this.label.setText("Player Name : ");
+
+            this.textField = new JTextField();
+            this.textField.setPreferredSize(new Dimension(250, 40));
+            this.textField.setFont(new Font("Monaco", Font.PLAIN, 20));
+
+            this.add(this.label);
+            this.add(this.textField);
+        }
+
+        public String getPlayerName() {
+            return this.textField.getText();
+        }
+
+        public void resetPlayerName() {
+            this.textField.setText("");
+        }
+    }
+
+    private class PlayerStatus extends JPanel{
+        private PlayerStatusOption[] playerStatusOptions;
+        private final String[] statusOptions = {"Strength", "Intelligence", "Dexterity"};
+        
+        public PlayerStatus(App3 a) {
+            this.setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            this.playerStatusOptions = new PlayerStatusOption[this.statusOptions.length];
+            for(int i = 0; i < this.statusOptions.length; i ++) {
+                this.playerStatusOptions[i] = new PlayerStatusOption(this.statusOptions[i], a);
+                gbc.gridx = 0;
+                gbc.gridy = i;
+                this.add(playerStatusOptions[i], gbc);
+            }
+            this.setPreferredSize(new Dimension(300, 150));
+            this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Player Status", TitledBorder.CENTER, TitledBorder.CENTER));
+        }
+
+
+        public JButton getPlayerStatusOptionPlusButton(int index) {
+            return this.playerStatusOptions[index].getPlusButton();
+        }
+
+        public JButton getPlayerStatusOptionMinusButton(int index) {
+            return this.playerStatusOptions[index].getMinusButton();
+        }
+
+        public void downPlayerStatusOptionValue(int index) {
+            this.playerStatusOptions[index].downValue();
+        }
+
+        public void upPlayerStatusOptionValue(int index) {
+            this.playerStatusOptions[index].upValue();
+        }
+
+        public String getPlayerStatusOptionAll(int index) {
+            return this.playerStatusOptions[index].getText() + " : " + this.playerStatusOptions[index].getValue();
+        }
+
+        public void resetPlayerStatusOptionValue() {
+            for(int i = 0; i < this.statusOptions.length; i ++) {
+                this.playerStatusOptions[i].resetValue();
+            }
+        }
+
+        private class PlayerStatusOption extends JPanel{
+            private JButton plusButton;
+            private JButton minusButton;
+            private JLabel show;
+            private int value;
+            private String text;
+    
+            public PlayerStatusOption(String s, App3 a) {
+                this.text = s;
+                this.value = 0;
+                this.plusButton = new JButton("+");
+                this.minusButton = new JButton("-");
+                this.show = new JLabel();
+                this.show.setText(text + " : " + Integer.toString(value));
+                this.show.setHorizontalAlignment(SwingConstants.CENTER);
+                this.show.setPreferredSize(new Dimension(100, 20));
+                this.plusButton.addActionListener(a);
+                this.minusButton.addActionListener(a);
+
+                this.add(this.minusButton);
+                this.add(this.show);
+                this.add(this.plusButton);
+            }
+        
+            public JButton getPlusButton() {
+                return this.plusButton;
+            }
+
+            public JButton getMinusButton() {
+                return this.minusButton;
+            }
+
+            public void upValue() {
+                this.value++;
+                this.updateValue();
+            }
+
+            public void downValue() {
+                if(this.value > 0) {
+                    this.value--;
+                    this.updateValue();
+                }
+            }
+
+            public void updateValue() {
+                this.show.setText(this.text +" : "+ Integer.toString(this.value));
+            }
+
+            public int getValue() {
+                return this.value;
+            }
+
+            public String getText() {
+                return this.text;
+            }
+
+            public void resetValue() {
+                this.value = 0;
+                this.updateValue();
+            }
+        }
+    }
+
+
+    private class PlayerClass extends JPanel{
+        private JRadioButton[] selection;
+        private final String[] classSelection = {"Warrior", "Mage", "Rogue"};
+        private ButtonGroup buttonGroup;
+        public PlayerClass() {
+            this.selection = new JRadioButton[this.classSelection.length];
+            this.buttonGroup = new ButtonGroup();
+            for(int i = 0; i < this.classSelection.length; i++) {
+                this.selection[i] = new JRadioButton(this.classSelection[i]);
+                buttonGroup.add(selection[i]);
+                this.add(selection[i]);
+            }
+            this.setPreferredSize(new Dimension(300, 65));
+            this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Player Class", TitledBorder.CENTER, TitledBorder.CENTER));
+        }
+
+        private int checkSelected() {
+            int result = -1;
+            for(int i = 0; i < this.selection.length; i++){
+                if(this.selection[i].isSelected()) {
+                    result = i;
+                    break;
+                }
+            }
+            return result;
+        }
+        public String getPlayerClass() {
+            String result = "";
+            for(int i = 0; i < this.selection.length; i++){
+                if(this.checkSelected() == i) {
+                    result = this.selection[i].getText();
+                    break;
+                }
+                else {
+                    result = "Class not selected";
+                }
+            }
+            return result;
+        }
+        public void resetSelectedClass() {
+            this.buttonGroup.clearSelection();
+        }
+    }
+
+    private class PlayerTrait extends JPanel {
+        private final String[][] traits = {{"Fast Reader", "Speed Demon"}, 
+                                            {"Smoker", "Obese"}};
+        private JCheckBox[][] checkBox;
+
+        public PlayerTrait() {
+            this.setLayout(new GridLayout(this.traits.length, this.traits.length, 60,0));
+            this.checkBox = new JCheckBox[this.traits.length][this.traits.length];
+            this.instantiateTraits(this.traits[0], this.traits[1], this.checkBox);
+            this.addToPanel(this, this.traits[0], this.traits[1], this.checkBox);
+            this.setPreferredSize(new Dimension(300, 80));
+            this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Player Trait", TitledBorder.CENTER, TitledBorder.CENTER));
+        }
+
+        public String[][] getTrait() {
+            return this.traits;
+        }
+
+        private void instantiateTraits(String[] positive, String[] negative, JCheckBox[][] traitCheckBox) {
+            for(int i = 0; i < positive.length; i ++) {
+                for(int j = 0; j < negative.length; j ++) {
+                    traitCheckBox[i][j] = new JCheckBox(this.traits[i][j]);
+                }
+            }
+        }
+
+        private void addToPanel(JPanel panel, String[] positive, String[] negative, JCheckBox[][] traitCheckBox) {
+            for(int i = 0; i < positive.length; i ++) {
+                for(int j = 0; j < negative.length; j ++) {
+                    panel.add(traitCheckBox[j][i]);
+                }
+            }
+        }
+
+
+        public void printTrait(String[] positive, String[] negative) {
+            for(int i = 0 ; i < positive.length; i ++) {
+                for(int j = 0; j < negative.length; j ++) {
+                    System.out.println(this.checkBox[i][j].getText() + " : " + this.checkBox[i][j].isSelected());
+                }
+            }
+        }
+
+        public void resetSelected(String[] positive, String[] negative) {
+            for(int i = 0 ; i < positive.length; i ++) {
+                for(int j = 0; j < negative.length; j ++) {
+                    this.checkBox[i][j].setSelected(false);
+                }
+            }
+        }
+
+    }
+
+    private class OperationButton extends JPanel {
+        private JButton[] button;
+        private PlayerName pn;
+        private PlayerClass pc;
+        private PlayerStatus ps;
+        private PlayerTrait pt;
+
+        public OperationButton(App3 a, PlayerName pn, PlayerClass pc, PlayerStatus ps, PlayerTrait pt) {
+            this.pn = pn;
+            this.pc = pc;
+            this.ps = ps;
+            this.pt = pt;
+            this.button = new JButton[2];
+            this.button[0] = new JButton("Submit");
+            this.button[1] = new JButton("Reset");
+            this.button[0].addActionListener(a);
+            this.button[1].addActionListener(a);
+            this.add(button[0]);
+            this.add(button[1]);
+        }
+
+        public JButton getResetButton() {
+            return this.button[1];
+        }
+        public JButton getSubmiButton() {
+            return this.button[0];
+        }
+        public void submitResult() {
+            System.out.println("Name : " + this.pn.getPlayerName());
+            System.out.println("Class : " + this.pc.getPlayerClass());
+            System.out.println(this.ps.getPlayerStatusOptionAll(0));
+            System.out.println(this.ps.getPlayerStatusOptionAll(1));
+            System.out.println(this.ps.getPlayerStatusOptionAll(2));
+            this.pt.printTrait(this.pt.getTrait()[0], this.pt.getTrait()[1]);
+        }
+        public void resetSelection() {
+            this.pn.resetPlayerName();
+            this.pc.resetSelectedClass();
+            this.ps.resetPlayerStatusOptionValue();
+            this.pt.resetSelected(this.pt.getTrait()[0], this.pt.getTrait()[1]);
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == this.operationButton.getResetButton()) {
+            System.out.println("reset");
+            this.operationButton.resetSelection();
+        }
+        else if(e.getSource() == this.operationButton.getSubmiButton()) {
+            this.operationButton.submitResult();
+        }
+        else if(e.getSource() == this.playerStatus.getPlayerStatusOptionPlusButton(0)) {
+            this.playerStatus.upPlayerStatusOptionValue(0);
+        }
+        else if(e.getSource() == this.playerStatus.getPlayerStatusOptionPlusButton(1)) {
+            this.playerStatus.upPlayerStatusOptionValue(1);
+        }
+        else if(e.getSource() == this.playerStatus.getPlayerStatusOptionPlusButton(2)) {
+            this.playerStatus.upPlayerStatusOptionValue(2);
+        }
+        else if(e.getSource() == this.playerStatus.getPlayerStatusOptionMinusButton(0)) {
+            this.playerStatus.downPlayerStatusOptionValue(0);
+        }
+        else if(e.getSource() == this.playerStatus.getPlayerStatusOptionMinusButton(1)) {
+            this.playerStatus.downPlayerStatusOptionValue(1);
+        }
+        else if(e.getSource() == this.playerStatus.getPlayerStatusOptionMinusButton(2)) {
+            this.playerStatus.downPlayerStatusOptionValue(2);
+        }
+    }
+}
+
+これはゲームのキャラクターを作るようなものなので、必要なデータを入力する。
+Submitボタンを押せば結果が端末に表示され、リセットボタンを押せば、入力したデータはすべてリセットされる。
+
