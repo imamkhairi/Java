@@ -1,0 +1,6 @@
+dummy file 
+second line 
+third line
+------EDIT------
+start here
+end here

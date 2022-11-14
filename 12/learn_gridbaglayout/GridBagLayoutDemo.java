@@ -43,7 +43,7 @@ public class GridBagLayoutDemo extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = 3;
+        // gbc.gridwidth = 3;
         this.add(btn5, gbc);
 
 
