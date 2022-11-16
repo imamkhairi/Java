@@ -220,7 +220,7 @@ public class TextEditor_2 extends JFrame implements ActionListener{
 /* 
 THINGS TO DO
 - bikin shortcut untuk file menu bar (alt)
-- bikin save as
+- bedakan save dan save as
 - set font size (optional)
 
 */
