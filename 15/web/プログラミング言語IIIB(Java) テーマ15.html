@@ -1,0 +1,284 @@
+<!--?xml version="1.0" encoding="utf-8"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>プログラミング言語IIIB(Java) テーマ15</title>
+<link rel="stylesheet" href="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E15_files/tenmo2008single.css" type="text/css" media="all">
+</head>
+
+<body>
+
+<h2>プログラミング言語IIIB(Java) テーマ15</h2>
+
+<h3>グラフィックス描画処理</h3>
+
+<p>Java Swingでウィンドウ上にグラフィックスを描く処理は以下の手順で行う.</p>
+
+<ol>
+<li><code>JPanel</code>クラスを<em>継承</em>した独自の描画(びょうが)パネルクラスを作成する.</li>
+<li>描画パネルを<!--<code>JFrame</code>の上に--><em>配置</em>する. 配置方法は通常のGUI部品と同じ.</li>
+<li>描画パネルの<code class="em">paintComponent</code>メソッドを<em>オーバーライド</em>(上書き定義)し, そのメソッドの中で, 各種の図形や画像を描く.</li>
+</ol>
+
+<p>以下に描画パネルを使用する例を示す.</p>
+
+<pre>// グラフィックス描画専用の自作パネルクラス
+public class MyPanel extends JPanel // **** JFrameではない!! ****
+{
+    public MyPanel()
+    {
+        super.setBackground(Color.black); // 背景を黒に設定(この時点ではまだ実際には描画されない)
+        super.setPreferredSize(new Dimension(640, 480)); // 大きさを640x480に設定
+    }
+    public void paintComponent(Graphics g)
+    {
+        super.paintComponent(g); // まずJPanelのデフォルトの描画処理(背景色でクリア)を行い,
+
+        g.setColor(Color.blue); // 前景色を設定し,
+        g.drawLine(50, 50, 100, 100); // 独自の図形を描画する
+        g.drawOval(32, 16, 256, 128);
+        g.drawString("文字列をグラフィックスとして表示", 48, 48);
+            :
+    }
+}
+</pre>
+<pre>// 配置を行う自作フレームは従来通り
+public class MyFrame extends JFrame
+{
+    private MyPanel mp; // MyFrame HAS-A MyPanel の関係を構築
+
+    public MyFrame()
+    {
+        this.mp = new MyPanel(); // 描画用のパネル
+        JPanel panel = new JPanel(); // 配置用のパネル
+        panel.add(this.mp);
+        super.getContentPane().add(panel);
+    }
+    public static void main(String[] args) { 略 }
+}
+</pre>
+
+<p>注意を要する点は以下の通り.</p>
+
+<ul>
+
+<li><code>paintComponent</code>メソッドは, ウィンドウが表示された時点や, ウィンドウが前面に出た時点など, ウィンドウを「画面に描く」ことが必要になった時点で, OSが<em>自動的</em>に呼び出す. プログラム内で直接呼び出すメソッドではない.</li>
+
+<li>ユーザーから何か操作があった時点で, <em>即座に</em>グラフィックスを描画したい場合は, <code>actionPerformed</code>の中などで描画パネルに対して<code class="em">repaint</code>メソッドを呼び出す. <code>paintComponent</code>ではない.</li>
+
+<pre>// actionPerformedの中など, 意図的に再描画したい時点で
+this.mp.repaint();
+</pre>
+
+<p><code>repaint</code>メソッドは<code>JPanel</code>クラスであらかじめ定義されており, 呼び出されるとOSにウィンドウの再描画を要求する. 再描画を要求されたOSは, <code>paintComponent</code>メソッドを呼び出す. この様に<em>間接的</em>に<code>paintComponent</code>が呼び出されることになる.</p>
+
+    <img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E15_files/repaint.png">
+
+<p>※OSやJDKの環境によっては, PCへの負荷を軽減するために, Javaプログラムの画面更新頻度(フレームレート)が遅かったり, 停止することがある. その様に感じられた場合は, 以下のコードを試してみて欲しい.</p>
+<pre>this.mp.repaint();
+// その直後にさらに
+Toolkit.getDefaultToolkit().sync(); // これを追加してみる
+</pre>
+
+</ul>
+    
+<h3><code>Graphics</code>クラス</h3>
+
+<p>描画パネルに各種の図形を描くには, <code>paintComponent</code>メソッドの引数である<code class="em">Graphics</code>クラスのインスタンス(例では<code>g</code>)を用いる. この<code>g</code>は, 描画パネルに図形を描くための<em>ペン</em>, と理解すると分かり易い. OSから描画パネル専用のペンを渡され, それを使って図形を描くイメージである.</p>
+
+<pre>                                    ↓ここに注目
+public void paintComponent(Graphics g)
+{
+    super.paintComponent(g); // まずJPanelのデフォルトの描画処理(背景色でクリア)を行い,
+
+    g.setColor(Color.blue); // 「ペンの色」を設定し,
+    g.drawLine(50, 50, 100, 100); // その「ペンを使って」独自の図形を描画する
+    g.drawOval(32, 16, 256, 128);
+    g.drawString("文字列をグラフィックスとして表示", 48, 48);
+        :
+}
+</pre>
+
+<p>以下に, <code>Graphics</code>クラスの主な描画メソッドを示す. これら以外にも様々な機能が用意されているので, API仕様やウェブ, 書籍等を調査して積極的に利用してみて欲しい.</p>
+
+<ul>
+<li><code>drawLine</code> ... 直線を引く</li>
+<li><code>drawRect</code> ... 長方形を描く</li>
+<li><code>drawOval</code> ... 楕円を描く</li>
+<li><code>drawPolygon</code> ... 多角形を描く</li>
+<li><code>drawString</code> ... 文字列を描く</li>
+<li><code>drawImage</code> ... 画像を描く(実際には画像データをウィンドウに<em>転写</em>する)</li>
+</ul>
+
+<h3><code>JSlider</code>クラス</h3>
+
+<p>ノブ(つまみ)を<em>数直線</em>上で動かして数値を選択入力するための部品である. ノブの位置が変化すると, イベントリスナーに<code class="em">ChangeEvent</code>が送られる. <code>ChangeEvent</code>を処理するリスナーの名前は<code class="em">ChangeListener</code>, メソッドの名前は<code class="em">stateChanged</code>である. (<code>this.slider1.addChangeListener(this);</code>も忘れずに) →<a href="http://jsuri1.info.kushiro-ct.ac.jp/~tenmo/java/14/">テーマ14「イベント処理」</a>参照</p>
+
+<pre>画面イメージ
++------------###------------+
+             ↑ノブ(マウスやキーボードで動かせる)
+</pre>
+
+<!--<p>→ 課題は次回, テーマ16にて</p>-->
+
+<!-- <p>(<a href="http://www.info.kushiro-ct.ac.jp/~futaya/doc/jdk-1_5_0-doc-ja/docs/ja/api/index.html">API仕様</a>にて, コンストラクタ, <code>getValue</code>メソッド, <code>setValue</code>メソッド等を各自で調査)</p> -->
+
+<!-- <p>コンストラクタやメソッドの詳細は各自で調査して欲しい.</p> -->
+
+<h3>課題</h3>
+
+<p>以下の課題のレポートは, レポートファイル<code class="em">report15.txt</code>を作成してアップロードにより提出すること.</p>
+
+<p><em>[注意]</em> 課題4にて, 課題1〜課題3の遂行時に各自で調査した事柄(<code>Graphics</code>クラスの各描画メソッドの使い方や, <code>Color</code>クラスの使い方等)を載せる必要があるため, <em>途中で調べた事柄と引用元</em>をレポートファイルに貼り付けて, 記録を残しておくと良い.</p>
+
+<ol>
+
+<li>円や四角形等のグラフィックスを描くプログラムを作成せよ. ウィンドウが表示された時に, 適当な位置に, 固定された図形が, 描画されるだけで良い. (ソース<!--, 開発者向け解説-->をレポート)
+
+  <ul>
+  <li>上記の最初にある例をコピペしてソースを二つ作る.</li>
+  <!--<li>クラス名とファイル名を一致させる.</li>-->
+  <li><code>main</code>は従来通り, フレームの方に入れる.</li>
+  <!--<li>この課題では部品が<code>MyPanel</code>一つだけしかないので, 複数部品配置用のパネルやレイアウトマネージャーの設定は無くて良い.</li>-->
+  </ul>
+</li>
+
+<li><code>JTextField</code>と<code>JSlider</code>を<em>連携</em>させるプログラムを作成せよ. ここで連携とは, スライダーのノブを動かすと随時それに応じた数値がテキストフィールドに表示され<!--, また, テキストフィールドに数値を入れてEnterを押すと, スライダーのノブが自動的にその数値に応じた場所へ移動す-->ることである. (ソース<!--, 開発者向け解説-->をレポート)
+    <ul>
+    <li>画面イメージは以下の通り.
+<pre>+------------###------------+  [50]
+             ↑ノブを動かすと   ↑この欄の数値が変わる
+</pre></li>
+    <!--
+	 <pre>
+	 +------###------------------+  [20]
+	 ↑ノブが移動する         ↑ここに数値を入れてEnterを押すと
+	 </pre>
+    -->
+    <li>まずはスライダーとテキストフィールドを配置してハリボテを作る所から始める.</li>
+    <li>スライダーのイベントを処理するために<code>import</code>文の追加が必要.
+<pre>import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*; // これを入れる
+</pre></li>
+    <li>スライダーのノブが動いた時 → ノブの位置(数値)をゲット → 文字列に変換 → テキストフィールドにセット</li>
+    <li>スライダーが動いた時に反応させるにはチェンジ3点セットが必要 → <a href="http://jsuri1.info.kushiro-ct.ac.jp/~tenmo/java/14">テーマ14</a>参照
+    <ul>
+    <li><code>implements ChangeListener</code></li>
+    <li><code>this.slider1.addChangeListener(this);</code></li>
+    <li><code>public void stateChanged(ChangeEvent e) { }</code></li>
+    </ul></li>
+<!--
+    <li>テキストフィールドにテキストが入力された時 → テキスト(文字列)をゲット → 数値に変換 → スライダーのノブの位置をセット</li>-->
+    <li>ノブの位置(数値)をゲット/セットする方法を自分で調べる必要がある.<!-- テキストをゲット/セットする方法はボタンやラベルと同様である.--></li>
+    <li>数値(<code>int</code>)を文字列(<code>String</code>)に変換するには「<code>"" + 数値</code>」(空文字列の後ろに連結する)</li>
+<!--
+    <li>文字列(<code>String</code>)を数値(<code>int</code>)に変換するには「<code>Integer.parseInt(文字列)</code>」</li>
+-->
+    </ul>
+</li>
+
+<li>課題1のプログラムに<code>JButton</code>, <code>JSlider</code>, <code>JTextField</code>等の様々な入力部品を追加し, ユーザーの操作に応じて何らかの<em>変化</em>があるグラフィックスを描くプログラムを作成せよ. (ソース, <em>使用方法</em>をレポート)
+
+<ul>
+
+<li>例えば, <!--前期の占いプログラムで結果が棒グラフで表示されたり, に作成した-->ベクトルの加算結果が図で表示されたり, フィールドの値(数値)が棒グラフで表示される, などである.</li>
+<li>特にアイデアが浮かばない場合は, 課題2にさらに描画パネルを追加し, スライダーを動かすと図形が移動したり拡大縮小したりするプログラムでも良い.</li>
+<li>注意: ペイントソフトの様な, ドラッグ操作でお絵描きするプログラム<em>ではない</em>. →それは次回テーマ16にて</li>
+    <li>フレーム側から描画パネル側へ, スライダーの値などを渡したい場合は, セッターを作成して使うと良い.
+<pre>public class MyFrame extends JFrame implements ChangeListener
+{
+    public void stateChanged(ChangeEvent e) // スライダーが動いたとき
+    {
+        int s = this.slider1.値をゲット();
+        this.mp.setSize(s); // 描画パネルに値をセットしてから
+        this.mp.repaint();  // 描画パネルを再描画
+    }
+}
+</pre>
+<pre>public class MyPanel extends JPanel
+{
+    private int size; // 図形の大きさを保存するためのフィールドを用意しておく
+
+    public void setSize(int size) // 引数で値を受け取って
+    {
+        this.size = size; // フィールドに保存しておく
+    }
+    public void paintComponent(Graphics g) // this.mp.repaint()で, 間接的にここが呼ばれる
+    {
+        g.drawLine(this.sizeを使って大きさを指定);
+    }
+}
+</pre></li>
+    </ul>
+</li>
+
+<li>課題1〜課題3の遂行時に各自で調査した事柄をまとめ, 報告せよ. <em>引用元</em>を必ず明記<!--し, そのまま丸写しはせずに, 自分専用のマニュアルとして編集・整理-->すること. 「何もなし」や「課題ページのみ」は不可.</li>
+
+</ol>
+
+<h3>レポート</h3>
+
+<ul>
+<li>内容: 課題中に指示されている通り. 必要な項目を全て記載しているか, 十分に確認すること.</li>
+</ul>
+
+<h3>テクニック</h3>
+
+<ul>
+
+<li>チェックボックス等の<em>状態</em>に応じて描画内容を切り替えるには, 描画パネルに状態を表すフィールドを追加し, 描画時の<em>判断</em>に利用すると良い. フィールドとゲッター・セッターを思い出して活用して欲しい.
+
+<pre>【フレーム側】
+// ----- actionPerformed の中で ----
+if (this.cb1.isSelected())      // チェックボックスが選択されているならば
+{
+    this.mp.setDrawFlag(true);  // trueをセット
+}
+else                            // そうでなければ
+{
+    this.mp.setDrawFlag(false); // falseをセット
+}
+// 上記の様にifで分岐させずに, isSelected()の値をそのままセットしても良い.
+
+this.mp.repaint();              // 再描画を要求
+</pre>
+<pre>【描画パネル側】
+// フィールドを追加
+private boolean drawFlag = false; // 画像描画フラグ(初期値:しない)
+
+(セッターも自分で追加)
+
+// ---- paintComponent の中で ----
+if (this.drawFlag == true)      // フラグがtrueならば
+{
+    g.drawImage(〜);            // 画像を描画
+}
+</pre>
+</li>
+
+<li>図形が複雑または多数になり, <code>paintComponent</code>メソッドが長くなりすぎた場合は, メソッドを分割し, <code>paintComponent</code>の中から<code>g</code>を引数として呼び出せば良い. </li>
+
+<li>描画する線の<em>太さ</em>を変えたり, 線の端を<em>丸め</em>たりするには, 以下の様に<code class="em">Graphics2D</code>クラスを用いる. 詳しくはAPI仕様やウェブ, 書籍などを調査してみて欲しい.
+
+<pre>// 例: 線の太さを8.0にする
+Graphics2D g2 = (Graphics2D)g;
+g2.setStroke(new BasicStroke(8.0F));
+g.drawLine(〜);
+</pre>
+
+<pre>// 例: 線の端を丸くする(デフォルトでは角)
+Graphics2D g2 = (Graphics2D)g;
+g2.setStroke(new BasicStroke(1.0F, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+g.drawLine(〜);
+</pre>
+</li>
+
+<li><em>アンチエイリアス</em>(ピクセルを滑らかにする機能)も使用可能であるため, 美を追求したい人は調査してみると良い.</li>
+
+</ul>
+
+
+
+</body></html>

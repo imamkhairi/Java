@@ -1,0 +1,75 @@
+a:link {
+  color: #060;
+}
+a:visited {
+  color: #060;
+}
+a:hover {
+  color: #a00;
+}
+
+a img {
+  border: none;
+}
+
+body {
+  font-size: small;
+  color: #222;
+  width: 800px;
+  padding: 8px 8px 8px 8px;
+}
+
+h2 {
+  border-style: solid;
+  border-width: 8px 1px 1px 1px;
+  border-color: #a00 #ccc #ccc #ccc;
+  padding: 16px;
+  margin-bottom: 1px;
+}
+
+h3 {
+  border-style: solid;
+  border-width: 1px 1px 1px 1px;
+  border-color: #d84;
+  color: #222;
+  background: #fea;
+  padding: 2px 2px 2px 8px;
+}
+
+h4 {
+  border-style: dotted;
+  border-width: 0 0 1px 16px;
+  border-color: #ccc;
+  padding: 0 0 0 8px;
+}
+
+th {
+  background: #888;
+  color: #fff;
+  font-weight: normal;
+}
+
+td {
+  border-style: solid;
+  border-width: 0 1px 1px 0;
+  border-color: #ccc;
+}
+
+li {
+  margin: 8px;
+}
+em {
+  font-style: normal;
+  color: #008;
+}
+code.em {
+  font-style: normal;
+  color: #008;
+}
+pre {
+  background: #f8f8f8;
+  padding: 8px;
+  border-style: dotted;
+  border-width: 1px;
+  border-color: #ccc;
+}
