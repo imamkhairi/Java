@@ -5,7 +5,6 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 
-
 public class TextEditor extends JFrame implements ActionListener{
     private JTextField textField;
     private JTextArea textArea;
@@ -41,14 +40,6 @@ public class TextEditor extends JFrame implements ActionListener{
         gbc.gridwidth = 1;
         gbc.gridy = 1;
         basePanel.add(this.textArea, gbc);
-        
-        // JPanel basePanel = new JPanel();
-        // basePanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        // basePanel.setLayout(new BoxLayout(basePanel, BoxLayout.PAGE_AXIS));
-        // basePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        // basePanel.add(inputPanel);
-        // basePanel.add(textArea);
-        // basePanel.add(Box.createHorizontalGlue());
 
         this.getContentPane().add(basePanel);
         this.pack();
@@ -62,12 +53,9 @@ public class TextEditor extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == this.openButton) {
-            System.out.println("Opening "  + this.textField.getText());
             this.openFile();
         }   
         if(e.getSource() == this.saveButton) {
-            // System.out.println(this.textField.getText() + " saved");
-            // System.out.println(this.textArea.getText());
             this.saveFile();
         }
     }
@@ -79,7 +67,6 @@ public class TextEditor extends JFrame implements ActionListener{
             BufferedReader br = new BufferedReader(fr);
             String buf;
             int line_count = 1;
-            // String all = "";
             this.clearTextArea();
             while ((buf = br.readLine()) != null) {
                 if(line_count == 1) {
@@ -89,7 +76,6 @@ public class TextEditor extends JFrame implements ActionListener{
                 }
                 line_count ++;
             }
-            // System.out.println(all);
             br.close();
             fr.close();
         }
@@ -104,7 +90,6 @@ public class TextEditor extends JFrame implements ActionListener{
         try {
             FileWriter fw = new FileWriter(fileName);
             BufferedWriter bw = new BufferedWriter(fw);
-            System.out.println(this.textArea.getText());
             bw.write(this.textArea.getText());
             bw.close();
             fw.close();

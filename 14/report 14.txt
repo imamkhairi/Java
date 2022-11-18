@@ -1,3 +1,114 @@
+4J 08 イマムカイリルビス　テーマ14　レポート
+
+課題１
+import java.io.*;
+
+import javax.swing.*;
+import javax.swing.border.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class TextEditor extends JFrame{
+    private JTextField textField;
+    private JTextArea textArea;
+    private JButton openButton;
+    private JButton saveButton;
+
+    public TextEditor() {
+        super();
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        this.textField = new JTextField(26);
+        
+        this.textArea = new JTextArea(26,52);
+
+        this.openButton = new JButton("Open File");
+
+        this.saveButton = new JButton("Save File");
+
+        JPanel ioPanel = new JPanel();
+        ioPanel.add(this.textField);
+        ioPanel.add(this.openButton);
+        ioPanel.add(this.saveButton);
+        ioPanel.setPreferredSize(ioPanel.getPreferredSize());
+
+        JPanel basePanel = new JPanel();
+        basePanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        basePanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+        basePanel.add(ioPanel, gbc);
+        gbc.gridwidth = 1;
+        gbc.gridy = 1;
+        basePanel.add(this.textArea, gbc);
+
+        this.getContentPane().add(basePanel);
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+    }
+    public static void main(String[] args) {
+        new TextEditor();
+    }
+}
+
+
+課題２
+@Override
+public void actionPerformed(ActionEvent e) {
+    if(e.getSource() == this.openButton) {
+        this.openFile();
+    }   
+    if(e.getSource() == this.saveButton) {
+        this.saveFile();
+    }
+}
+
+private void openFile() {
+    String fileName = this.textField.getText();
+    try {
+        FileReader fr = new FileReader(fileName);
+        BufferedReader br = new BufferedReader(fr);
+        String buf;
+        int line_count = 1;
+        this.clearTextArea();
+        while ((buf = br.readLine()) != null) {
+            if(line_count == 1) {
+                this.textArea.append(buf);
+            } else {
+                this.textArea.append("\n" + buf);
+            }
+            line_count ++;
+        }
+        br.close();
+        fr.close();
+    }
+    catch(IOException e) {
+        System.out.println("file open error");
+        System.exit(1);
+    }
+}
+
+private void saveFile() {
+    String fileName = this.textField.getText();
+    try {
+        FileWriter fw = new FileWriter(fileName);
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(this.textArea.getText());
+        bw.close();
+        fw.close();
+    } catch (IOException e) {
+        System.out.println("file save error");
+        System.exit(1);
+    }
+}
+
+private void clearTextArea() {
+    this.textArea.setText("");
+}
+
+
+課題３
 import java.io.*;
 
 import javax.swing.*;
@@ -325,9 +436,21 @@ public class TextEditor_2 extends JFrame implements ActionListener{
     }
 }
 
-/* 
-THINGS TO DO
-- kalau save as yang udh pernah di save buka dialog di direktori itu langsung
-- bikin shortcut untuk file menu bar (alt)
-- set font size (optional)
-*/
+追加機能の解説
+1. ファイルを開くと保存するのに JFlieChooser を使った。
+2. スクロールバーを JScorllPane で作った。
+3. 現在の Caret の位置を表示するのに CaretListener を作って、JPanel で表示する。
+4. JMenuBar を追加した。開くや保存やテキストのワープ設定が全部メニューバーに入れた。
+5. 何らかファイルを開くと、JFrame のタイトルがそのファイルの名前に変わる。
+6. Save 機能は保存したことがあるファイルに対して、再び保存してみると　JFileChooser の dialog を表示しないように設定した。
+7. Save As（名前をつけて別のファイルとして保存する） 機能を追加した。
+8. Save, Open, Save As のキーボードショットカットを設定した。
+9. JTextArea に変化したかどうかをわかるために、DocumentListener　インターフェースを使った。
+10. JTextArea に何かが変化があれば、JFrame のタイトルに "*" を追加した。そのファイルを保存したら　"*" を消えるように設定した。
+
+将来的にさらに追加してみたい機能をレポート
+1. 自動的テキスト完成させる機能。
+2. フォントのスタイルを設定する機能。
+3. Save As 機能に関して、JFileChooser のデフォルトは保存されたファイルのディレクトリに設定する。
+4. 開いているファイルを保存せず、テキストエディターを閉じると、警告を表すように機能。
+5. Find & replace 機能。
