@@ -43,7 +43,6 @@ public class TestApp2 extends JFrame implements ChangeListener{
     public void stateChanged(ChangeEvent e) {
         if(e.getSource() == this.slider) {
             int value = this.slider.getValue();
-            System.out.println("slider: " + value);
             this.textField.setText("slider: " + value);
         }
     }

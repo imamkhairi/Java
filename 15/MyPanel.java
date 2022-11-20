@@ -2,9 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MyPanel extends JPanel {
+    private final Dimension windowSize = new Dimension(700, 700);
+
     public MyPanel() {
         super.setBackground(new Color(240, 240, 250));
-        super.setPreferredSize(new Dimension(700, 700));
+        super.setPreferredSize(windowSize);
     }
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
@@ -12,16 +14,20 @@ public class MyPanel extends JPanel {
         super.paintComponent(g);
 
         g2.setColor(Color.BLACK);
-        // g2.setStroke(new BasicStroke(2));
-        // g2.drawLine(50, 50, 100, 100);
-        // g2.drawOval(32, 16, 256, 126);
-        for(int i = 0; i < 11; i++) {
-            // g2.drawOval(10+(100+10*i)/2, 10 + 25*i, 100+10*i, 100+10*i);
-            g2.drawOval(10+i*100/2,10+i*100/2,100,100);
+
+        int r  = 30;
+        int prev_r = r;
+        int next_r = r;
+        int x = (int)(this.windowSize.getWidth()/2);
+
+
+        for(int i = 0; i < 15; i++) {
+            next_r  = prev_r + i*2;
+            System.out.println(next_r);
+            g2.drawOval(x - next_r, 10, next_r*2, next_r*2);
+            g2.drawOval(x - next_r, 490 - next_r*2, next_r*2, next_r*2);
+            prev_r = next_r;
         }
-        // g2.drawString("文字列をグラフィックスとして表示", 48, 48);
+
     }
-
-    // nanti bikin pacman wkwk
-
 }
