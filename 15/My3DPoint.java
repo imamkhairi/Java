@@ -9,16 +9,16 @@ public class My3DPoint {
         this.z = z;
     }
 
-    public int getX() {
-        return (int)this.x;
+    public float getX() {
+        return this.x;
     }
 
-    public int getY() {
-        return (int)this.y;
+    public float getY() {
+        return this.y;
     }
     
-    public int getZ() {
-        return (int)this.z;
+    public float getZ() {
+        return this.z;
     }
 
     public int getLength() {
@@ -41,10 +41,21 @@ public class My3DPoint {
         My3DPoint result = new My3DPoint(0, 0, 0);
         result.setX(a[0][0]);
         result.setY(a[1][0]);
+        if(a.length > 2) {
+            result.setZ(a[2][0]);
+        } else {
+            result.setZ(0);
+        }
         return result;
     }
 
     public void printPoint() {
-        System.out.println(this.getX() + this.getY() + this.getZ());
+        System.out.println(this.getX() + ", " + this.getY() + ", " + this.getZ());
+    }
+
+    public void mult(int multiplier) {
+        this.setX(this.x * multiplier);
+        this.setY(this.y * multiplier);
+        this.setZ(this.z * multiplier);
     }
 }

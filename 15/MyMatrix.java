@@ -4,11 +4,17 @@ public class MyMatrix {
         {0, 1, 0}
     };
 
-    public static float[][] point = {
-        {10},
-        {5},
-        {0}
-    };
+    public static float[][] perspectiveProjection(float z) {
+        float distance = (float)1.5;
+        float a = 1 / (distance - z/200);
+        
+        float[][] projection = {
+            {a, 0 , 0},
+            {0, a, 0}
+        };
+
+        return projection;
+    }
 
     public static void printMatrix(float[][] a){
         int rows = a.length;
@@ -62,12 +68,38 @@ public class MyMatrix {
         return result;
     }
 
-    public static float[][] rotation(double angle, float[][] a) {
+    public static float[][] rotateZ(double angle, float[][] a) {
         float[][] transformMatrix = {
             {(float)Math.cos(angle), -(float)Math.sin(angle), 0},
-            {(float)Math.sin(angle), (float)Math.cos(angle), 0}
+            {(float)Math.sin(angle), (float)Math.cos(angle), 0},
+            {0,0,1}
         };
-        
         return MyMatrix.matrixMul(transformMatrix, a);
+    }
+
+    public static float[][] rotateX(double angle, float[][] a) {
+        float[][] transformMatrix = {
+            {1,0,0},
+            {0, (float)Math.cos(angle) , -(float)Math.sin(angle)},
+            {0, (float)Math.sin(angle), (float)Math.cos(angle)}
+        };
+        return MyMatrix.matrixMul(transformMatrix, a);
+    }
+
+    public static float[][] rotateY(double angle, float[][] a) {
+        float[][] transformMatrix = {
+            {(float)Math.cos(angle), 0 , (float)Math.sin(angle)},
+            {0,1,0},
+            {-(float)Math.sin(angle), 0, (float)Math.cos(angle)}
+        };
+        return MyMatrix.matrixMul(transformMatrix, a);
+    }
+
+    public static float[][] rotationTransform(double angleX, double angleY, double angleZ, float[][] a) {
+        float[][] result = null;
+        result = MyMatrix.rotateX(angleX, a);
+        result = MyMatrix.rotateY(angleY, result);
+        result = MyMatrix.rotateZ(angleZ, result);
+        return result;
     }
 }
