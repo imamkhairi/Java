@@ -1,0 +1,435 @@
+4J 08 イマムカイリルビス　テーマ15　レポート
+
+課題１
+import javax.swing.*;
+
+public class MyFrame extends JFrame {
+    private MyPanel mp;
+
+    public MyFrame(MyPanel mp) {
+        super();
+
+        this.mp = mp;
+        JPanel panel = new JPanel();
+        panel.add(this.mp);
+        super.getContentPane().add(panel);
+
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+        this.setResizable(false);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public static void main (String[] args) {
+        new MyFrame(new MyPanel());
+    }
+}
+
+import javax.swing.*;
+import java.awt.*;
+
+public class MyPanel extends JPanel {
+    private final Dimension windowSize = new Dimension(700, 700);
+
+    public MyPanel() {
+        super.setBackground(new Color(240, 240, 250));
+        super.setPreferredSize(windowSize);
+    }
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D)g;
+
+        super.paintComponent(g);
+
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2.setColor(Color.BLACK);
+
+        int r  = 30;
+        int prev_r = r;
+        int next_r = r;
+        int x = (int)(this.windowSize.getWidth()/2);
+
+
+        for(int i = 0; i < 15; i++) {
+            next_r  = prev_r + i*2;
+            g2.drawOval(x - next_r, 10, next_r*2, next_r*2);
+            g2.drawOval(x - next_r, 490 - next_r*2, next_r*2, next_r*2);
+            prev_r = next_r;
+        }
+    }
+}
+
+
+課題２
+import javax.swing.*;
+import javax.swing.event.*;
+import java.awt.*;
+
+public class TestApp2 extends JFrame implements ChangeListener{
+    private JSlider slider;
+    private JTextField textField;
+    
+    public TestApp2() {
+        super();
+        
+        this.slider = new JSlider(SwingConstants.HORIZONTAL, 0, 100, 0);
+        this.slider.addChangeListener(this);
+        this.slider.setPaintTicks(true);
+        this.slider.setMajorTickSpacing(20);
+        this.slider.setPaintLabels(true);
+        this.slider.setFont(new Font("Helvetica Neue", Font.PLAIN, 10));
+        this.slider.setForeground(Color.LIGHT_GRAY);
+
+        this.textField = new JTextField(10);
+        this.textField.setText("slider: " + this.slider.getValue());
+
+        JPanel basePanel = new JPanel();
+        basePanel.add(slider);
+        basePanel.add(textField);
+
+        this.getContentPane().add(basePanel);
+
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public static void main(String[] args) {
+        new TestApp2();
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        if(e.getSource() == this.slider) {
+            int value = this.slider.getValue();
+            this.textField.setText("slider: " + value);
+        }
+    }
+}
+
+
+課題３
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+public class TestApp3 extends JFrame implements ChangeListener{
+    private TestApp3_Panel p;
+    private angleSlider xSlider;
+    private angleSlider ySlider;
+    private angleSlider zSlider;
+
+    public TestApp3(TestApp3_Panel p) {
+        super();
+        
+        this.p = p;
+        this.xSlider = new angleSlider("X : ");
+        this.xSlider.addChangeListener(this);
+        this.ySlider = new angleSlider("Y : ");
+        this.ySlider.addChangeListener(this);
+        this.zSlider = new angleSlider("Z : ");
+        this.zSlider.addChangeListener(this);
+
+        JPanel basePanel = new JPanel();
+        basePanel.setLayout(new BoxLayout(basePanel, BoxLayout.PAGE_AXIS));
+        basePanel.add(this.p);
+        basePanel.add(this.xSlider.getSliderPanel());
+        basePanel.add(this.ySlider.getSliderPanel());
+        basePanel.add(this.zSlider.getSliderPanel());
+
+        this.getContentPane().add(basePanel);
+
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false);
+        this.setVisible(true);
+    }
+    public static void main(String[] args) {
+        new TestApp3(new TestApp3_Panel());
+    }
+    
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        if(e.getSource() == this.xSlider || e.getSource() == this.ySlider || e.getSource() == this.zSlider) {
+            for(int i = 0; i < this.p.getPointsCount(); i++) {
+                this.p.rotation(i, this.xSlider.getAngle(), this.ySlider.getAngle(), this.zSlider.getAngle());
+                this.p.perspective2D(i);
+            }
+            this.p.repaint();
+        }
+    }
+}
+
+
+import javax.swing.JPanel;
+import java.awt.*;
+
+public class TestApp3_Panel extends JPanel{
+    private Dimension windowSize = new Dimension(500,500);
+    private My3DPoint[] point;
+    private My3DPoint[] projectedPoint;
+    private int x;
+    private int y;
+
+    public TestApp3_Panel() {
+        this.setPreferredSize(windowSize);
+        this.setBackground(Color.BLACK);
+
+        this.point = new My3DPoint[8];
+        this.projectedPoint = new My3DPoint[8];
+
+        this.x = (int)this.windowSize.getWidth()/2;
+        this.y = (int)this.windowSize.getHeight()/2;
+        
+        // initiate points
+        this.point[0] = new My3DPoint(-100, 100, 100);
+        this.point[1] = new My3DPoint(100, 100, 100);
+        this.point[2] = new My3DPoint(100, -100, 100);
+        this.point[3] = new My3DPoint(-100, -100, 100);
+        this.point[4] = new My3DPoint(-100, 100, -100);
+        this.point[5] = new My3DPoint(100, 100, -100);
+        this.point[6] = new My3DPoint(100, -100, -100);
+        this.point[7] = new My3DPoint(-100, -100, -100);
+
+        this.projectedPoint[0] = new My3DPoint(-100, 100, 100);
+        this.projectedPoint[1] = new My3DPoint(100, 100, 100);
+        this.projectedPoint[2] = new My3DPoint(100, -100, 100);
+        this.projectedPoint[3] = new My3DPoint(-100, -100, 100);
+        this.projectedPoint[4] = new My3DPoint(-100, 100, -100);
+        this.projectedPoint[5] = new My3DPoint(100, 100, -100);
+        this.projectedPoint[6] = new My3DPoint(100, -100, -100);
+        this.projectedPoint[7] = new My3DPoint(-100, -100, -100);
+
+        for(int i = 0; i < this.projectedPoint.length; i++) {
+            this.perspective2D(i);
+        }
+        
+    }
+
+    public int getPointsCount() {
+        return this.point.length;
+    }
+
+    public void rotation(int i, double angleX, double angleY, double angleZ) {
+        double radX = Math.toRadians(angleX);
+        double radY = Math.toRadians(angleY);
+        double radZ = Math.toRadians(angleZ);
+        this.projectedPoint[i] = this.point[i].changeToPoint(MyMatrix.rotationTransform(radX, radY, radZ, MyMatrix.tPoint(this.point[i])));
+    }
+
+    public void to2D(int i) {
+        this.projectedPoint[i] = this.projectedPoint[i].changeToPoint(MyMatrix.matrixMul(MyMatrix.projection, MyMatrix.tPoint(this.projectedPoint[i])));
+    }
+
+    public void perspective2D(int i) {
+        this.projectedPoint[i] = this.projectedPoint[i].changeToPoint(
+            MyMatrix.matrixMul(
+                MyMatrix.perspectiveProjection(200, this.projectedPoint[i].getZ()), MyMatrix.tPoint(this.projectedPoint[i])
+                )
+            );
+    }
+
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D)g;
+
+        super.paintComponent(g2);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(Color.WHITE);
+
+        // draw point
+        for(int i = 0; i < this.projectedPoint.length; i++) {
+            g2.fillOval(x + (int)projectedPoint[i].getX() - 5, y + (int)projectedPoint[i].getY() - 5, 10, 10);
+        }
+        //draw cube
+        for(int i = 0; i < 4; i ++) {
+            g2.drawLine(x + (int)projectedPoint[i].getX(), y + (int)projectedPoint[i].getY(), x + (int)projectedPoint[(i+1)%4].getX(), y + (int)projectedPoint[(i+1)%4].getY());
+            g2.drawLine(x + (int)projectedPoint[i+4].getX(), y + (int)projectedPoint[i+4].getY(), x + (int)projectedPoint[(i+1)%4+4].getX(), y + (int)projectedPoint[(i+1)%4+4].getY());
+            g2.drawLine(x + (int)projectedPoint[i].getX(), y + (int)projectedPoint[i].getY(), x + (int)projectedPoint[i+4].getX(), y + (int)projectedPoint[i+4].getY());
+        }
+
+    }
+}
+
+public class My3DPoint {
+    private float x;
+    private float y;
+    private float z;
+
+    public My3DPoint(float x, float y, float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    public float getX() {
+        return this.x;
+    }
+
+    public float getY() {
+        return this.y;
+    }
+    
+    public float getZ() {
+        return this.z;
+    }
+
+    public int getLength() {
+        return 3;
+    }
+
+    private void setX(float x) {
+        this.x = x;
+    }
+
+    private void setY(float y) {
+        this.y = y;
+    }
+    
+    private void setZ(float z) {
+        this.z = z;
+    }
+
+    public My3DPoint changeToPoint(float[][] a) {
+        My3DPoint result = new My3DPoint(0, 0, 0);
+        result.setX(a[0][0]);
+        result.setY(a[1][0]);
+        if(a.length > 2) {
+            result.setZ(a[2][0]);
+        } else {
+            result.setZ(0);
+        }
+        return result;
+    }
+
+    public void printPoint() {
+        System.out.println(this.getX() + ", " + this.getY() + ", " + this.getZ());
+    }
+
+    public void mult(int multiplier) {
+        this.setX(this.x * multiplier);
+        this.setY(this.y * multiplier);
+        this.setZ(this.z * multiplier);
+    }
+}
+
+public class MyMatrix {
+    public static float[][] projection = {
+        {1, 0 , 0},
+        {0, 1, 0}
+    };
+
+    public static float[][] perspectiveProjection(int length, float z) {
+        float distance = 350;
+        float a = 1 / ((distance - z)/length);
+    
+        float[][] projection = {
+            {a, 0 , 0},
+            {0, a, 0}
+        };
+
+        return projection;
+    }
+
+    public static void printMatrix(float[][] a){
+        int rows = a.length;
+        int cols = a[0].length;
+
+        System.out.println(rows + " x " + cols);
+        System.out.println("--------------------");
+        for(int i = 0; i < rows; i++) {
+            for(int j = 0; j < cols; j++) {
+                System.out.print(a[i][j] + " ");
+            }
+            System.out.println("");
+        }
+
+        System.out.println("\n");
+
+    }
+
+    public static float[][] matrixMul(float[][] a, float[][] b) {
+        int rowsA = a.length;
+        int colsA = a[0].length;
+        int rowsB = b.length;
+        int colsB = b[0].length;
+
+        float[][] result = new float[rowsA][colsB];
+
+        if(colsA != rowsB) {
+            System.out.println("Column A and Row B not same");
+            return null;
+        } else {
+            for(int i = 0; i < rowsA; i++) { // a rows
+                for(int j = 0; j < colsB; j++ ) { // b cols
+                    float sum = 0;
+                    for(int k = 0; k < colsA; k++) {
+                        sum += a[i][k] * b[k][j];
+                        result[i][j] = sum;
+                    }
+                }
+            }
+        }
+        
+        return result;
+    }
+
+    public static float[][] tPoint(My3DPoint pt) { //transpose only for 1 x n matrix
+        int rows = pt.getLength();
+        float[][] result = new float[rows][1];
+        result[0][0] = pt.getX();
+        result[1][0] = pt.getY();
+        result[2][0] = pt.getZ();
+        return result;
+    }
+
+    public static float[][] rotateZ(double angle, float[][] a) {
+        float[][] transformMatrix = {
+            {(float)Math.cos(angle), -(float)Math.sin(angle), 0},
+            {(float)Math.sin(angle), (float)Math.cos(angle), 0},
+            {0,0,1}
+        };
+        return MyMatrix.matrixMul(transformMatrix, a);
+    }
+
+    public static float[][] rotateX(double angle, float[][] a) {
+        float[][] transformMatrix = {
+            {1,0,0},
+            {0, (float)Math.cos(angle) , -(float)Math.sin(angle)},
+            {0, (float)Math.sin(angle), (float)Math.cos(angle)}
+        };
+        return MyMatrix.matrixMul(transformMatrix, a);
+    }
+
+    public static float[][] rotateY(double angle, float[][] a) {
+        float[][] transformMatrix = {
+            {(float)Math.cos(angle), 0 , (float)Math.sin(angle)},
+            {0,1,0},
+            {-(float)Math.sin(angle), 0, (float)Math.cos(angle)}
+        };
+        return MyMatrix.matrixMul(transformMatrix, a);
+    }
+
+    public static float[][] rotationTransform(double angleX, double angleY, double angleZ, float[][] a) {
+        float[][] result = null;
+        result = MyMatrix.rotateX(angleX, a);
+        result = MyMatrix.rotateY(angleY, result);
+        result = MyMatrix.rotateZ(angleZ, result);
+        return result;
+    }
+}
+
+使用方法：各軸のノブを動かして、好きな角度に回転させることができる。
+
+
+４．
+https://en.wikipedia.org/wiki/Transformation_matrix#Perspective_projection
+https://stackoverflow.com/questions/21835430/how-to-set-size-of-a-jslider
+https://en.wikipedia.org/wiki/Rotation_matrix
+https://processing.github.io/processing-javadocs/core/processing/core/PVector.html
+https://docs.oracle.com/javase/tutorial/2d/advanced/quality.html
+https://docs.oracle.com/javase/7/docs/api/javax/swing/JSlider.html

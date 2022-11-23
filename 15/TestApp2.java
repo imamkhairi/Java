@@ -8,9 +8,6 @@ public class TestApp2 extends JFrame implements ChangeListener{
     
     public TestApp2() {
         super();
-
-        // anggap ini buka oracle documentation buat report
-        // https://docs.oracle.com/javase/7/docs/api/javax/swing/JSlider.html
         
         this.slider = new JSlider(SwingConstants.HORIZONTAL, 0, 100, 0);
         this.slider.addChangeListener(this);

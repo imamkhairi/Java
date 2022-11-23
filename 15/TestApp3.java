@@ -33,6 +33,7 @@ public class TestApp3 extends JFrame implements ChangeListener{
         this.pack();
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false);
         this.setVisible(true);
     }
     public static void main(String[] args) {
@@ -53,5 +54,9 @@ public class TestApp3 extends JFrame implements ChangeListener{
 
 /* 
 https://en.wikipedia.org/wiki/Transformation_matrix#Perspective_projection
-ntar tambah lagi
+https://stackoverflow.com/questions/21835430/how-to-set-size-of-a-jslider
+https://en.wikipedia.org/wiki/Rotation_matrix
+https://processing.github.io/processing-javadocs/core/processing/core/PVector.html
+https://docs.oracle.com/javase/tutorial/2d/advanced/quality.html
+https://docs.oracle.com/javase/7/docs/api/javax/swing/JSlider.html
 */

@@ -10,6 +10,8 @@ public class TestApp3_Panel extends JPanel{
 
     public TestApp3_Panel() {
         this.setPreferredSize(windowSize);
+        this.setBackground(Color.BLACK);
+
         this.point = new My3DPoint[8];
         this.projectedPoint = new My3DPoint[8];
 
@@ -41,21 +43,6 @@ public class TestApp3_Panel extends JPanel{
         
     }
 
-    //debug use only
-    private void checkpoint(int i) {
-        System.out.println(i + "-----------");
-        System.out.println(this.projectedPoint[i].getX());
-        System.out.println(this.projectedPoint[i].getY());
-        System.out.println(this.projectedPoint[i].getZ());
-        System.out.println("----------");
-    }
-
-    public void printPoint(int i) {
-        System.out.print(i + " : ");
-        this.projectedPoint[i].printPoint();
-        System.out.println();
-    }
-
     public int getPointsCount() {
         return this.point.length;
     }
@@ -83,8 +70,8 @@ public class TestApp3_Panel extends JPanel{
         Graphics2D g2 = (Graphics2D)g;
 
         super.paintComponent(g2);
-
-        g2.setColor(Color.BLUE);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(Color.WHITE);
 
         // draw point
         for(int i = 0; i < this.projectedPoint.length; i++) {
