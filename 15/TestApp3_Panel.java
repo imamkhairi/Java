@@ -13,31 +13,29 @@ public class TestApp3_Panel extends JPanel{
         this.point = new My3DPoint[8];
         this.projectedPoint = new My3DPoint[8];
 
-        this.x = 250;
-        this.y = 250;
+        this.x = (int)this.windowSize.getWidth()/2;
+        this.y = (int)this.windowSize.getHeight()/2;
         
         // initiate points
-        this.point[0] = new My3DPoint(-(float)0.5, (float)0.5, (float)0.5);
-        this.point[1] = new My3DPoint((float)0.5, (float)0.5, (float)0.5);
-        this.point[2] = new My3DPoint((float)0.5, -(float)0.5, (float)0.5);
-        this.point[3] = new My3DPoint(-(float)0.5, -(float)0.5, (float)0.5);
-        this.point[4] = new My3DPoint(-(float)0.5, (float)0.5, -(float)0.5);
-        this.point[5] = new My3DPoint((float)0.5, (float)0.5, -(float)0.5);
-        this.point[6] = new My3DPoint((float)0.5, -(float)0.5, -(float)0.5);
-        this.point[7] = new My3DPoint(-(float)0.5, -(float)0.5, -(float)0.5);
+        this.point[0] = new My3DPoint(-100, 100, 100);
+        this.point[1] = new My3DPoint(100, 100, 100);
+        this.point[2] = new My3DPoint(100, -100, 100);
+        this.point[3] = new My3DPoint(-100, -100, 100);
+        this.point[4] = new My3DPoint(-100, 100, -100);
+        this.point[5] = new My3DPoint(100, 100, -100);
+        this.point[6] = new My3DPoint(100, -100, -100);
+        this.point[7] = new My3DPoint(-100, -100, -100);
 
-        this.projectedPoint[0] = new My3DPoint(-(float)0.5, (float)0.5, (float)0.5);
-        this.projectedPoint[1] = new My3DPoint((float)0.5, (float)0.5, (float)0.5);
-        this.projectedPoint[2] = new My3DPoint((float)0.5, -(float)0.5, (float)0.5);
-        this.projectedPoint[3] = new My3DPoint(-(float)0.5, -(float)0.5, (float)0.5);
-        this.projectedPoint[4] = new My3DPoint(-(float)0.5, (float)0.5, -(float)0.5);
-        this.projectedPoint[5] = new My3DPoint((float)0.5, (float)0.5, -(float)0.5);
-        this.projectedPoint[6] = new My3DPoint((float)0.5, -(float)0.5, -(float)0.5);
-        this.projectedPoint[7] = new My3DPoint(-(float)0.5, -(float)0.5, -(float)0.5);
+        this.projectedPoint[0] = new My3DPoint(-100, 100, 100);
+        this.projectedPoint[1] = new My3DPoint(100, 100, 100);
+        this.projectedPoint[2] = new My3DPoint(100, -100, 100);
+        this.projectedPoint[3] = new My3DPoint(-100, -100, 100);
+        this.projectedPoint[4] = new My3DPoint(-100, 100, -100);
+        this.projectedPoint[5] = new My3DPoint(100, 100, -100);
+        this.projectedPoint[6] = new My3DPoint(100, -100, -100);
+        this.projectedPoint[7] = new My3DPoint(-100, -100, -100);
 
         for(int i = 0; i < this.projectedPoint.length; i++) {
-            this.projectedPoint[i].mult(200);
-            this.point[i].mult(200);
             this.perspective2D(i);
         }
         
@@ -76,7 +74,7 @@ public class TestApp3_Panel extends JPanel{
     public void perspective2D(int i) {
         this.projectedPoint[i] = this.projectedPoint[i].changeToPoint(
             MyMatrix.matrixMul(
-                MyMatrix.perspectiveProjection(this.projectedPoint[i].getZ()), MyMatrix.tPoint(this.projectedPoint[i])
+                MyMatrix.perspectiveProjection(200, this.projectedPoint[i].getZ()), MyMatrix.tPoint(this.projectedPoint[i])
                 )
             );
     }
@@ -94,7 +92,6 @@ public class TestApp3_Panel extends JPanel{
         }
         //draw cube
         for(int i = 0; i < 4; i ++) {
-            System.out.println(i);
             g2.drawLine(x + (int)projectedPoint[i].getX(), y + (int)projectedPoint[i].getY(), x + (int)projectedPoint[(i+1)%4].getX(), y + (int)projectedPoint[(i+1)%4].getY());
             g2.drawLine(x + (int)projectedPoint[i+4].getX(), y + (int)projectedPoint[i+4].getY(), x + (int)projectedPoint[(i+1)%4+4].getX(), y + (int)projectedPoint[(i+1)%4+4].getY());
             g2.drawLine(x + (int)projectedPoint[i].getX(), y + (int)projectedPoint[i].getY(), x + (int)projectedPoint[i+4].getX(), y + (int)projectedPoint[i+4].getY());

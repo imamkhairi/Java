@@ -4,10 +4,12 @@ public class MyMatrix {
         {0, 1, 0}
     };
 
-    public static float[][] perspectiveProjection(float z) {
-        float distance = (float)1.5;
-        float a = 1 / (distance - z/200);
+    public static float[][] perspectiveProjection(int length, float z) {
+        float distance = 350;
+        float a = 1 / ((distance - z)/length);
         
+        System.out.println(a);
+
         float[][] projection = {
             {a, 0 , 0},
             {0, a, 0}
