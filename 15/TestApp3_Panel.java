@@ -19,28 +19,41 @@ public class TestApp3_Panel extends JPanel{
         this.y = (int)this.windowSize.getHeight()/2;
         
         // initiate points
-        this.point[0] = new My3DPoint(-100, 100, 100);
-        this.point[1] = new My3DPoint(100, 100, 100);
-        this.point[2] = new My3DPoint(100, -100, 100);
-        this.point[3] = new My3DPoint(-100, -100, 100);
-        this.point[4] = new My3DPoint(-100, 100, -100);
-        this.point[5] = new My3DPoint(100, 100, -100);
-        this.point[6] = new My3DPoint(100, -100, -100);
-        this.point[7] = new My3DPoint(-100, -100, -100);
+        this.initiatePoint(100, this.point);
+        this.initiatePoint(100, this.projectedPoint);
+        // this.point[0] = new My3DPoint(-100, 100, 100);
+        // this.point[1] = new My3DPoint(100, 100, 100);
+        // this.point[2] = new My3DPoint(100, -100, 100);
+        // this.point[3] = new My3DPoint(-100, -100, 100);
+        // this.point[4] = new My3DPoint(-100, 100, -100);
+        // this.point[5] = new My3DPoint(100, 100, -100);
+        // this.point[6] = new My3DPoint(100, -100, -100);
+        // this.point[7] = new My3DPoint(-100, -100, -100);
 
-        this.projectedPoint[0] = new My3DPoint(-100, 100, 100);
-        this.projectedPoint[1] = new My3DPoint(100, 100, 100);
-        this.projectedPoint[2] = new My3DPoint(100, -100, 100);
-        this.projectedPoint[3] = new My3DPoint(-100, -100, 100);
-        this.projectedPoint[4] = new My3DPoint(-100, 100, -100);
-        this.projectedPoint[5] = new My3DPoint(100, 100, -100);
-        this.projectedPoint[6] = new My3DPoint(100, -100, -100);
-        this.projectedPoint[7] = new My3DPoint(-100, -100, -100);
+        // this.projectedPoint[0] = new My3DPoint(-100, 100, 100);
+        // this.projectedPoint[1] = new My3DPoint(100, 100, 100);
+        // this.projectedPoint[2] = new My3DPoint(100, -100, 100);
+        // this.projectedPoint[3] = new My3DPoint(-100, -100, 100);
+        // this.projectedPoint[4] = new My3DPoint(-100, 100, -100);
+        // this.projectedPoint[5] = new My3DPoint(100, 100, -100);
+        // this.projectedPoint[6] = new My3DPoint(100, -100, -100);
+        // this.projectedPoint[7] = new My3DPoint(-100, -100, -100);
 
         for(int i = 0; i < this.projectedPoint.length; i++) {
             this.perspective2D(i);
         }
         
+    }
+
+    private void initiatePoint(int length, My3DPoint[] targetPoint) {
+        targetPoint[0] = new My3DPoint(-length, length, length);
+        targetPoint[1] = new My3DPoint(length, length, length);
+        targetPoint[2] = new My3DPoint(length, -length, length);
+        targetPoint[3] = new My3DPoint(-length, -length, length);
+        targetPoint[4] = new My3DPoint(-length, length, -length);
+        targetPoint[5] = new My3DPoint(length, length, -length);
+        targetPoint[6] = new My3DPoint(length, -length, -length);
+        targetPoint[7] = new My3DPoint(-length, -length, -length);
     }
 
     public int getPointsCount() {

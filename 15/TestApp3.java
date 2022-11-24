@@ -3,6 +3,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.*;
 
 public class TestApp3 extends JFrame implements ChangeListener{
     private TestApp3_Panel p;
@@ -23,6 +24,7 @@ public class TestApp3 extends JFrame implements ChangeListener{
 
         JPanel basePanel = new JPanel();
         basePanel.setLayout(new BoxLayout(basePanel, BoxLayout.PAGE_AXIS));
+        basePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         basePanel.add(this.p);
         basePanel.add(this.xSlider.getSliderPanel());
         basePanel.add(this.ySlider.getSliderPanel());
