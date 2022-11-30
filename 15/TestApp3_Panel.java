@@ -21,23 +21,6 @@ public class TestApp3_Panel extends JPanel{
         // initiate points
         this.initiatePoint(100, this.point);
         this.initiatePoint(100, this.projectedPoint);
-        // this.point[0] = new My3DPoint(-100, 100, 100);
-        // this.point[1] = new My3DPoint(100, 100, 100);
-        // this.point[2] = new My3DPoint(100, -100, 100);
-        // this.point[3] = new My3DPoint(-100, -100, 100);
-        // this.point[4] = new My3DPoint(-100, 100, -100);
-        // this.point[5] = new My3DPoint(100, 100, -100);
-        // this.point[6] = new My3DPoint(100, -100, -100);
-        // this.point[7] = new My3DPoint(-100, -100, -100);
-
-        // this.projectedPoint[0] = new My3DPoint(-100, 100, 100);
-        // this.projectedPoint[1] = new My3DPoint(100, 100, 100);
-        // this.projectedPoint[2] = new My3DPoint(100, -100, 100);
-        // this.projectedPoint[3] = new My3DPoint(-100, -100, 100);
-        // this.projectedPoint[4] = new My3DPoint(-100, 100, -100);
-        // this.projectedPoint[5] = new My3DPoint(100, 100, -100);
-        // this.projectedPoint[6] = new My3DPoint(100, -100, -100);
-        // this.projectedPoint[7] = new My3DPoint(-100, -100, -100);
 
         for(int i = 0; i < this.projectedPoint.length; i++) {
             this.perspective2D(i);

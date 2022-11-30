@@ -433,3 +433,6 @@ https://en.wikipedia.org/wiki/Rotation_matrix
 https://processing.github.io/processing-javadocs/core/processing/core/PVector.html
 https://docs.oracle.com/javase/tutorial/2d/advanced/quality.html
 https://docs.oracle.com/javase/7/docs/api/javax/swing/JSlider.html
+
+
+===== ULANG COPY LAGI =======
