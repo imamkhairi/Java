@@ -116,6 +116,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.*;
 
 public class TestApp3 extends JFrame implements ChangeListener{
     private TestApp3_Panel p;
@@ -136,6 +137,7 @@ public class TestApp3 extends JFrame implements ChangeListener{
 
         JPanel basePanel = new JPanel();
         basePanel.setLayout(new BoxLayout(basePanel, BoxLayout.PAGE_AXIS));
+        basePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         basePanel.add(this.p);
         basePanel.add(this.xSlider.getSliderPanel());
         basePanel.add(this.ySlider.getSliderPanel());
@@ -187,28 +189,24 @@ public class TestApp3_Panel extends JPanel{
         this.y = (int)this.windowSize.getHeight()/2;
         
         // initiate points
-        this.point[0] = new My3DPoint(-100, 100, 100);
-        this.point[1] = new My3DPoint(100, 100, 100);
-        this.point[2] = new My3DPoint(100, -100, 100);
-        this.point[3] = new My3DPoint(-100, -100, 100);
-        this.point[4] = new My3DPoint(-100, 100, -100);
-        this.point[5] = new My3DPoint(100, 100, -100);
-        this.point[6] = new My3DPoint(100, -100, -100);
-        this.point[7] = new My3DPoint(-100, -100, -100);
-
-        this.projectedPoint[0] = new My3DPoint(-100, 100, 100);
-        this.projectedPoint[1] = new My3DPoint(100, 100, 100);
-        this.projectedPoint[2] = new My3DPoint(100, -100, 100);
-        this.projectedPoint[3] = new My3DPoint(-100, -100, 100);
-        this.projectedPoint[4] = new My3DPoint(-100, 100, -100);
-        this.projectedPoint[5] = new My3DPoint(100, 100, -100);
-        this.projectedPoint[6] = new My3DPoint(100, -100, -100);
-        this.projectedPoint[7] = new My3DPoint(-100, -100, -100);
+        this.initiatePoint(100, this.point);
+        this.initiatePoint(100, this.projectedPoint);
 
         for(int i = 0; i < this.projectedPoint.length; i++) {
             this.perspective2D(i);
         }
         
+    }
+
+    private void initiatePoint(int length, My3DPoint[] targetPoint) {
+        targetPoint[0] = new My3DPoint(-length, length, length);
+        targetPoint[1] = new My3DPoint(length, length, length);
+        targetPoint[2] = new My3DPoint(length, -length, length);
+        targetPoint[3] = new My3DPoint(-length, -length, length);
+        targetPoint[4] = new My3DPoint(-length, length, -length);
+        targetPoint[5] = new My3DPoint(length, length, -length);
+        targetPoint[6] = new My3DPoint(length, -length, -length);
+        targetPoint[7] = new My3DPoint(-length, -length, -length);
     }
 
     public int getPointsCount() {
@@ -252,68 +250,6 @@ public class TestApp3_Panel extends JPanel{
             g2.drawLine(x + (int)projectedPoint[i].getX(), y + (int)projectedPoint[i].getY(), x + (int)projectedPoint[i+4].getX(), y + (int)projectedPoint[i+4].getY());
         }
 
-    }
-}
-
-public class My3DPoint {
-    private float x;
-    private float y;
-    private float z;
-
-    public My3DPoint(float x, float y, float z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-
-    public float getX() {
-        return this.x;
-    }
-
-    public float getY() {
-        return this.y;
-    }
-    
-    public float getZ() {
-        return this.z;
-    }
-
-    public int getLength() {
-        return 3;
-    }
-
-    private void setX(float x) {
-        this.x = x;
-    }
-
-    private void setY(float y) {
-        this.y = y;
-    }
-    
-    private void setZ(float z) {
-        this.z = z;
-    }
-
-    public My3DPoint changeToPoint(float[][] a) {
-        My3DPoint result = new My3DPoint(0, 0, 0);
-        result.setX(a[0][0]);
-        result.setY(a[1][0]);
-        if(a.length > 2) {
-            result.setZ(a[2][0]);
-        } else {
-            result.setZ(0);
-        }
-        return result;
-    }
-
-    public void printPoint() {
-        System.out.println(this.getX() + ", " + this.getY() + ", " + this.getZ());
-    }
-
-    public void mult(int multiplier) {
-        this.setX(this.x * multiplier);
-        this.setY(this.y * multiplier);
-        this.setZ(this.z * multiplier);
     }
 }
 
@@ -423,16 +359,116 @@ public class MyMatrix {
     }
 }
 
+public class My3DPoint {
+    private float x;
+    private float y;
+    private float z;
+
+    public My3DPoint(float x, float y, float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    public float getX() {
+        return this.x;
+    }
+
+    public float getY() {
+        return this.y;
+    }
+    
+    public float getZ() {
+        return this.z;
+    }
+
+    public int getLength() {
+        return 3;
+    }
+
+    private void setX(float x) {
+        this.x = x;
+    }
+
+    private void setY(float y) {
+        this.y = y;
+    }
+    
+    private void setZ(float z) {
+        this.z = z;
+    }
+
+    public My3DPoint changeToPoint(float[][] a) {
+        My3DPoint result = new My3DPoint(0, 0, 0);
+        result.setX(a[0][0]);
+        result.setY(a[1][0]);
+        if(a.length > 2) {
+            result.setZ(a[2][0]);
+        } else {
+            result.setZ(0);
+        }
+        return result;
+    }
+
+    public void printPoint() {
+        System.out.println(this.getX() + ", " + this.getY() + ", " + this.getZ());
+    }
+
+    public void mult(int multiplier) {
+        this.setX(this.x * multiplier);
+        this.setY(this.y * multiplier);
+        this.setZ(this.z * multiplier);
+    }
+}
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+
+import java.awt.*;
+
+public class angleSlider extends JSlider{
+    private JPanel panel;
+    private JLabel textLabel;
+
+    public angleSlider(String angle) {
+        super();
+        this.textLabel = new JLabel();
+        this.textLabel.setText(angle);
+
+        this.setPreferredSize(new Dimension(400,50));
+        this.setPaintTicks(true);
+        this.setValue(0);
+        this.setMaximum(360);
+        this.setMinorTickSpacing(15);
+        this.setMajorTickSpacing(45);
+        this.setPaintLabels(true);
+        this.setFont(new Font("Helvetica Neue", Font.PLAIN, 10));
+        this.setForeground(Color.GRAY);
+
+        this.panel = new JPanel();
+        panel.add(textLabel);
+        panel.add(this);
+    }
+    
+    public JPanel getSliderPanel() {
+        return this.panel;
+    }
+
+    public double getAngle() {
+        return (double)this.getValue();
+    }
+}
+
 使用方法：各軸のノブを動かして、好きな角度に回転させることができる。
 
 
 ４．
+3Dオブジェクトの行列変換の方法を調べて、利用可能な2Dグラフィックスを使用してその方法を実装していた。
 https://en.wikipedia.org/wiki/Transformation_matrix#Perspective_projection
 https://stackoverflow.com/questions/21835430/how-to-set-size-of-a-jslider
 https://en.wikipedia.org/wiki/Rotation_matrix
 https://processing.github.io/processing-javadocs/core/processing/core/PVector.html
 https://docs.oracle.com/javase/tutorial/2d/advanced/quality.html
 https://docs.oracle.com/javase/7/docs/api/javax/swing/JSlider.html
-
-
-===== ULANG COPY LAGI =======
+https://docs.oracle.com/javase/8/docs/api/java/lang/Math.html
