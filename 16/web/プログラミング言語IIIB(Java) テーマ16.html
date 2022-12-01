@@ -1,0 +1,166 @@
+<!--?xml version="1.0" encoding="utf-8"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>プログラミング言語IIIB(Java) テーマ16</title>
+<link rel="stylesheet" href="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E16_files/tenmo2008single.css" type="text/css" media="all">
+</head>
+
+<body>
+
+<h2>プログラミング言語IIIB(Java) テーマ16<!-- <em>※プレビュー中につき編集の可能性あり</em>--></h2>
+
+<h3><code>MouseListener</code>インターフェースと<code>MouseMotionListener</code>インターフェース</h3>
+
+<p>マウスのボタンを押した・マウスを動かした等の, 低レベルな(ハードウェアに近い階層の, という意味)イベントを処理してグラフィックスを描くには, <em>描画パネル</em>に<code class="em">MouseListener</code>インターフェースや<code class="em">MouseMotionListener</code>インターフェースを実装する.</p>
+
+<p>※大切な事なのでもう一度: <u>描画パネル</u>に, <code>MouseListener</code>や<code>MouseMotionListener</code>を付ける. <em>フレームではない</em>.</p>
+
+<h4><code>MouseListener</code>インターフェース</h4>
+
+<p><code>implements</code>に<code>MouseListener</code>を追加し, 以下の五つのメソッドを<em>すべて</em>定義する. これらのメソッドは, それぞれ該当するイベントが起きた際に, システムによって呼び出される.</p>
+
+<pre>public void mousePressed(MouseEvent e) { }  // マウスボタンが押されたとき
+public void mouseReleased(MouseEvent e) { } // マウスボタンが離されたとき
+public void mouseClicked(MouseEvent e) { }  // マウスボタンがクリックされた(押して離された)とき
+public void mouseEntered(MouseEvent e) { }  // マウスカーソルが部品内に入ったとき
+public void mouseExited(MouseEvent e) { }   // マウスカーソルが部品外に出たとき
+</pre>
+
+<p>※大切な事なのでもう一度: <u>描画パネル</u>に, 五つのメソッドを<u>すべて</u>定義する. <em>一つでも欠けると</em>コンパイルできない.</p>
+
+<p>また, 上記の各イベント処理メソッド内でマウスカーソルの座標を得るには, 引数である<code class="em">MouseEvent</code>クラスのインスタンスに対して, <code class="em">getX(), getY()</code>メソッドを呼び出す. 以下に例を示す.</p>
+
+<pre>public void mousePressed(MouseEvent e) // eにはマウスイベントの情報が入っている
+{
+    int x = e.getX();                  // X座標を取り出す
+    int y = e.getY();                  // Y座標を取り出す
+    System.out.println("x=" + x + " y=" + y);
+    // このx, yを何に使うかは貴方次第. 座標(x, y)の位置に図形を描くなど.
+}
+</pre>
+
+<p>なお, マウスイベントを描画パネルが処理することをシステムに登録するため, <em>描画パネル</em>の<em>コンストラクタ</em>内で<code class="em">this.addMouseListener(this);</code>を実行する事を忘れないように注意せよ.</p>
+
+<p>※大切な事なのでもう一度: <u>描画パネル</u>の<em>コンストラクタ</em>で<code>this.addMouseListener(this)</code>する.</p>
+
+<p>ドットの前に<code>this</code>があり, 括弧内にも<code>this</code>があるという奇妙な形式ではあるが, 「この描画パネルで発生したマウスイベントを, この描画パネルで処理することにします.」という意味である.</p>
+
+<h4><code>MouseMotionListener</code>インターフェース</h4>
+
+<p>マウスの移動(モーション)に反応させるためには, 以下の二つのメソッドを実装する. <code>getX, getY</code>メソッドは<code>MouseListener</code>と同様である. <code class="em">this.addMouseMotionListener(this);</code>も忘れずに.</p>
+
+<pre>public void mouseMoved(MouseEvent e) {}   // マウスが動いたとき
+public void mouseDragged(MouseEvent e) {} // マウスがドラッグされたとき
+</pre>
+
+<h3>マウス操作によるグラフィックス描画</h3>
+
+<p>マウスの操作に反応させてパネルにグラフィックスを描画したい場合は, 以下の様に, パネルに予め用意されている<code class="em">getGraphics</code>メソッドを利用してOSからペン(<code>g</code>)を一時的に入手し, 各種の図形描画メソッドで描画処理を行う.</p>
+
+<pre>public void mousePressed(MouseEvent e)          // マウスのボタンが押されたとき
+{
+    int x = e.getX();                           // マウスカーソルのX座標と
+    int y = e.getY();                           // Y座標を調べ
+    System.out.println("x=" + x + " y=" + y);
+    Graphics g = this.getGraphics();            // OSからペンを借り
+    g.drawLine(x - 10, y - 10, x + 10, y + 10); // マウスカーソルの位置に図形を描画する
+    g.dispose();                                // 借りたペンを返す ←****これを忘れない!!****
+}
+</pre>
+
+<!--
+<p>また, 自作の<code>paintComponent</code>メソッド中に<code class="em">super.paintComponent(g);</code>がある場合は, これを<em>コメントアウト</em>する. こうすると画面クリアが行われなくなり, 上記の方法で描画したグラフィックスがそのまま画面に残ることになる.</p>
+-->
+
+<h3>描画パネルの再描画</h3>
+
+<p>前節の方法では現在見えている<em>描画パネル</em>に対して直接描画しており, 描画した内容はどこにも記憶していない. そのため, <!--ウィンドウの一部を他のウィンドウで隠して戻したり,--> 画面を切り替えたり, アイコン化して復元した際に, それまでに描画した内容が<em>失われる</em>.</p>
+<img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E16_files/2007-10-31-directdraw.png">
+
+<p>このため, 実用的なソフトウェア/アプリでは, 現在画面に表示されているパネルに直接描画するのではなく, 内部的なデータとしての<em>仮想画面</em>に一旦描画し, それを<em>ユーザーから見えているパネルへ常時転写</em>する, という2段階で処理を行う. これにより, 画面が切り替わってウィンドウが再表示された際にも, 内部的にデータとして保存してある仮想画面を転写するだけで画面を復元することができる. 画面のデータを2重に持つことから, この処理を一般に「<em>ダブルバッファ</em>」方式と呼ぶ.</p>
+
+<p>※ダブルバッファ方式には画面書換えによるチラツキを防止する効果もある.</p>
+
+<img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E16_files/2007-10-31-doublebuffer.png">
+
+<p>Java Swingで内部的にデータとして仮想画面を持つには, <code class="em">BufferedImage</code>クラスを用いる. 以下に手順を示す.</p>
+<ol>
+<li><u>描画パネル</u>のコンストラクタで, <code>BufferedImage</code>クラスのインスタンスを生成しておく. 引数は横サイズ, 縦サイズ, <code>BufferedImage.TYPE_INT_ARGB</code>とする.</li>
+<li>グラフィックス描画の際に呼び出す<code>getGraphics</code>メソッドを, <code>this</code>(つまり描画パネル)に対してではなく, <code>BufferedImage</code>クラスのインスタンス(<u>つまり仮想画面</u>)に対して行う. その後, <code>this</code>(つまり描画パネル)に対して<code>repaint</code>メソッドを呼び出す. ※その結果, OSから<code>paintComponent</code>メソッドが呼び出される.</li>
+<pre>Graphics g = this.bi.getGraphics();         // ユーザーから見えない「仮想画面」用のペンを借り
+             ~~~~~~~ここに注目
+g.drawLine(x - 10, y - 10, x + 10, y + 10); // マウスカーソルの位置に図形を描画する
+g.dispose();                                // 借りたペンを返す
+this.repaint();                             // ユーザーに見えている「描画パネル」の再描画を要求する
+</pre>
+<li>描画パネルの<code>paintComponent</code>メソッドで, <code>BufferedImage</code>クラスのインスタンス(つまり仮想画面)を, 描画パネルの座標(0,0)に転写する. 転写には<code>drawImage</code>メソッドを使用する.<!-- ※<code>drawImage</code>メソッドの4つめの引数は<code>this</code>で良い.--></li>
+<pre>public void paintComponent(Graphics g) {    // this.repaint();でここが呼び出される
+                                            // ここでの g は「見えている画面」用のペンである
+    g.drawImage(...);                       // this.biを「見えている画面」の座標(0,0)に描く
+}
+</pre>
+</ol>
+
+<h3>課題</h3>
+
+<p>以下の課題のレポートは, レポートファイル<code class="em">report16.txt</code>を作成してアップロードにより提出すること.</p>
+
+<p><em>[注意]</em> 課題4にて, 課題1〜課題3の遂行時に各自で調査した事柄(<code>drawImage</code>メソッドの使い方等)を載せる必要があるので, 途中で調べた事柄はファイルに貼り付けたりブックマークするなど, メモを残しておくと良い.</p>
+
+<ol>
+
+<li>上記「マウス操作によるグラフィックス描画」の例を実際に動作させ, マウスでクリックした位置に, スタンプの様に図形が描かれるプログラムを作成せよ. (ソースをレポート)</li>
+
+  <p>※プログラムの基本は前回の課題1と同様. 「描画用のパネル」と「部品配置用のフレーム」を作る.</p>
+  <p>※マウスイベント3点セットは以下の通り. これらを全て揃える必要がある.</p>
+<pre>implements MouseListener
+this.addMouseListener(this)
+mousePressed, mouseReleased, mouseClicked, mouseEntered, mouseExited
+</pre>
+  <p>※<em>ドラッグで線を途切れなくする処理は作らない</em> →それは課題2にて</p>
+  <p>※<em>ダブルバッファ方式にしない</em> →それは課題3にて</p>
+
+<li>マウス操作で絵を描けるプログラムを, 各自の自由な発想で作成せよ. 特にアイデアが思いつかない場合は, 最低限, ドラッグで<u>線を途切れることなく</u>引けるプログラムとすること. ラジオボタン等で筆の色や太さが切り替えられたり, 筆を図形や画像によるスタンプに切り替えできるとさらに良い. (ソース, <em>使用方法</em>をレポート)</li>
+
+  <p>※マウスモーション3点セットは以下の通り. マウスイベント3点セット<u>に加えて</u>, これらも全て揃える必要がある.</p>
+<pre>implements MouseMotionListener
+this.addMouseMotionListener(this)
+mouseMoved, mouseDragged
+</pre>
+  <p>※<em>ダブルバッファ方式にしない</em> →それは課題3にて</p>
+
+  <p>※ドラッグされた時に, 「前回の座標」と「今回の座標」を直線で結ぶ. そのためには「前回の座標」をフィールドに保存しておく必要がある. ※ヒント: 今は未来の過去である.</p>
+
+  <p>※「プレスされた時の座標」と「今回の座標」を結んでしまうと, ウニやクリの様な模様になってしまう.</p>
+
+  <!--<p>※他のGUI部品も一緒に使いたい場合は, 従来通りの配置用パネルも必要. GUI部品の入れ子を良く考えよう.</p>-->
+
+<li>課題2のプログラムを, ダブルバッファ方式に改造せよ. 必ず<em>課題2とは分けて</em>レポートすること. (プログラムの修正箇所(どこを)と, 修正内容(どの様に)をレポート)</li>
+    <!--<p>注意: whyが「描いた内容が失われない様にするため」では不可. →もっと具体的に</p>-->
+    <p>※<code>BufferedImage</code>クラスに必要な<code>import</code>文はAPI仕様で調べる.</p>
+    <p>※転写のための<code>drawImage</code>メソッドの使い方もAPI仕様で<code>Graphics</code>クラスを調べる. なお, <u>最後の引数はthis</u>にする.</p>
+   <p>※ドラッグされた際に常時転写をし続けるために, <code>mouseDragged</code>メソッドの中で<code>this.repaint()</code>を呼び出す.</p>
+
+<pre>【ダブルバッファ方式でうまく描かれない場合の対策】
+* g.drawLine等の前にカラー設定しておく. 白背景に白ペンで描いたりしていないか?
+* BufferedImageクラスのインスタンスをnewしたあと, 自前の背景色で全面塗りつぶししておく.
+  Graphics g = this.bi.getGraphics();
+  g.setColor(Color.black); g.fillRect(0, 0, 639, 479); など
+</pre>
+
+<li>課題1〜課題3の遂行時に各自で調査した事柄をまとめ, 報告せよ. <em>引用元</em>を必ず明記<!--し, そのまま丸写しはせずに, 自分専用のマニュアルとして編集・整理-->すること. 「何もなし」や「課題ページのみ」は不可.</li>
+
+  <p>※実験室の後ろの本棚にある「黄色本」に, おそらく君達が知りたい事がズバリ載っているので活用のこと.</p>
+
+</ol>
+
+<h3>レポート</h3>
+
+<ul>
+<li>内容: 課題中に指示されている通り. 必要な項目を全て記載しているか, 十分に確認すること.</li>
+</ul>
+
+
+
+</body></html>
