@@ -2,12 +2,13 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class ripple {
-    private int cols = 451;
-    private int rows = 451;
-    private int mid = (rows)/2;
+    private int cols = 501;
+    private int rows = 501;
+    private int mid = (rows-1)/2;
     private double[][] current = new double[this.rows][this.cols];
     private double[][] previous = new double[this.rows][this.cols];
-    private double damping = 0.999;
+    private double damping = 0.99;
+    private int count = 0; // buat ngilangin tengahnya yang nyisa 1
     private AppPanel3 panel;
 
     public ripple(AppPanel3 panel) {
@@ -21,7 +22,7 @@ public class ripple {
     }
 
     public void start(int x, int y, Graphics2D g) {
-        this.previous[this.mid][this.mid] = 1.0;
+        if(this.count == 0)this.previous[this.mid][this.mid] = 1.0; // gara2 ini setelah loop tengahnya jadi nyisa satu
         // System.out.println();
         // this.printValue(this.previous);
         for(int i = 1; i < this.rows - 1; i ++) {
@@ -41,16 +42,19 @@ public class ripple {
 
         this.panel.testDraw(x, y, g, this.current);
         this.panel.repaint();
+        this.count++;
 
-        // double[][] temp = this.current;
-        // this.current = this.previous;
-        // this.previous = temp;
+        double[][] temp = this.current;
+        this.current = this.previous;
+        this.previous = temp;
         // this.resetCurrent();
 
         // System.out.println();
         // this.printValue(this.previous);
         // System.out.println();
         // this.printValue(this.current);
+        // System.out.println("---------------------------");
+        // System.out.println();
     }
 
     public void resetAll() {
@@ -60,6 +64,7 @@ public class ripple {
                 this.previous[i][j] = 0;
             }
         }
+        this.count = 0;
     }
 
     //debug

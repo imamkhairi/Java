@@ -59,7 +59,7 @@ public class AppPanel3 extends JPanel implements MouseListener, MouseMotionListe
         Graphics2D g2 = (Graphics2D)g;
         // this.water.start(x, y, g2);
     }  
-    @Override
+    @Override// jangan lupa balikin ini lagi
     public void mouseReleased(MouseEvent e) {
         // this.repaint();
         Graphics g = this.bi.getGraphics();
@@ -97,7 +97,7 @@ public class AppPanel3 extends JPanel implements MouseListener, MouseMotionListe
         int y = e.getY();
         Graphics g = this.bi.getGraphics();
         Graphics2D g2 = (Graphics2D)g;
-        this.water.start(x, y, g2);
+        this.water.start(250, 250, g2);//250 ganti x dan y lagi
 
         // g2.fillOval(x - 50/2, y - 50/2, 50, 50);
     }
