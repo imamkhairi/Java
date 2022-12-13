@@ -14,27 +14,36 @@ public class AppPanel1 extends JPanel implements MouseListener{
 
     @Override
     public void mousePressed(MouseEvent e) { 
-        // int x = e.getX();
-        // int y = e.getY();
-        // System.out.println("x = " +x +", y = " + y);
         Graphics g = this.getGraphics();
         Graphics2D g2 = (Graphics2D)g;
         int r = 10;
-        g2.setColor(Color.WHITE);
-        g2.drawOval(e.getX()-r, e.getY()-r, 2*r,2*r);
-        //bisa dimain2in warnanya pake fillOval
-        //atau random2 juga tipe shape nya (mungkin bisa)
+        g2.setColor(new Color((int)Math.round(Math.random()*255),(int)Math.round(Math.random()*255),(int)Math.round(Math.random()*255)));
+        int type = (int)Math.round(Math.random()*2);
+        switch (type) {
+            case 0:
+                g2.fillOval(e.getX()-r, e.getY()-r, 2*r,2*r);
+                break;
+            case 1:
+                g2.fillRect(e.getX()-r, e.getY()-r, 2*r, 2*r);
+                break;
+            case 2:
+                g2.fillRoundRect(e.getX()-r, e.getY()-r, 2*r, 2*r, 9, 9);
+                break;
+            default:
+                System.out.println("Type input error");
+                break;
+        }
     }  
     
     @Override
-    public void mouseReleased(MouseEvent e) { } // マウスボタンが離されたとき
+    public void mouseReleased(MouseEvent e) { }
     
     @Override
-    public void mouseClicked(MouseEvent e) { }  // マウスボタンがクリックされた(押して離された)とき
+    public void mouseClicked(MouseEvent e) { }
     
     @Override
-    public void mouseEntered(MouseEvent e) { }  // マウスカーソルが部品内に入ったとき
+    public void mouseEntered(MouseEvent e) { }
     
     @Override
-    public void mouseExited(MouseEvent e) { }   // マウスカーソルが部品外に出たとき
+    public void mouseExited(MouseEvent e) { }
 }

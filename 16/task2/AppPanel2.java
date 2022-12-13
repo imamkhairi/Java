@@ -18,30 +18,30 @@ public class AppPanel2 extends JPanel implements MouseMotionListener, MouseListe
         this.oldY = e.getY();
     }
 
-    
-    //tambahin method resize
-
     @Override
     public void mousePressed(MouseEvent e) { 
         this.savePoint(e);
     }  
     
     @Override
-    public void mouseReleased(MouseEvent e) { } // マウスボタンが離されたとき
+    public void mouseReleased(MouseEvent e) { }
     
     @Override
-    public void mouseClicked(MouseEvent e) { }  // マウスボタンがクリックされた(押して離された)とき
+    public void mouseClicked(MouseEvent e) { }
     
     @Override
-    public void mouseEntered(MouseEvent e) { }  // マウスカーソルが部品内に入ったとき
+    public void mouseEntered(MouseEvent e) { }
     
     @Override
-    public void mouseExited(MouseEvent e) { }
-    
-    @Override
-    public void mouseMoved(MouseEvent e) {
-
+    public void mouseExited(MouseEvent e) {
+        Graphics g = this.getGraphics();
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0, 0, (int)(this.windowSize.getWidth()), (int)(this.windowSize.getHeight()));
     }
+    
+    @Override
+    public void mouseMoved(MouseEvent e) {}
 
     @Override
     public void mouseDragged(MouseEvent e) {

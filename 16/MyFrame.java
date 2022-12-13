@@ -1,12 +1,12 @@
 import javax.swing.*;
 
-public class AppFrame1 extends JFrame {
-    private AppPanel1 drawPanel;
+public class MyFrame extends JFrame {
+    private MyPanel drawPanel;
     
-    public AppFrame1() {
+    public MyFrame() {
         super();
 
-        this.drawPanel = new AppPanel1();
+        this.drawPanel = new MyPanel();
 
         JPanel basePanel = new JPanel();
         basePanel.add(this.drawPanel);
@@ -14,12 +14,12 @@ public class AppFrame1 extends JFrame {
         this.getContentPane().add(basePanel);
         this.pack();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(null);        
         this.setVisible(true);
+        this.setResizable(false);
     }
-    
+
     public static void main(String[] args) {
-        new AppFrame1();
+        new MyFrame();
     }
 }
-
