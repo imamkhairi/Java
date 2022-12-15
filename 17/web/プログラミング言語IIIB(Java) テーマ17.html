@@ -1,0 +1,247 @@
+<!--?xml version="1.0" encoding="utf-8"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>プログラミング言語IIIB(Java) テーマ17</title>
+<link rel="stylesheet" href="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E17_files/tenmo2008single.css" type="text/css" media="all">
+</head>
+
+<body>
+
+<h2>プログラミング言語IIIB(Java) テーマ17</h2>
+
+<h3><code>Timer</code>クラス</h3>
+
+<p><code>Timer</code>クラスを用いると, 一定時間毎に<em>自動的に</em>アクションイベントが発生し, <code>actionPerformed</code>メソッドが呼び出される. この機能を利用して, 一定時間毎に<em>少しずつ異なる絵や画像</em>を, <em>少しずつ異なる位置</em>に描画する事で, 古典的ではあるが, アニメーションを実現できる.</p>
+
+<p><code>Timer</code>クラスを利用する方法は以下の通りである. 今回は, タイマーを<em>フレーム</em>側に設置し, タイマーで定期的に呼び出される<code>actionPerformed</code>メソッドから, <em>描画パネル</em>に対して<code>repaint</code>をかける方式で行う.</p>
+
+<ol>
+
+<li><em>フレーム</em>側の<em>フィールド</em>に, <code>Timer</code>クラスのオブジェクト変数を追加する.</li>
+<pre>// -------- MyFrame側フィールド --------
+private Timer timer;
+</pre>
+
+<li><em>フレーム</em>側の<em>コンストラクタ</em>で, <code>Timer</code>クラスのインスタンスを生成する. 引数は<em>呼び出し間隔</em>(単位ミリ秒)と, 呼び出される<code>actionPerformed</code>メソッドを持つインスタンスである(つまり<code>this</code>). その後, タイマーをスタートさせる.</li>
+<pre>// -------- MyFrame側コンストラクタ --------
+this.timer = new Timer(500, this); // 0.5秒ごとにthisのactionPerformedメソッドを呼び出す様に設定
+this.timer.start();                // タイマースタート
+</pre>
+
+<li><em>フレーム</em>側の<code class="em">actionPerformed</code>メソッドに, 一定時間毎に行いたい処理を書く. (今回は描画パネルの<code>repaint</code>)</li>
+<pre>// -------- MyFrame側メソッド --------
+public void actionPerformed(ActionEvent e)
+{
+    System.out.println("in actionPerform:");
+    this.mp.repaint(); // 描画パネル「に対して」再描画を指示する
+    Toolkit.getDefaultToolkit().sync(); // CentOSの不具合(お節介?)対策
+}
+</pre>
+<li><em>描画パネル</em>側の<code>paintComponent</code>で, グラフィックスを描く.</li>
+<pre>// -------- MyPanel側メソッド --------
+public void paintComponent(Graphics g)
+{
+    System.out.println("in paintComponent:");
+    super.paintComponent(g);
+    // 少しずつ異なる絵や画像を, 少しずつ異なる位置に描画する. 例えば
+    x座標やy座標を更新;
+    画像番号iを更新;
+    (x,y)にキャラクター画像のi番目を描画;
+}
+</pre>
+
+</ol>
+
+<p><!--各クラスやメソッドの関係は以下のUML図の様になる. -->一つのクラスに全ての機能を詰め込むのではなく, クラス毎に<em>役割を分担</em>している点に注目せよ.<!-- (→最終テーマ20では三つのクラスに分割する.)--></p>
+<!--
+<center>
+<img src="timer_anime.png" border="1">
+</center>
+-->
+
+<p><code>Timer</code>クラスにはこの他にも様々なメソッドがある. 自分のアイデアに応じて適宜調査して利用し, 報告して欲しい.</p>
+
+<h3>画像ファイルの読込みと描画</h3>
+
+<p>パネルに描く画像は以下の手順で用意する. <em>どこ</em>(場所)に, <em>何</em>を記述するのか, 良く注意すること.</p>
+
+<ol>
+
+<li><em>フレーム</em>側の<em>コンストラクタ</em>で画像ファイルを読み込む. 画像ファイルはプログラムと同じディレクトリに置いておく.</li>
+<pre>// -------- MyFrame側コンストラクタ --------
+Toolkit tk = Toolkit.getDefaultToolkit(); // 画像ファイルを読み込む機能等が入った道具箱
+Image chara = tk.getImage("chara.png"); // chara.pngを読み込み, 変数charaに代入する. 
+</pre>
+
+<li><em>フレーム</em>側の<em>コンストラクタ</em>で, 描画パネルのインスタンスを生成する時に, 手順1で用意した画像インスタンスを<em>引数</em>として渡す.</li>
+<pre>// -------- MyFrame側コンストラクタ --------
+this.mp = new MyPanel(chara); // 引数charaに注目
+</pre>
+
+<li><em>描画パネル</em>側の<em>コンストラクタ</em>で, 引数で受け取った画像を<em>フィールド</em>に保存しておく.</li>
+<pre>// -------- MyPanel側フィールド --------
+private Image chara;
+
+// -------- MyPanel側コンストラクタ --------
+public MyPanel(Image chara) // 引数で受け取り
+{
+    this.chara = chara;     // フィールドに保存する. セッターと同じ考え方.
+}
+</pre>
+<p>※コンストラクタの引数で渡すのではなく, セッターで渡す方式でも良い.</p>
+
+<li><em>描画パネル</em>側の<code class="em">paintComponent</code>メソッドで, 画像を描画する.</li>
+<pre>// -------- MyPanel側メソッド --------
+public void paintComponent(Graphics g)
+{
+    System.out.println("in paintComponent:");
+    super.paintComponent(g);
+    g.drawImage(this.chara, X座標, Y座標, this); // X座標, Y座標は自分で設定する, 最後の引数はthisにする
+}
+</pre>
+
+</ol>
+
+<!--
+<p>なお, Javaで画像ファイルを読み込む方法はこの他にも様々に存在するが, 次回テーマの<em>アプレット化</em>を容易にするために, 今回の課題では<u>上記のルールに従って</u>プログラミングして欲しい. (従わないと次回大変苦労する, かもしれない. )</p>
+-->
+
+<!--<p>※大切な事なのでもう一度: 従っておかないと, 次回以降, 大変苦労する.</p>-->
+
+<h3>画像の配列</h3>
+
+<p>アニメーションを行うためには, 少しずつ異なる<em>複数の画像</em>が必要となる. それら複数の画像をひとまとめに扱うには, <em>配列</em>が便利である.</p>
+
+<p>以下に, 10枚の画像から成る配列の生成方法の例を示す. 前節の例では単一の画像データ(<code>chara</code>)をフレーム側から描画パネル側へ渡していたが, この場合は<em>画像の配列</em>(<code>chara_array</code>)を渡している.</p>
+
+<pre>// -------- MyFrame側コンストラクタ --------
+Image[] chara_array = new Image[10]; // Imageクラスの配列
+for (int i = 0; i &lt; 10; i++) {
+    chara_array[i] = tk.getImage("chara" + i + ".png"); // chara0.png, ..., chara9.png
+                                                           0番から          9番まで
+}
+this.mp = new MyPanel(chara_array); // 配列を渡す. 受け取る方も当然, 修正が必要. 
+</pre>
+
+<p>※大切な事なのでもう一度: <u>受け取る方も修正が必要</u>.</p>
+
+<p>※配列と<code>for</code>文が苦手な人は, 前期の内容を再確認して十分に復習しておく.</p>
+
+<h3>アニメーション</h3>
+
+<p><em>描画パネル</em>側の<em>フィールド</em>に, 現在の<em>画像番号</em>を表す状態変数を追加し, その<em>画像番号に応じた</em>画像を描画する. その後, 画像番号をインクリメント(+1)しておく.</p>
+
+<p>また, キャラクターを描く座標(x, y)もフィールドとし, (x, y)の位置に画像を描く. (x, y)を次々と変化させることで, 動きを表すことができる. 例えばx座標を増加させると右に, 減少させると左に動くことになる.</p>
+
+<pre>// -------- MyPanel側フィールド --------
+private int chara_i, chara_x, chara_y;
+
+// -------- MyPanel側コンストラクタ --------
+public MyPanel(Image[] chara_array)
+{
+    中略
+    this.chara_i = 0; this.chara_x = 300; this.chara_y = 200; // 初期値の設定
+
+
+// -------- MyPanel側メソッド --------
+public void paintComponent(Graphics g)
+{
+    中略
+    this.chara_i++;
+    if (this.chara_i &gt;= this.chara_array.length) { this.chara_i = 0; }
+    this.chara_x -= 2;
+    if (this.chara_x &lt; 0) { this.chara_x = 300; }
+    g.drawImage(this.chara_array[this.chara_i], this.chara_x, this.chara_y, this);
+</pre>
+
+<!--
+<p>例えば, サンプル(<a href="sample-2016/MyFrame.java">フレーム<a>, <a href="sample-2016/MyPanel.java">パネル</a>)では以下の様な多数の状態変数を用意し, <code>paintComponent</code>メソッド中でこれらの変数の値を変化させ, その値に応じて描く画像の<em>種類(番号)</em>と<em>位置</em>を決定している.</p>
+<ul>
+  <li>自機の位置</lI>
+  <li>自機のモーションの状態(番号)</li>
+  <li>自機と敵機の間の距離</li>
+  <li>やられているかいないかの状態</li>
+  <li>やられモーションの状態(番号)</li>
+</ul>
+
+<p>※ただし, 上記サンプルは必要以上に複雑なので, 自分で考えた方が簡単.</p>
+-->
+
+<h3>課題</h3>
+
+<p>以下の課題のレポートは, レポートファイル<code class="em">report17.txt</code>を作成してアップロードにより提出すること.</p>
+
+<p><em>[注意]</em> 課題4にて, 課題1〜課題3の遂行時に各自で調査した事柄(<code>Timer</code>クラスの<code>start</code>以外のメソッドや, <code>MediaTracker</code>クラスの使い方等)を載せる必要があるので, 途中で調べた事柄はファイルに貼り付けたりブックマークするなど, メモを残しておくと良い.</p>
+
+<ol>
+
+  <li>画像ファイルを<em>一つ</em>読み込み, 描画パネル内の適当な固定位置に, その画像を描画するプログラムを作成せよ. (ソースをレポート)
+    <ul>
+      <li>画像ファイルは各自の好みで用意して良いが, <u>ハラスメント</u>や<u>誹謗中傷</u>となる画像は避けること. GIMP等による自作を推奨するが, フリーの各種素材を利用しても良い.</li>
+      <li><em>[重要]</em> 画像の大きさは100x100ピクセル程度の小さいものを用いること. ※ただし背景画像にする場合は, この限りではない.</li>
+      <li>※大切な事なのでもう一度: <u>画像は小さいもの</u>を用いること.</li>
+      <li><code>getImage</code>メソッドによる画像ファイルの読込みはバックグラウンドでの並列処理となるため, 読込み処理が完了しない段階で次の行に進んでしまう. このため, 画像が大きかったりネットワークに遅延があると, まだ画像の読込みが終了していない状態で描画してしまい, <em>画像が表示されない</em>という現象が発生する. この現象が疑われる場合は, しばらく待ってからウィンドウを切り替えるなど, <code>repaint</code>を誘発してみて欲しい.</li>
+    </ul></li>
+
+  <li>画像ファイルを<em>複数</em>読み込み, 適当な固定位置に, それぞれ位置をずらして<em>全て</em>描画するプログラムを作成せよ. 画像の一覧を表示するということである. 複数の画像は<em>配列</em>を用いてまとめて扱うこと. (ソースをレポート)
+    <ul>
+      <li><!--画像ファイルを多数用意する事が目的<em>ではない</em>ので, -->画像ファイルは少なくとも3枚あれば良い.</li>
+    </ul></li>
+
+  <li>課題2のプログラムを元に, <code>Timer</code>クラスを用いて画像のアニメーション表示を行うプログラムを作成せよ. (ソース, アニメーションの絵的な説明および, <em>座標や画像番号の変化など</em>コード的な説明をレポート)
+    <ul>
+      <li><!--画像ファイルを多数用意する事が目的<em>ではない</em>ので, -->画像ファイルは少なくとも3枚あれば良い. むしろ<em>動き</em>(座標の変化)や, <em>状態</em>(画像番号)の変化に力を注いで欲しい.</li>
+      <li>※大切な事なのでもう一度: <u>座標の変化</u>や<u>状態の変化</u>を重点的に.</li>
+      <li>画像を描画する<em>位置</em>を時々刻々と変化させるのであるから, 画像の大きさは100x100程度に小さくすること. 巨大な画像ファイルを, 内容だけ変化させて固定位置に描画しては誤りである.</li>
+      <li>※大切な事なのでもう一度: <u>画像は小さいもの</u>を用いること. ※ただし背景画像にして重ね合わせする場合は, この限りではない.</li>
+      <li>時間的に変化するアニメーションのために<code>for</code>や<code>while</code>等で<em>ループさせては誤り</em>である. 位置や状態を表すフィールドを活用すること.</li>
+      <li>アニメーション用に大量の画像ファイルを読み込もうとすると, 全ての画像がまだ揃っていない状態でタイマーが開始してしまい, 画像が表示されないという現象が発生する. この問題を回避するためには<code class="em">MediaTracker</code>クラスという, 画像ファイルの読込み完了を待つ(wait)機能を用いる必要がある. 各自で調査して自分のプログラムに適用してみて欲しい. (基礎実験室後ろの<u>黄色い図書</u>を参考にするとすぐに見つかる)</li>
+	<li>各種のGUI部品や, マウスイベント, キーイベントを併用してアニメーションの動作に介入できたり, キャラクターを操作できるようにする等, 複雑な動作に挑戦しても良い. (良いが, 締切優先とすること.)</li>
+    </ul></li>
+
+  <li>課題1〜3の遂行時に各自で調査した事柄をまとめ, 報告せよ. <em>引用元</em>を必ず明記<!--し, そのまま丸写しはせずに, マニュアルとして参照し易い様に編集を加え-->すること. 「何も無し」や「課題ページのみ」は不可.</li>
+
+</ol>
+
+<h3>ヘルプとアドバイス</h3>
+
+<ul>
+
+<li>各種GUI部品の配置や, ボタンが押された場合の処理等は, これまで通りフレーム側で行う. <!--フレームと描画パネルの<em>役割分担</em>に注意せよ. --></li>
+
+<!--
+<li>今回は, フレームと描画パネルの<em>両方</em>に<code>actionPerformed</code>を作成する. どのタイミングでどちらの<code>actionPerformed</code>が呼び出されるのか, 良く考えてみよ.</li>
+-->
+
+<li>今回用いる<code>Timer</code>クラスは<code class="em">javax.swing.Timer</code>である. 間違えて<code>java.util.Timer</code>を使うとエラーや挙動不審の原因となるので注意せよ.</li>
+
+<li>タイマーで呼び出される<code>actionPerformed</code>は, 短い時間間隔で次々と呼び出されるものであるから, <code>actionPerformed</code>や<code>paintComponent</code>の中であまりに時間のかかる重い処理を行うと, <em>処理落ち</em>(コマ落ち)が発生してしまう.</li>
+
+<li>アニメーションで動かしたいキャラクター画像の背景部分を<em>透過</em>させ, 大きな背景画像と重ねるには, 画像ファイルをGIMP等で透過PNG等に変換して描画すると良い.</li>
+
+<!--
+<li>キーイベントの使用例</li>
+  <ul>
+  <li>どうしてもキーボード操作を行いたい場合は以下のコードを参照のこと.</li>
+  <li>今回の課題で使用する必要は全く<em>無い</em>.</li>
+  <li><a href="KeyTest1Frame.java">フレーム</a> / <a href="KeyTest1Panel.java">パネル</a></li>
+  </ul>
+-->
+
+</ul>
+
+<h3>レポート</h3>
+
+<ul>
+<li>内容: 課題中に指示されている通り. 必要な項目を全て記載しているか, 十分に確認すること.</li>
+
+<!--
+<p><em>注意:</em> 次回のテーマ19で, 今回作成したアニメーションをアプレット化し, <u>さらに改造</u>することも可能なので, 今回の課題で無理をする必要は全く無い. 締切までに提出することを最優先とすること.</p>
+-->
+
+</ul>
+
+
+
+</body></html>
