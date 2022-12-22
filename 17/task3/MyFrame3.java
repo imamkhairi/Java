@@ -27,7 +27,7 @@ public class MyFrame3 extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("timer success");
+        // System.out.println("timer success");
         Toolkit.getDefaultToolkit().sync();
     }
 }
