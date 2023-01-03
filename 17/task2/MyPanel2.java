@@ -20,7 +20,7 @@ public class MyPanel2 extends JPanel {
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
         for(int i = 0; i < this.chara.length; i ++) {
-            g2.drawImage(this.chara[i], 0+200*i, 0, this);
+            g2.drawImage(this.chara[i], 0+120*i, 0, this);
         }
     }
 } 

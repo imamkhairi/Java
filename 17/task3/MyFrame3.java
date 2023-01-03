@@ -5,6 +5,9 @@ import java.awt.*;
 public class MyFrame3 extends JFrame implements ActionListener{
     private MyPanel3 mp;
     private Timer timer;
+
+    //Test 
+
     public MyFrame3() {
         super();
         
@@ -14,6 +17,7 @@ public class MyFrame3 extends JFrame implements ActionListener{
         this.mp = new MyPanel3();
         
         this.getContentPane().add(this.mp);
+        // this.getContentPane().add(this.myGrid);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();

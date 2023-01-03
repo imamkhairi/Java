@@ -12,7 +12,7 @@ public class MyFrame2 extends JFrame {
         
         Toolkit tk = Toolkit.getDefaultToolkit();
         for(int i = 0; i < chara.length; i ++) {
-            this.chara[i] = tk.getImage("Dead (" + (i+1) + ").png").getScaledInstance(200,170, Image.SCALE_DEFAULT);
+            this.chara[i] = tk.getImage("front" + i +".png").getScaledInstance(120, 140, Image.SCALE_DEFAULT);
         }
 
         this.mp = new MyPanel2();
