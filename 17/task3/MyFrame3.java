@@ -11,7 +11,7 @@ public class MyFrame3 extends JFrame implements ActionListener{
     public MyFrame3() {
         super();
         
-        this.timer = new Timer(500, this);
+        this.timer = new Timer(200, this);
         this.timer.start();
 
         this.mp = new MyPanel3();
@@ -32,6 +32,8 @@ public class MyFrame3 extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         // System.out.println("timer success");
+        // this.mp.checkOpen();
+        this.mp.update();
         Toolkit.getDefaultToolkit().sync();
     }
 }
