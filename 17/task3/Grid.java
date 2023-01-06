@@ -15,12 +15,20 @@ public class Grid extends JPanel implements MouseListener{
     private List<Point> open;
     private List<Point> close;
     private List<Point> neighbour;
+    private List<Point> path;
 
+    private int currentCost = 10; //Soalnya grid yang bersebelahan itu paling kecil 10 lah ya
     private Point current;
+    private Point start = new Point(0,0); // SEMENTARA GINI DULU
+    private Point end;
 
     private int[][] g;
     private int[][] h;
     private int[][] f;
+    private int[][] openValue;
+    private int[][] closeValue;
+
+    private Point[][] parent;
   
     public Grid(Dimension dimension) {
         this.dimension = dimension;
@@ -29,16 +37,246 @@ public class Grid extends JPanel implements MouseListener{
         this.setPreferredSize(this.dimension);
 
         this.open = new ArrayList<Point>();
+        this.close = new ArrayList<Point>();
+        this.neighbour = new ArrayList<Point>();
+        this.path = new ArrayList<Point>();
+
+        this.current = this.start; // di awal current merupakan start
 
         // Kalau ada waktu silahkan tanya ke sensei cara initiate di method
         this.g = new int[this.gridCount][this.gridCount];
         this.h = new int[this.gridCount][this.gridCount];
         this.f = new int[this.gridCount][this.gridCount];
-        this.intitateCost(g);
-        this.intitateCost(h);
-        this.intitateCost(f);
+        this.openValue = new int[this.gridCount][this.gridCount];
+        this.closeValue = new int[this.gridCount][this.gridCount];
+        // Mungkin nama initiatecost ini harusnya diganti
+        this.intitateCost(this.g);
+        this.intitateCost(this.h);
+        this.intitateCost(this.f);
+        this.intitateCost(this.openValue);
+        this.intitateCost(this.closeValue);
+
+        this.parent = new Point[this.gridCount][this.gridCount];
+        this.initiateParen(this.parent);
 
         this.addMouseListener(this);
+    }
+
+    private void initiateParen(Point[][] p) {
+        for(int i = 0; i < this.gridCount; i++){
+            for(int j = 0; j < this.gridCount; j++) {
+                p[i][j] = null;
+            }
+        } 
+    }
+
+    private void startPathFinding() {
+        this.open.add(this.start);
+        this.path.add(this.start);
+
+        // LOOP gedenya di sini
+
+        while(!this.isSame(this.end, this.current)) {
+            this.current = this.updateCurrent(this.getLowestF(this.open));
+            this.open.remove(this.current);
+            this.addClose(this.current);
+            
+            this.getNeighbour();
+    
+            this.checkNeighbour();
+    
+            this.neighbour.clear();
+        }
+        // check kalau udh selesai
+        if(this.isSame(this.current, this.end)){
+            // System.out.println("end");
+        } else {
+            // System.out.println("belum");
+        }
+        this.getPath();
+        System.out.println();
+    }
+
+    private void getPath() {
+        System.out.println("ini cek parent");
+        for(int i = 0; i < this.gridCount; i ++) {
+            for(int j = 0; j < this.gridCount; j ++) {
+                if(this.parent[i][j] != null) {
+                    System.out.println(i+","+j + " " +this.parent[i][j]);
+                }
+            }
+        }
+    }
+
+    private void addClose(Point p) {
+        int x = p.x;
+        int y = p.y;
+        if(this.closeValue[x][y] < 0) {
+            this.closeValue[x][y] = 1;
+            this.close.add(p);
+        }
+    }
+
+    // Kemungkinan ini gk guna
+    private void addToOpen(List<Point> target) {
+        for(Point p : target) {
+            this.open.add(p);
+        }
+    }
+
+    private Point updateCurrent(List<Point> p) {
+        Point r = null;
+        if(p.size() > 1) {
+            r = this.getLowestH(p);
+        } else {
+            r = p.get(0);
+        }
+        return r;
+    }
+
+    private Point getLowestH(List<Point> target) {
+        int lowest = this.f[target.get(0).x][target.get(0).y];
+        Point r = null;
+
+        for(Point p : target) {
+            int x = p.x;
+            int y = p.y;
+            if(this.f[x][y] <= lowest) {
+                lowest = this.f[x][y];
+                r = p;
+            }
+        }
+        return r;
+    }
+
+    private List<Point> getLowestF(List<Point> target) {
+        int lowest = this.f[target.get(0).x][target.get(0).y];
+        List<Point> r = new ArrayList<Point>();
+        
+        for(Point p : target) {
+            int x = p.x;
+            int y = p.y;
+            if(this.f[x][y] < lowest) {
+                lowest = this.f[x][y];
+                r.clear();
+                r.add(new Point(x,y));
+            } else if (this.f[x][y] == lowest) {
+                r.add(new Point(x,y));
+            }
+        }
+
+        return r;
+    }
+
+    private Boolean isSame(Point p, Point q) {
+        if(p.x == q.x && p.y == q.y) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void checkNeighbour() {
+        // System.out.println(this.neighbour);
+        // System.out.println(this.close);
+
+        List<Point> a = new ArrayList<Point>();
+
+        for(Point p : this.neighbour) {
+            if(this.open.size() == 0) {
+                this.updateParent(p);
+                this.checkOpen(p, a);
+            } else {
+                for(Point q : this.open) {
+                    if(!this.isSame(p, q) || this.getCost(p, this.current) < this.currentCost) {
+                        this.updateParent(p);
+                    }
+                    if(!this.isSame(p, q)){
+                        this.checkOpen(p, a);
+                    } else if (this.getCost(p, this.current) < this.currentCost) {
+                        System.out.println("Cost");
+                        System.out.println(this.currentCost);
+                        this.currentCost = this.getCost(q, this.current);
+                    }
+                }
+            }
+        }
+        
+        this.addToOpen(a);
+
+        //DEBUG
+        // System.out.println("ini cek parent");
+        // for(int i = 0; i < this.gridCount; i ++) {
+        //     for(int j = 0; j < this.gridCount; j ++) {
+        //         if(this.parent[i][j] != null) {
+        //             System.out.println(i+","+j + " " +this.parent[i][j]);
+        //         }
+        //     }
+        // }
+
+        // System.out.println("ini adalah Open");
+        // System.out.println(this.open);
+        // System.out.println("Close");
+        // System.out.println(this.close);
+    }
+
+    private void checkOpen(Point p, List<Point> a) {
+        int x = p.x;
+        int y = p.y;
+        if(this.openValue[x][y] < 0) {
+            this.openValue[x][y] = 1;
+            a.add(p);
+        }
+    }
+
+    private void updateParent(Point p) {
+        int x = p.x;
+        int y = p.y;
+        this.setF(p);
+        this.parent[x][y] = this.current;
+    }
+
+    private void setF(Point p) {
+        int x = p.x;
+        int y = p.y;
+        this.g[x][y] = this.getCost(this.start, p);
+        this.h[x][y] = this.getCost(this.end, p);
+        this.f[x][y] = this.g[x][y] + this.h[x][y];
+    }
+
+    private void getNeighbour(){
+        int[] v = {-1,0,1};
+        for(int i : v){
+            for(int j : v) {
+                int x = this.current.x + i;
+                int y = this.current.y + j;
+                if(x >= 0 && y >= 0 && x < this.gridCount && y < this.gridCount) {
+                    if(i == 0 && j == 0) {
+                    } else {
+                        if(this.closeValue[x][y] < 0) {
+                            this.neighbour.add(new Point(x,y));
+                        }
+                    }
+                }
+            }
+        }
+        
+        // for(Point p : this.neighbour){
+        //     int x = p.x;
+        //     int y = p.y;
+        //     this.g[x][y] = this.getCost(this.start, p);
+        //     this.h[x][y] = this.getCost(this.end, p);
+        //     this.f[x][y] = this.g[x][y] + this.h[x][y];
+
+        //     //DEBUG
+        //     System.out.println("G(" + x + "," + y +") " + this.g[x][y]);
+        //     System.out.println("H(" + x + "," + y +") " + this.h[x][y]);
+        //     System.out.println("F(" + x + "," + y +") " + this.f[x][y]);
+        //     System.out.println();
+        // }
+
+        // getLowestF worked
+        // System.out.println(this.getLowestF(this.neighbour));
     }
 
     private void intitateCost(int[][] target) {
@@ -62,8 +300,6 @@ public class Grid extends JPanel implements MouseListener{
         double d = Math.sqrt(dx*dx + dy*dy) * 10;
         return (int)d;
     }
-
-
 
     @Override
     public void paintComponent(Graphics g) {
@@ -124,16 +360,17 @@ public class Grid extends JPanel implements MouseListener{
         // YANG ATAS INI HANYA CEK KOORDINAT SAJA
 
         // Yang ini bisa lah
-        this.current = new Point(c[0], c[1]);
+        this.end = new Point(c[0], c[1]);
+        // System.out.println(end);
         // System.out.println(this.current);
 
-        System.out.println(this.getCost(new Point(0,0), this.current));
+        // System.out.println(this.getCost(new Point(0,0), this.current));
 
         // this.open.add(new Point(c[0],c[1]));
         // this.repaint();
 
         //DEBUG USE
-        System.out.println(this.g[0][0]);
+        this.startPathFinding();
     }
 
     @Override
