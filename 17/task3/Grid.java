@@ -50,19 +50,15 @@ public class Grid extends JPanel implements MouseListener{
         this.openValue = new int[this.gridCount][this.gridCount];
         this.closeValue = new int[this.gridCount][this.gridCount];
         // Mungkin nama initiatecost ini harusnya diganti
-        this.intitateCost(this.g);
-        this.intitateCost(this.h);
-        this.intitateCost(this.f);
-        this.intitateCost(this.openValue);
-        this.intitateCost(this.closeValue);
+        this.resetAll();
 
         this.parent = new Point[this.gridCount][this.gridCount];
-        this.initiateParen(this.parent);
+        this.initiateParent(this.parent);
 
         this.addMouseListener(this);
     }
 
-    private void initiateParen(Point[][] p) {
+    private void initiateParent(Point[][] p) {
         for(int i = 0; i < this.gridCount; i++){
             for(int j = 0; j < this.gridCount; j++) {
                 p[i][j] = null;
@@ -72,7 +68,7 @@ public class Grid extends JPanel implements MouseListener{
 
     private void startPathFinding() {
         this.open.add(this.start);
-        this.path.add(this.start);
+        // this.path.add(this.start);
 
         // LOOP gedenya di sini
 
@@ -87,25 +83,30 @@ public class Grid extends JPanel implements MouseListener{
     
             this.neighbour.clear();
         }
-        // check kalau udh selesai
-        if(this.isSame(this.current, this.end)){
-            // System.out.println("end");
-        } else {
-            // System.out.println("belum");
-        }
-        this.getPath();
-        System.out.println();
+
+        this.updatePath();
+        this.resetAll();
     }
 
-    private void getPath() {
-        System.out.println("ini cek parent");
-        for(int i = 0; i < this.gridCount; i ++) {
-            for(int j = 0; j < this.gridCount; j ++) {
-                if(this.parent[i][j] != null) {
-                    System.out.println(i+","+j + " " +this.parent[i][j]);
-                }
-            }
+    public void clearPath() {
+        this.path.clear();
+    }
+    
+    private void updatePath() {
+        int x = this.end.x;
+        int y = this.end.y;
+        this.path.add(new Point(x,y));
+
+        while(x != this.start.x || y != this.start.y) {
+            int prevX = this.parent[x][y].x;
+            int prevY = this.parent[x][y].y;
+
+            this.path.add(new Point(prevX, prevY));
+
+            x = prevX;
+            y = prevY;
         }
+
     }
 
     private void addClose(Point p) {
@@ -279,7 +280,17 @@ public class Grid extends JPanel implements MouseListener{
         // System.out.println(this.getLowestF(this.neighbour));
     }
 
-    private void intitateCost(int[][] target) {
+    private void resetAll() {
+        this.reset(this.g);
+        this.reset(this.h);
+        this.reset(this.f);
+        this.reset(this.openValue);
+        this.reset(this.closeValue);
+        this.open.clear();
+        this.close.clear();
+    }
+
+    private void reset(int[][] target) {
         // target = new int[this.gridCount][this.gridCount];
         for(int i = 0; i < this.gridCount; i ++){
             for(int j = 0; j < this.gridCount; j ++){
@@ -344,6 +355,18 @@ public class Grid extends JPanel implements MouseListener{
         } else {
             System.out.println("outside");
         }
+    }
+
+    public Point getStart() {
+        return this.start;
+    }
+
+    public int getGridSize() {
+        return this.gridSize;
+    }
+
+    public List<Point> getPath() {
+        return this.path;
     }
 
     @Override
