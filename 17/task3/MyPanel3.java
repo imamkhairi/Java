@@ -28,6 +28,8 @@ public class MyPanel3 extends JPanel{
         // System.out.println(this.myChara.getPath());
         
         this.myChara.updateSpritePosition();
+        this.myChara.animateMovement();
+        // this.myChara.animateMovement(this.myChara.getMovement(), this.myChara.setPosition(), ABORT, getLocation());
 
         this.myGrid.clearPath();
         this.myChara.updateSprite();

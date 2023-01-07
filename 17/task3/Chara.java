@@ -32,17 +32,21 @@ public class Chara extends JLabel {
     private final int height = 14;
 
     private int spriteIndex = 0;
-    private int pathIndex = 0;
 
     private Point p;
     private int gridSize;
 
+    private boolean move = false;
+
     private List<Point> path = new ArrayList<Point>();
+
+    private Point current;
+    private Point next;
 
     public Chara(Point p, int gridSize) {
         // rightwalk masih agak aneh
-        this.dir = "left";
-        this.action = "walk";
+        this.dir = "front";
+        this.action = "idle";
         this.updateFileName(this.dir, this.action, 0);
         this.updateSprite();
 
@@ -50,6 +54,8 @@ public class Chara extends JLabel {
         this.gridSize = gridSize;
 
         this.updateSpritePosition();
+
+        this.current = this.setPosition();
     }
 
     public void updatePath(List<Point> p) {
@@ -67,7 +73,7 @@ public class Chara extends JLabel {
         return p;
     }
 
-    private Point setPosition() {
+    public Point setPosition() {
         int x = (this.gridSize - this.width*this.scale)/2;
         int y = (this.gridSize - this.height*this.scale)/2;
         x += this.p.x * this.gridSize;
@@ -88,12 +94,7 @@ public class Chara extends JLabel {
             r[0] = x;
             r[1] = y;
 
-            // this.p.move(r[0], r[1]);
-
-            // System.out.println(this.path);
-            // System.out.println(this.path);
-            // System.out.println(r[0] + "," + r[1]);
-            this.path.remove(0);
+            if(!this.move) this.path.remove(0);
         }
         return r;
     }
@@ -102,14 +103,38 @@ public class Chara extends JLabel {
         return this.path;
     }
 
+    public void translateP(int[] v) {
+        this.p.translate(v[0], v[1]);
+        
+    }
     public void updateSpritePosition() {
         int[] v = this.getMovement();
-        // if(v[0] != 0 || v[1] != 0) {
-        //     System.out.println(v[0] + "," + v[1]);
-        // }
+        
+        Point next = this.setPosition();
+        int x = next.x;
+        int y = next.y;
+        
         this.p.translate(v[0], v[1]);
-        // System.out.println(this.p);
-        this.setBounds(this.setPosition().x, this.setPosition().y, this.width*this.scale, this.height*this.scale);
+        next = this.setPosition();
+        
+        if(v[0] != 0 || v[0] != 0) {
+            while(x != next.x || y != next.y) {
+                x += v[0]*1;
+                y += v[1]*1;
+                System.out.println(x +","+ y);
+                this.setBounds(x, y, this.width*this.scale, this.height*this.scale);
+            }
+        } else {
+            this.setBounds(next.x, next.y, this.width*this.scale, this.height*this.scale);
+        }
+    }
+
+    public void animateMovement() {
+        // System.out.println(this.current);
+        this.p.translate(1, 1);
+        this.next = this.setPosition();
+        System.out.println(this.current);
+        System.out.println(this.next);
     }
 
     private void updateFileName(String dir, String action, int index) {
