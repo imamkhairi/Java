@@ -29,7 +29,7 @@ public class Grid extends JPanel implements MouseListener{
     private int[][] closeValue;
 
     private Point[][] parent;
-  
+    
     public Grid(Dimension dimension) {
         this.dimension = dimension;
         this.setBounds(0, 0, this.dimension.width, this.dimension.height);
@@ -49,7 +49,6 @@ public class Grid extends JPanel implements MouseListener{
         this.f = new int[this.gridCount][this.gridCount];
         this.openValue = new int[this.gridCount][this.gridCount];
         this.closeValue = new int[this.gridCount][this.gridCount];
-        // Mungkin nama initiatecost ini harusnya diganti
         this.resetAll();
 
         this.parent = new Point[this.gridCount][this.gridCount];
@@ -204,21 +203,6 @@ public class Grid extends JPanel implements MouseListener{
         }
         
         this.addToOpen(a);
-
-        //DEBUG
-        // System.out.println("ini cek parent");
-        // for(int i = 0; i < this.gridCount; i ++) {
-        //     for(int j = 0; j < this.gridCount; j ++) {
-        //         if(this.parent[i][j] != null) {
-        //             System.out.println(i+","+j + " " +this.parent[i][j]);
-        //         }
-        //     }
-        // }
-
-        // System.out.println("ini adalah Open");
-        // System.out.println(this.open);
-        // System.out.println("Close");
-        // System.out.println(this.close);
     }
 
     private void checkOpen(Point p, List<Point> a) {
@@ -261,23 +245,6 @@ public class Grid extends JPanel implements MouseListener{
                 }
             }
         }
-        
-        // for(Point p : this.neighbour){
-        //     int x = p.x;
-        //     int y = p.y;
-        //     this.g[x][y] = this.getCost(this.start, p);
-        //     this.h[x][y] = this.getCost(this.end, p);
-        //     this.f[x][y] = this.g[x][y] + this.h[x][y];
-
-        //     //DEBUG
-        //     System.out.println("G(" + x + "," + y +") " + this.g[x][y]);
-        //     System.out.println("H(" + x + "," + y +") " + this.h[x][y]);
-        //     System.out.println("F(" + x + "," + y +") " + this.f[x][y]);
-        //     System.out.println();
-        // }
-
-        // getLowestF worked
-        // System.out.println(this.getLowestF(this.neighbour));
     }
 
     private void resetAll() {

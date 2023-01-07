@@ -27,9 +27,10 @@ public class MyPanel3 extends JPanel{
         // System.out.println(x[0] + ","+ x[1]);
         // System.out.println(this.myChara.getPath());
         
-        this.myChara.updateSpritePosition();
+        // this.myChara.updateSpritePosition();
+
         this.myChara.animateMovement();
-        // this.myChara.animateMovement(this.myChara.getMovement(), this.myChara.setPosition(), ABORT, getLocation());
+        this.myChara.changeMoveValue();
 
         this.myGrid.clearPath();
         this.myChara.updateSprite();

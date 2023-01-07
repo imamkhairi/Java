@@ -45,8 +45,8 @@ public class Chara extends JLabel {
 
     public Chara(Point p, int gridSize) {
         // rightwalk masih agak aneh
-        this.dir = "front";
-        this.action = "idle";
+        this.dir = "right";
+        this.action = "walk";
         this.updateFileName(this.dir, this.action, 0);
         this.updateSprite();
 
@@ -121,7 +121,7 @@ public class Chara extends JLabel {
             while(x != next.x || y != next.y) {
                 x += v[0]*1;
                 y += v[1]*1;
-                System.out.println(x +","+ y);
+                // System.out.println(x +","+ y);
                 this.setBounds(x, y, this.width*this.scale, this.height*this.scale);
             }
         } else {
@@ -129,12 +129,43 @@ public class Chara extends JLabel {
         }
     }
 
+    public void changeMoveValue() {
+        // if((this.current.x != this.next.x || this.current.y != this.next.y) && !this.move) {
+        if(this.path.size() > 0 && !this.move) {
+            this.move = true;
+        } else if(this.current.x == this.next.x && this.current.y == this.next.y) {
+            this.move = false;
+        }
+        // else if (this.move) {
+        //     this.move = false;
+        // }
+        // System.out.println(this.move);
+    }
+
     public void animateMovement() {
-        // System.out.println(this.current);
-        this.p.translate(1, 1);
-        this.next = this.setPosition();
-        System.out.println(this.current);
-        System.out.println(this.next);
+        this.next = new Point(84,8);
+        if((this.current.x != this.next.x || this.current.y != this.next.y) && this.move) {
+            this.current.translate(4, 0);
+            this.setBounds(this.current.x, this.current.y, this.width*this.scale, this.height*this.scale);
+            this.move = true;
+        } else {
+            //DISINI SETELAH NYAMPE MASIH NGEBUG
+            // System.out.println("ini "+this.move);
+            this.updateNext();
+            // DISINI BELUM TERUPDATE
+            System.out.println(this.next + " , " + this.current);
+            if(this.current.x == this.next.x && this.current.y == this.next.y) {
+                // System.out.println("ini kena");
+                this.path.clear();
+            }
+        }
+        // System.out.println(this.move + "   " +this.path.size());
+    }
+
+    //Masih kasar
+    private void updateNext() {
+        this.next.translate(72, 0);
+        // System.out.println(this.next);
     }
 
     private void updateFileName(String dir, String action, int index) {
