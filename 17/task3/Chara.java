@@ -41,21 +41,26 @@ public class Chara extends JLabel {
     private List<Point> path = new ArrayList<Point>();
 
     private Point current;
-    private Point next;
+    private Point next = new Point(84,8);
+
+    private boolean start = true;
 
     public Chara(Point p, int gridSize) {
         // rightwalk masih agak aneh
-        this.dir = "right";
-        this.action = "walk";
+        this.dir = "front";
+        this.action = "idle";
         this.updateFileName(this.dir, this.action, 0);
         this.updateSprite();
 
         this.p = p;
+        this.current = p;
         this.gridSize = gridSize;
 
         this.updateSpritePosition();
 
-        this.current = this.setPosition();
+        this.current = this.setPosition(this.current);
+        this.p = this.setPosition(this.p);
+
     }
 
     public void updatePath(List<Point> p) {
@@ -67,9 +72,22 @@ public class Chara extends JLabel {
 
     public List<Point> reversePath() {
         List<Point> p = new ArrayList<Point>();
-        for(int i = this.path.size() - 2; i >= 0; i--) {
+        for(int i = this.path.size() - 1; i >= 0; i--) {
             p.add(this.path.get(i)); 
         }
+        if(start) {
+            p.remove(0);
+            this.start = false;
+        }
+        return p;
+    }
+
+    public Point setPosition(Point current) {
+        int x = (this.gridSize - this.width*this.scale)/2;
+        int y = (this.gridSize - this.height*this.scale)/2;
+        x += current.x * this.gridSize;
+        y += current.y * this.gridSize;
+        Point p = new Point(x,y);
         return p;
     }
 
@@ -115,7 +133,6 @@ public class Chara extends JLabel {
         int y = next.y;
         
         this.p.translate(v[0], v[1]);
-        next = this.setPosition();
         
         if(v[0] != 0 || v[0] != 0) {
             while(x != next.x || y != next.y) {
@@ -132,7 +149,9 @@ public class Chara extends JLabel {
     public void changeMoveValue() {
         // if((this.current.x != this.next.x || this.current.y != this.next.y) && !this.move) {
         if(this.path.size() > 0 && !this.move) {
+            // System.out.println(this.path);
             this.move = true;
+            this.next = this.setPosition(this.path.get(0));
         } else if(this.current.x == this.next.x && this.current.y == this.next.y) {
             this.move = false;
         }
@@ -142,30 +161,74 @@ public class Chara extends JLabel {
         // System.out.println(this.move);
     }
 
+    private void changeDir(int x, int y) {
+        if(x < 0) {
+            this.dir = "left";
+        } else if(x > 0) {
+            this.dir = "right";
+        }
+
+        if(y > 0 && x == 0) {
+            this.dir = "front";
+        } else if(y < 0 && x == 0) {
+            this.dir = "back";
+        }
+    }
+
+    private void changeAction(List<Point> p) {
+        if(p.size() > 0) {
+            this.action = "walk";
+        } else {
+            this.action = "idle";
+        }
+    }
     public void animateMovement() {
-        this.next = new Point(84,8);
-        if((this.current.x != this.next.x || this.current.y != this.next.y) && this.move) {
-            this.current.translate(4, 0);
+        if(this.move) {
+            // ini mungkin masih bisa dimasukan ke method lain gitu
+            int x = this.next.x - this.p.x;
+            int y = this.next.y - this.p.y;
+            // System.out.println(x + " , " + y);
+            this.current.translate(8*x/72, 8*y/72);
+
+            this.changeDir(x, y);
+
             this.setBounds(this.current.x, this.current.y, this.width*this.scale, this.height*this.scale);
             this.move = true;
-        } else {
-            //DISINI SETELAH NYAMPE MASIH NGEBUG
-            // System.out.println("ini "+this.move);
-            this.updateNext();
-            // DISINI BELUM TERUPDATE
-            System.out.println(this.next + " , " + this.current);
-            if(this.current.x == this.next.x && this.current.y == this.next.y) {
-                // System.out.println("ini kena");
+            // System.out.println("jalan");
+        } else if(this.current.x == this.next.x && this.current.y == this.next.y) {
+            // System.out.println("sini");
+            int x = this.current.x;
+            int y = this.current.y;
+            this.p = new Point(x,y);
+            if(this.path.size() > 1) {
+                // System.out.println("masuk sini");
+                this.path.remove(0);
+                this.next = this.setPosition(this.path.get(0));
+            } else {
                 this.path.clear();
+                this.move = false;
             }
+            // System.out.println(this.p);
+            // System.out.println("end");
+            // this.p = this.current;
+            // this.next = this.setPosition(this.path.get(0));
         }
-        // System.out.println(this.move + "   " +this.path.size());
+
+        this.changeAction(this.path);
+        // System.out.println(this.p);
+        // System.out.println(this.current);
+        // System.out.println(this.next);
+        // System.out.println(this.move);
+        // System.out.println();
+        // System.out.println(this.path);
     }
 
     //Masih kasar
     private void updateNext() {
-        this.next.translate(72, 0);
-        // System.out.println(this.next);
+        // this.next.translate(72, 0);
+        // this.path.clear();
+        // System.out.println("point updated");
+        // this.next = new Point(156,8);
     }
 
     private void updateFileName(String dir, String action, int index) {
@@ -179,6 +242,7 @@ public class Chara extends JLabel {
     }
 
     public void updateSprite() {
+        this.updateFileName(this.dir, this.action, this.spriteIndex);
         if(this.spriteIndex < 3) {
             this.spriteIndex ++;
         } else {

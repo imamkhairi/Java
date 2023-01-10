@@ -84,7 +84,15 @@ public class Grid extends JPanel implements MouseListener{
         }
 
         this.updatePath();
+        // System.out.println(this.path);
         this.resetAll();
+
+        int x = this.end.x;
+        int y = this.end.y;
+        this.start = new Point(x,y);
+
+        // System.out.println("Start : " + this.start);
+        // System.out.println("End : " +this.end);
     }
 
     public void clearPath() {
@@ -177,9 +185,6 @@ public class Grid extends JPanel implements MouseListener{
     }
 
     private void checkNeighbour() {
-        // System.out.println(this.neighbour);
-        // System.out.println(this.close);
-
         List<Point> a = new ArrayList<Point>();
 
         for(Point p : this.neighbour) {
@@ -359,7 +364,6 @@ public class Grid extends JPanel implements MouseListener{
         // this.open.add(new Point(c[0],c[1]));
         // this.repaint();
 
-        //DEBUG USE
         this.startPathFinding();
     }
 
