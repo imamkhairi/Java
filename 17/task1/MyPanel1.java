@@ -18,6 +18,6 @@ public class MyPanel1 extends JPanel {
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
         super.paintComponent(g2);
-        g2.drawImage(this.chara, 0, 0, this);
+        g2.drawImage(this.chara, 150, 150, this);
     }
 }

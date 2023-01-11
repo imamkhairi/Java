@@ -1,0 +1,771 @@
+4J 08 イマムカイリルビス　テーマ17　レポート
+
+課題１
+import javax.swing.*;
+import java.awt.*;
+
+public class MyPanel1 extends JPanel {
+    private Image chara;
+
+    private Dimension panelSize = new Dimension(720, 480);
+
+    public MyPanel1() {
+        this.setPreferredSize(this.panelSize);
+        this.setBackground(Color.BLACK);
+    }
+
+    public void setChara(Image chara) {
+        this.chara = chara;
+    }
+
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D)g;
+        super.paintComponent(g2);
+        g2.drawImage(this.chara, 150, 150, this);
+    }
+}
+
+import javax.swing.*;
+import java.awt.*;
+
+public class MyFrame1 extends JFrame {
+    private MyPanel1 mp;
+
+    public MyFrame1() {
+        super();
+        
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        // Image chara = tk.getImage("/mnt/home/p214071/Java/17/res/png/Idle (1).png");
+        Image chara = tk.getImage("Dead (1).png").getScaledInstance(200,170, Image.SCALE_DEFAULT);
+
+        this.mp = new MyPanel1();
+        this.mp.setChara(chara);
+
+        this.getContentPane().add(this.mp);
+
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setVisible(true);
+    }
+    
+    public static void main(String[] args) {
+        new MyFrame1();
+    }
+}
+
+課題２
+import javax.swing.*;
+import java.awt.*;
+
+public class MyPanel2 extends JPanel {
+    private Dimension panelSize = new Dimension(1080, 720);
+    private Image[] chara;
+
+    public MyPanel2() {
+        this.setPreferredSize(this.panelSize);
+        this.setBackground(Color.BLACK);
+        this.chara = new Image[5];
+    }
+
+    public void setChara(Image[] chara) {
+        for(int i = 0; i < chara.length; i ++) {
+            this.chara[i] = chara[i];
+        }
+    }
+
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D)g;
+        for(int i = 0; i < this.chara.length; i ++) {
+            g2.drawImage(this.chara[i], 0+120*i, 0, this);
+        }
+    }
+} 
+
+import javax.swing.*;
+import java.awt.*;
+
+public class MyFrame2 extends JFrame {
+    private MyPanel2 mp;
+    private Image[] chara;
+
+    public MyFrame2() {
+        super();
+
+        this.chara = new Image[5];
+        
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        for(int i = 0; i < chara.length; i ++) {
+            this.chara[i] = tk.getImage("front" + i +".png").getScaledInstance(120, 140, Image.SCALE_DEFAULT);
+        }
+
+        this.mp = new MyPanel2();
+        this.mp.setChara(this.chara);
+
+        this.getContentPane().add(this.mp);
+
+        this.pack();
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new MyFrame2();
+    }
+}
+
+
+課題３
+import javax.swing.*;
+import java.awt.event.*;
+import java.awt.*;
+
+public class MyFrame3 extends JFrame implements ActionListener{
+    private MyPanel3 mp;
+    private Timer timer;
+
+    public MyFrame3() {
+        super();
+        
+        this.timer = new Timer(200, this);
+        this.timer.start();
+
+        this.mp = new MyPanel3();
+        
+        this.getContentPane().add(this.mp);
+
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new MyFrame3();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        this.mp.update();
+        Toolkit.getDefaultToolkit().sync();
+    }
+}
+
+import javax.swing.*;
+import java.awt.*;
+
+public class MyPanel3 extends JPanel{
+    private Dimension panelSize = new Dimension(720, 720);
+
+    private Grid myGrid;
+    private Chara myChara;
+    
+    public MyPanel3() {
+        this.setPreferredSize(this.panelSize);
+
+        this.myGrid = new Grid(this.panelSize);
+        this.myChara = new Chara(this.myGrid.getStart(), this.myGrid.getGridSize());
+
+        this.setLayout(null);
+        this.add(this.myChara);
+        this.add(this.myGrid);
+    }
+
+    public void update() {
+        this.myChara.updatePath(this.myGrid.getPath());
+
+        this.myChara.animateMovement();
+        this.myChara.changeMoveValue();
+
+        this.myGrid.clearPath();
+        this.myChara.updateSprite();
+    }
+
+    public void checkOpen() {
+        if(this.myGrid.getOpen().isEmpty()){
+            System.out.println(this.myGrid.getOpen().isEmpty());
+        } else {
+            System.out.println(this.myGrid.getOpen().size());
+        }
+    }
+
+}
+
+import java.awt.event.*;
+import java.awt.*;
+import javax.swing.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Grid extends JPanel implements MouseListener{
+    private Dimension dimension;
+    private int gridCount = 10;
+    private int gridSize;
+    private int box_X = -1;
+    private int box_Y = -1;
+
+    private List<Point> open;
+    private List<Point> close;
+    private List<Point> neighbour;
+    private List<Point> path;
+
+    private int currentCost = 10;
+    private Point current;
+    private Point start = new Point(0,0);
+    private Point end;
+
+    private int[][] g;
+    private int[][] h;
+    private int[][] f;
+    private int[][] openValue;
+    private int[][] closeValue;
+
+    private Point[][] parent;
+    
+    public Grid(Dimension dimension) {
+        this.dimension = dimension;
+        this.setBounds(0, 0, this.dimension.width, this.dimension.height);
+        this.gridSize = this.dimension.height/this.gridCount;
+        this.setPreferredSize(this.dimension);
+
+        this.open = new ArrayList<Point>();
+        this.close = new ArrayList<Point>();
+        this.neighbour = new ArrayList<Point>();
+        this.path = new ArrayList<Point>();
+
+        this.current = this.start; 
+
+        this.g = new int[this.gridCount][this.gridCount];
+        this.h = new int[this.gridCount][this.gridCount];
+        this.f = new int[this.gridCount][this.gridCount];
+        this.openValue = new int[this.gridCount][this.gridCount];
+        this.closeValue = new int[this.gridCount][this.gridCount];
+        this.resetAll();
+
+        this.parent = new Point[this.gridCount][this.gridCount];
+        this.initiateParent(this.parent);
+
+        this.addMouseListener(this);
+    }
+
+    private void initiateParent(Point[][] p) {
+        for(int i = 0; i < this.gridCount; i++){
+            for(int j = 0; j < this.gridCount; j++) {
+                p[i][j] = null;
+            }
+        } 
+    }
+
+    private void startPathFinding() {
+        this.open.add(this.start);
+
+        while(!this.isSame(this.end, this.current)) {
+            this.current = this.updateCurrent(this.getLowestF(this.open));
+            this.open.remove(this.current);
+            this.addClose(this.current);
+            
+            this.getNeighbour();
+    
+            this.checkNeighbour();
+    
+            this.neighbour.clear();
+        }
+
+        this.updatePath();
+        this.resetAll();
+
+        this.changeStart();
+    }
+
+    private void changeStart() {
+        int x = this.end.x;
+        int y = this.end.y;
+        this.start = new Point(x,y);
+    }
+
+    public void clearPath() {
+        this.path.clear();
+    }
+    
+    private void updatePath() {
+        int x = this.end.x;
+        int y = this.end.y;
+        this.path.add(new Point(x,y));
+
+        while(x != this.start.x || y != this.start.y) {
+            int prevX = this.parent[x][y].x;
+            int prevY = this.parent[x][y].y;
+
+            this.path.add(new Point(prevX, prevY));
+
+            x = prevX;
+            y = prevY;
+        }
+    }
+
+    private void addClose(Point p) {
+        int x = p.x;
+        int y = p.y;
+        if(this.closeValue[x][y] < 0) {
+            this.closeValue[x][y] = 1;
+            this.close.add(p);
+        }
+    }
+
+    private void addToOpen(List<Point> target) {
+        for(Point p : target) {
+            this.open.add(p);
+        }
+    }
+
+    private Point updateCurrent(List<Point> p) {
+        Point r = null;
+        if(p.size() > 1) {
+            r = this.getLowestH(p);
+        } else {
+            r = p.get(0);
+        }
+        return r;
+    }
+
+    private Point getLowestH(List<Point> target) {
+        int lowest = this.f[target.get(0).x][target.get(0).y];
+        Point r = null;
+
+        for(Point p : target) {
+            int x = p.x;
+            int y = p.y;
+            if(this.f[x][y] <= lowest) {
+                lowest = this.f[x][y];
+                r = p;
+            }
+        }
+        return r;
+    }
+
+    private List<Point> getLowestF(List<Point> target) {
+        int lowest = this.f[target.get(0).x][target.get(0).y];
+        List<Point> r = new ArrayList<Point>();
+        
+        for(Point p : target) {
+            int x = p.x;
+            int y = p.y;
+            if(this.f[x][y] < lowest) {
+                lowest = this.f[x][y];
+                r.clear();
+                r.add(new Point(x,y));
+            } else if (this.f[x][y] == lowest) {
+                r.add(new Point(x,y));
+            }
+        }
+
+        return r;
+    }
+
+    private Boolean isSame(Point p, Point q) {
+        if(p.x == q.x && p.y == q.y) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void checkNeighbour() {
+        List<Point> a = new ArrayList<Point>();
+
+        for(Point p : this.neighbour) {
+            if(this.open.size() == 0) {
+                this.updateParent(p);
+                this.checkOpen(p, a);
+            } else {
+                for(Point q : this.open) {
+                    if(!this.isSame(p, q) || this.getCost(p, this.current) < this.currentCost) {
+                        this.updateParent(p);
+                    }
+                    if(!this.isSame(p, q)){
+                        this.checkOpen(p, a);
+                    } else if (this.getCost(p, this.current) < this.currentCost) {
+                        System.out.println("Cost");
+                        System.out.println(this.currentCost);
+                        this.currentCost = this.getCost(q, this.current);
+                    }
+                }
+            }
+        }
+        
+        this.addToOpen(a);
+    }
+
+    private void checkOpen(Point p, List<Point> a) {
+        int x = p.x;
+        int y = p.y;
+        if(this.openValue[x][y] < 0) {
+            this.openValue[x][y] = 1;
+            a.add(p);
+        }
+    }
+
+    private void updateParent(Point p) {
+        int x = p.x;
+        int y = p.y;
+        this.setF(p);
+        this.parent[x][y] = this.current;
+    }
+
+    private void setF(Point p) {
+        int x = p.x;
+        int y = p.y;
+        this.g[x][y] = this.getCost(this.start, p);
+        this.h[x][y] = this.getCost(this.end, p);
+        this.f[x][y] = this.g[x][y] + this.h[x][y];
+    }
+
+    private void getNeighbour(){
+        int[] v = {-1,0,1};
+        for(int i : v){
+            for(int j : v) {
+                int x = this.current.x + i;
+                int y = this.current.y + j;
+                if(x >= 0 && y >= 0 && x < this.gridCount && y < this.gridCount) {
+                    if(i == 0 && j == 0) {
+                    } else {
+                        if(this.closeValue[x][y] < 0) {
+                            this.neighbour.add(new Point(x,y));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void resetAll() {
+        this.reset(this.g);
+        this.reset(this.h);
+        this.reset(this.f);
+        this.reset(this.openValue);
+        this.reset(this.closeValue);
+        this.open.clear();
+        this.close.clear();
+    }
+
+    private void reset(int[][] target) {
+        for(int i = 0; i < this.gridCount; i ++){
+            for(int j = 0; j < this.gridCount; j ++){
+                target[i][j] = -1;
+            }
+        }
+    }
+
+    public List<Point> getOpen() {
+        return this.open;
+    }
+
+    private int getCost(Point a, Point b){
+        int dx = a.x - b.x;
+        dx = (int)Math.abs(dx);
+        int dy = a.y - b.y;
+        dy = (int)Math.abs(dy);
+        double d = Math.sqrt(dx*dx + dy*dy) * 10;
+        return (int)d;
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        
+        Graphics2D g2 = (Graphics2D)g;
+
+        g2.setColor(Color.LIGHT_GRAY);
+        this.drawHorizontalLine(g2);
+        this.drawVerticalLine(g2);
+    }
+
+    public void drawVerticalLine(Graphics2D g2) {
+        for(int i = 1; i < this.gridCount; i++) {
+            g2.drawLine(i*this.gridSize, 0, i*this.gridSize, this.gridCount*this.gridSize);
+        }
+    }
+
+    public void drawHorizontalLine(Graphics2D g2) {
+        for(int i = 1; i < this.gridCount; i++) {
+            g2.drawLine(0, i*this.gridSize, this.gridCount*this.gridSize, i*this.gridSize);
+        }
+    }
+
+    private int[] getGridCoordinate(int x, int y) {
+        int[] result = new int[2];
+        result[0] = x/this.gridSize;
+        result[1] = y/this.gridSize;
+        return result;
+    }
+
+    public Point getStart() {
+        return this.start;
+    }
+
+    public int getGridSize() {
+        return this.gridSize;
+    }
+
+    public List<Point> getPath() {
+        return this.path;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        this.box_X = e.getX();
+        this.box_Y = e.getY();
+        int[] c = new int[2];
+        c = this.getGridCoordinate(box_X, box_Y);
+
+        this.end = new Point(c[0], c[1]);
+
+        this.startPathFinding();
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
+    
+}
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Chara extends JLabel {
+    private String fileName;
+    private String dir;
+    private String action;
+    private ImageIcon sprite;
+    private int scale = 4;
+    private final int width = 12;
+    private final int height = 14;
+
+    private int spriteIndex = 0;
+
+    private Point p;
+    private int gridSize;
+
+    private boolean move = false;
+
+    private List<Point> path = new ArrayList<Point>();
+
+    private Point current;
+    private Point next = new Point(84,8);
+
+    private boolean start = true;
+
+    public Chara(Point p, int gridSize) {
+        this.dir = "front";
+        this.action = "idle";
+        this.updateFileName(this.dir, this.action, 0);
+        this.updateSprite();
+
+        this.p = p;
+        this.current = p;
+        this.gridSize = gridSize;
+
+        this.updateSpritePosition();
+
+        this.current = this.setPosition(this.current);
+        this.p = this.setPosition(this.p);
+
+    }
+
+    public void updatePath(List<Point> p) {
+        if(p.size() != 0) {
+            this.path = p;
+            this.path = this.reversePath();
+        }
+    }
+
+    public List<Point> reversePath() {
+        List<Point> p = new ArrayList<Point>();
+        for(int i = this.path.size() - 1; i >= 0; i--) {
+            p.add(this.path.get(i)); 
+        }
+        if(start) {
+            p.remove(0);
+            this.start = false;
+        }
+        return p;
+    }
+
+    public Point setPosition(Point current) {
+        int x = (this.gridSize - this.width*this.scale)/2;
+        int y = (this.gridSize - this.height*this.scale)/2;
+        x += current.x * this.gridSize;
+        y += current.y * this.gridSize;
+        Point p = new Point(x,y);
+        return p;
+    }
+
+    public Point setPosition() {
+        int x = (this.gridSize - this.width*this.scale)/2;
+        int y = (this.gridSize - this.height*this.scale)/2;
+        x += this.p.x * this.gridSize;
+        y += this.p.y * this.gridSize;
+        Point p = new Point(x,y);
+        return p;
+    }
+
+    public int[] getMovement() {
+        int[] r = new int[2];
+        r[0] = 0;
+        r[1] = 0;
+
+        if(this.path.size() > 0) {
+            int x = this.path.get(0).x - this.p.x;
+            int y = this.path.get(0).y - this.p.y;
+            
+            r[0] = x;
+            r[1] = y;
+
+            if(!this.move) this.path.remove(0);
+        }
+        return r;
+    }
+
+    public List<Point> getPath() {
+        return this.path;
+    }
+
+    public void translateP(int[] v) {
+        this.p.translate(v[0], v[1]);
+        
+    }
+    
+    public void updateSpritePosition() {
+        int[] v = this.getMovement();
+        
+        Point next = this.setPosition();
+        int x = next.x;
+        int y = next.y;
+        
+        this.p.translate(v[0], v[1]);
+        
+        if(v[0] != 0 || v[0] != 0) {
+            while(x != next.x || y != next.y) {
+                x += v[0]*1;
+                y += v[1]*1;
+                this.setBounds(x, y, this.width*this.scale, this.height*this.scale);
+            }
+        } else {
+            this.setBounds(next.x, next.y, this.width*this.scale, this.height*this.scale);
+        }
+    }
+
+    public void changeMoveValue() {
+        if(this.path.size() > 0 && !this.move) {
+            this.move = true;
+            this.next = this.setPosition(this.path.get(0));
+        } else if(this.current.x == this.next.x && this.current.y == this.next.y) {
+            this.move = false;
+        }
+    }
+
+    private void changeDir(int x, int y) {
+        if(x < 0) {
+            this.dir = "left";
+        } else if(x > 0) {
+            this.dir = "right";
+        }
+
+        if(y > 0 && x == 0) {
+            this.dir = "front";
+        } else if(y < 0 && x == 0) {
+            this.dir = "back";
+        }
+    }
+
+    private void changeAction(List<Point> p) {
+        if(p.size() > 0) {
+            this.action = "walk";
+        } else {
+            this.action = "idle";
+        }
+    }
+    
+    public void animateMovement() {
+        if(this.move) {
+            int x = this.next.x - this.p.x;
+            int y = this.next.y - this.p.y;
+            this.current.translate(8*x/72, 8*y/72);
+
+            this.changeDir(x, y);
+
+            this.setBounds(this.current.x, this.current.y, this.width*this.scale, this.height*this.scale);
+            this.move = true;
+        } else if(this.current.x == this.next.x && this.current.y == this.next.y) {
+            int x = this.current.x;
+            int y = this.current.y;
+            this.p = new Point(x,y);
+
+            if(this.path.size() > 1) {
+                this.path.remove(0);
+                this.next = this.setPosition(this.path.get(0));
+            } else {
+                this.path.clear();
+                this.move = false;
+            }
+        }
+
+        this.changeAction(this.path);
+    }
+
+    private void updateFileName(String dir, String action, int index) {
+        this.fileName = dir + action + index;
+    }
+
+    public void setSpriteIndex(int i) {
+        this.spriteIndex = i;
+        String dum = this.dir + this.action + this.spriteIndex + ".png";
+        this.fileName = dum;
+    }
+
+    public void updateSprite() {
+        this.updateFileName(this.dir, this.action, this.spriteIndex);
+        if(this.spriteIndex < 3) {
+            this.spriteIndex ++;
+        } else {
+            this.spriteIndex = 0;
+        }
+        this.setSpriteIndex(this.spriteIndex);
+        this.sprite = new ImageIcon(new ImageIcon(this.fileName).getImage().getScaledInstance(this.width*this.scale, this.height*this.scale, Image.SCALE_DEFAULT));
+        this.setIcon(this.sprite);
+    }
+}
+
+アニメーションはすべてCharaクラスで行っています。
+この課題では、座標を変更するために、Gridクラスで実装されているパスファインディング・アルゴリズムを使用した。
+このアルゴリズムは、マウスがクリックされると、どこに行くべきかを返すので、そのデータをpathというArrayListフィールドに格納する。
+
+そして、このpathのデータをCharaクラスに渡し、それを基づいてImageを移動させる。
+しかし、このデータにはグリッドの座標しか含まれておらず、ピクセルの座標は含まれていない。
+そこで、Charaクラスに "animateMovement "メソッドを作って、グリッドからグリッドへジャンプするのではなく、
+ピクセルに沿って目的のグリッド座標に到達するまで移動させるようにした。
+
+また、今まで使っていた画像は、方向とアクションによって分割されていた。
+そのため、画像の更新には、ファイルのインデックスだけでなく、"dir "と "action "の文字列フィルドも変更する必要がある。
+この2つの文字列は、キャラクターがどこに移動するか、キャラクターが移動しているかどうかによって変更される。
+これらの変更は、charaクラスのchangeDirメソッドとchangeActionメソッドで変更する。
+
+画像インデックスについては、プログラム実行中もループしている。
+dirとactionはそれぞれ4ファイルずつしかないので、インデックスが3になると0にリセットされる。
+

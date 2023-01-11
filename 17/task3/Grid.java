@@ -17,9 +17,9 @@ public class Grid extends JPanel implements MouseListener{
     private List<Point> neighbour;
     private List<Point> path;
 
-    private int currentCost = 10; //Soalnya grid yang bersebelahan itu paling kecil 10 lah ya
+    private int currentCost = 10;
     private Point current;
-    private Point start = new Point(0,0); // SEMENTARA GINI DULU
+    private Point start = new Point(0,0);
     private Point end;
 
     private int[][] g;
@@ -41,7 +41,7 @@ public class Grid extends JPanel implements MouseListener{
         this.neighbour = new ArrayList<Point>();
         this.path = new ArrayList<Point>();
 
-        this.current = this.start; // di awal current merupakan start
+        this.current = this.start; 
 
         // Kalau ada waktu silahkan tanya ke sensei cara initiate di method
         this.g = new int[this.gridCount][this.gridCount];
@@ -67,9 +67,6 @@ public class Grid extends JPanel implements MouseListener{
 
     private void startPathFinding() {
         this.open.add(this.start);
-        // this.path.add(this.start);
-
-        // LOOP gedenya di sini
 
         while(!this.isSame(this.end, this.current)) {
             this.current = this.updateCurrent(this.getLowestF(this.open));
@@ -84,15 +81,15 @@ public class Grid extends JPanel implements MouseListener{
         }
 
         this.updatePath();
-        // System.out.println(this.path);
         this.resetAll();
 
+        this.changeStart();
+    }
+
+    private void changeStart() {
         int x = this.end.x;
         int y = this.end.y;
         this.start = new Point(x,y);
-
-        // System.out.println("Start : " + this.start);
-        // System.out.println("End : " +this.end);
     }
 
     public void clearPath() {
@@ -113,7 +110,6 @@ public class Grid extends JPanel implements MouseListener{
             x = prevX;
             y = prevY;
         }
-
     }
 
     private void addClose(Point p) {
@@ -125,7 +121,6 @@ public class Grid extends JPanel implements MouseListener{
         }
     }
 
-    // Kemungkinan ini gk guna
     private void addToOpen(List<Point> target) {
         for(Point p : target) {
             this.open.add(p);
@@ -263,7 +258,6 @@ public class Grid extends JPanel implements MouseListener{
     }
 
     private void reset(int[][] target) {
-        // target = new int[this.gridCount][this.gridCount];
         for(int i = 0; i < this.gridCount; i ++){
             for(int j = 0; j < this.gridCount; j ++){
                 target[i][j] = -1;
@@ -287,11 +281,8 @@ public class Grid extends JPanel implements MouseListener{
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // this.setBackground(Color.CYAN);
         
         Graphics2D g2 = (Graphics2D)g;
-        // tanya kenapa ini dieksekusi dua kali di awal
-        // this.drawBox(g2, this.box_X, this.box_Y);
 
         g2.setColor(Color.LIGHT_GRAY);
         this.drawHorizontalLine(g2);
@@ -317,18 +308,6 @@ public class Grid extends JPanel implements MouseListener{
         return result;
     }
 
-    // draw box ga digunakan lagi, kita hanya perlu koordinat grid yang diklik
-    private void drawBox(Graphics2D g2, int x, int y) {
-        int[] c = new int[2];
-        if(x > 0 && y > 0) {
-            c = this.getGridCoordinate(x,y);
-            g2.setColor(Color.RED);
-            g2.fillRect(c[0]*this.gridSize, c[1]*this.gridSize, this.gridSize, this.gridSize);
-        } else {
-            System.out.println("outside");
-        }
-    }
-
     public Point getStart() {
         return this.start;
     }
@@ -351,18 +330,8 @@ public class Grid extends JPanel implements MouseListener{
         this.box_Y = e.getY();
         int[] c = new int[2];
         c = this.getGridCoordinate(box_X, box_Y);
-        // System.out.println(c[0] + " " + c[1]); 
-        // YANG ATAS INI HANYA CEK KOORDINAT SAJA
 
-        // Yang ini bisa lah
         this.end = new Point(c[0], c[1]);
-        // System.out.println(end);
-        // System.out.println(this.current);
-
-        // System.out.println(this.getCost(new Point(0,0), this.current));
-
-        // this.open.add(new Point(c[0],c[1]));
-        // this.repaint();
 
         this.startPathFinding();
     }

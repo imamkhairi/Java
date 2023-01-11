@@ -3,25 +3,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-// public class Chara extends JPanel{
-//     private String fileName;
-//     private Image sprite;
-//     private Toolkit tk;
-
-//     public Chara() {
-//         // this.setPreferredSize(new Dimension(300,300));
-//         this.tk = Toolkit.getDefaultToolkit();
-//         this.sprite = tk.getImage("front0.png").getScaledInstance(60, 70, Image.SCALE_DEFAULT);
-//         this.setBounds(0, 0, 60, 70);
-//     }
-
-//     @Override
-//     public void paintComponent(Graphics g) {
-//         Graphics2D g2 = (Graphics2D)g;
-//         g2.drawImage(this.sprite, 0, 0, this);
-//     }
-// }
-
 public class Chara extends JLabel {
     private String fileName;
     private String dir;
@@ -46,7 +27,6 @@ public class Chara extends JLabel {
     private boolean start = true;
 
     public Chara(Point p, int gridSize) {
-        // rightwalk masih agak aneh
         this.dir = "front";
         this.action = "idle";
         this.updateFileName(this.dir, this.action, 0);
@@ -125,6 +105,7 @@ public class Chara extends JLabel {
         this.p.translate(v[0], v[1]);
         
     }
+    
     public void updateSpritePosition() {
         int[] v = this.getMovement();
         
@@ -138,7 +119,6 @@ public class Chara extends JLabel {
             while(x != next.x || y != next.y) {
                 x += v[0]*1;
                 y += v[1]*1;
-                // System.out.println(x +","+ y);
                 this.setBounds(x, y, this.width*this.scale, this.height*this.scale);
             }
         } else {
@@ -147,18 +127,12 @@ public class Chara extends JLabel {
     }
 
     public void changeMoveValue() {
-        // if((this.current.x != this.next.x || this.current.y != this.next.y) && !this.move) {
         if(this.path.size() > 0 && !this.move) {
-            // System.out.println(this.path);
             this.move = true;
             this.next = this.setPosition(this.path.get(0));
         } else if(this.current.x == this.next.x && this.current.y == this.next.y) {
             this.move = false;
         }
-        // else if (this.move) {
-        //     this.move = false;
-        // }
-        // System.out.println(this.move);
     }
 
     private void changeDir(int x, int y) {
@@ -182,53 +156,32 @@ public class Chara extends JLabel {
             this.action = "idle";
         }
     }
+    
     public void animateMovement() {
         if(this.move) {
-            // ini mungkin masih bisa dimasukan ke method lain gitu
             int x = this.next.x - this.p.x;
             int y = this.next.y - this.p.y;
-            // System.out.println(x + " , " + y);
             this.current.translate(8*x/72, 8*y/72);
 
             this.changeDir(x, y);
 
             this.setBounds(this.current.x, this.current.y, this.width*this.scale, this.height*this.scale);
             this.move = true;
-            // System.out.println("jalan");
         } else if(this.current.x == this.next.x && this.current.y == this.next.y) {
-            // System.out.println("sini");
             int x = this.current.x;
             int y = this.current.y;
             this.p = new Point(x,y);
+
             if(this.path.size() > 1) {
-                // System.out.println("masuk sini");
                 this.path.remove(0);
                 this.next = this.setPosition(this.path.get(0));
             } else {
                 this.path.clear();
                 this.move = false;
             }
-            // System.out.println(this.p);
-            // System.out.println("end");
-            // this.p = this.current;
-            // this.next = this.setPosition(this.path.get(0));
         }
 
         this.changeAction(this.path);
-        // System.out.println(this.p);
-        // System.out.println(this.current);
-        // System.out.println(this.next);
-        // System.out.println(this.move);
-        // System.out.println();
-        // System.out.println(this.path);
-    }
-
-    //Masih kasar
-    private void updateNext() {
-        // this.next.translate(72, 0);
-        // this.path.clear();
-        // System.out.println("point updated");
-        // this.next = new Point(156,8);
     }
 
     private void updateFileName(String dir, String action, int index) {
@@ -251,9 +204,5 @@ public class Chara extends JLabel {
         this.setSpriteIndex(this.spriteIndex);
         this.sprite = new ImageIcon(new ImageIcon(this.fileName).getImage().getScaledInstance(this.width*this.scale, this.height*this.scale, Image.SCALE_DEFAULT));
         this.setIcon(this.sprite);
-    }
-
-    public int getSpriteIndex() {
-        return this.spriteIndex;
     }
 }
