@@ -1,0 +1,184 @@
+<!--?xml version="1.0" encoding="utf-8"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>プログラミング言語IIIB(Java) テーマ18</title>
+<link rel="stylesheet" href="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E18_files/tenmo2008single.css" type="text/css" media="all">
+</head>
+
+<body>
+
+<h2>プログラミング言語IIIB(Java) テーマ18</h2>
+
+<h3>MVCモデル</h3>
+
+<p>MVCモデルは, オブジェクト指向プログラミング(OOP; Object-Oriented Programming)において<em>クラス分割</em>を行う際に基準となる考え方である. MVCモデルではプログラム全体を以下の三つの役割のクラスに分割して作成する(更に細かく分割しても良い).</p>
+
+<ul>
+<li>モデル(Model) ... データの<em>保存</em>や<em>計算</em>を担当する. (前期のプログラミング言語IIIAで作成した様なクラス)</li>
+<li>ビュー(View) ... データの<em>表示</em>を担当する. (プログラミング言語IIIBでは描画パネルに相当)</li>
+<li>コントローラー(Controller) ... モデルとビューの<em>制御</em>を担当する. (プログラミング言語IIIBではフレームに相当)</li>
+</ul>
+
+<center>
+<img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E18_files/mvc.png"><br>
+<font size="-1">図: MVCモデル</font>
+</center>
+
+<p>MVCに分割してプログラムを作成することで各部分の独立性を高められ, 大規模なソースの見通しが良くなると共に, 更新や再利用等の管理も容易になるメリットがある.</p>
+
+<h3>jarファイル</h3>
+
+<p>Javaで作成したソフトウェア(アプリ)を配布する方法の一つとして, jarファイルがある. jarファイルを用いると, アニメーションに用いる画像ファイルなど, アプリの実行に必要な多数のリソースファイルを<em>一つのアーカイブファイル</em>にまとめることができ, 単一ファイルで取扱いが容易になる上に, ファイル圧縮が行われるためデバイスやネットワーク等での転送が高速になるという利点もある.</p>
+
+<p>jarファイルの作成には<code class="em">jar</code>コマンドを用いる. <code>jar</code>コマンドの使い方は, UNIX(Linux, MacOSを含む)の標準アーカイブコマンドである<code>tar</code>コマンドと同様であるため, UNIXユーザーには馴染みが深く, 取り掛かりが容易である.</p>
+
+<pre>*.classと*.gifをまとめてsample1.jarを作成(create)するには
+$ jar vcf sample1.jar *.class *.gif
+※vcfの中でここで最も重要なのはc. createのc, と覚えよ.
+※なお, vはverbose, fはfileである.
+</pre>
+
+<pre>sample1.jarに含まれるファイルの一覧(list)を表示するには
+$ jar vtf sample1.jar
+※listのt, と覚えよ.
+</pre>
+
+<p><code>jar</code>ファイルに<em>マニフェストファイル</em>も追加すると, 最初に実行する<code>main</code>メソッドを含むクラスを指定できる. 以下に例を示す.</p>
+
+<pre>事前にマニフェストファイルを manifest.txt などの名前で作成しておく. 今回は下記の1行のみの内容で良い.
+Main-Class: mainメソッドを含むクラスの名前
+</pre>
+<pre>jarファイルを作成する際にマニフェストファイルも指定する.
+         ↓ここにmを追加
+$ jar vcfm sample1.jar manifest.txt *.class *.gif
+                       ~~~~~~~~~~~~ここにマニフェストファイルを指定
+</pre>
+<pre>こうすることで, jarファイルのまま実行できる様になる.
+$ java -jar sample1.jar
+→sample1.jarの中の, マニフェストファイルで指定したmainメソッドからプログラムが実行される.
+</pre>
+
+<center>
+  <img src="%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9EIIIB(Java)%20%E3%83%86%E3%83%BC%E3%83%9E18_files/jar_file.png"><br>
+  <font size="-1">図: 複数のファイルをまとめてjarファイル化し, jarファイルのみを配布する.</font>
+</center>
+
+<h3>課題</h3>
+
+<p>今回はレポート提出システムによるアップロード方式ではなく, 学内ファイルサーバーの<em>学内ウェブ公開用ディレクトリに</em> jar ファイルおよび index.html を<em>配置する</em>ことで提出とする.</p>
+
+<p>※開発中は従来通り各自の課題遂行用ディレクトリで作業し, そこで動作確認を行い, 適宜jarファイル化してもう一度動作確認を行った後, 
+公開用ディレクトリへコピーして配置すると良い. ファイル名やディレクトリ名に不備があると自動回収が不可能となり, 未提出として扱われるため, 
+ファイル名等を良く確認すること.</p>
+
+<p>これまでの多数の課題遂行により得られた知識をフル活用し, Java Swingでアプリを作成せよ. 以下の条件を満たす様に作成すること.</p>
+
+<ul>
+
+<li>グラフィックス描画とタイマーを用いてアニメーションさせる.</li>
+
+<li><em>[重要]</em> クラスは<em>MVCモデル</em>に従って<em>三つ</em>に分割する(三つ以上でも良い).</li>
+
+<li><em>[重要]</em> 各クラスにコンストラクタやゲッター, セッターを用意し, インスタンス間で<em>データの受け渡し</em>を行う. 抜け道となる<code>public</code>フィールドや, <code>static</code>フィールドは原則として禁止する. (定数定義の場合のみ可とする. →使い方はこのページの最下部にて)</li>
+
+<li>公開用ディレクトリは <code class="em">~/public_html/java/2023-01-12</code> とする.</li>
+<li>アプリのファイルは <em>jar形式</em> とする. jarファイルのファイル名は「<em>ユーザーID</em><code class="em">.jar</code>」とする.</li>
+<li>HTMLファイルの名前は <code class="em">index.html</code> とする.
+    <ul>
+    <li>ページの最初に<em>出席番号</em>・<em>名前</em>・<em>テーマ番号</em>を記入する.</li>
+    <li>自動回収の都合上, 複数のHTMLファイルには分割せず, <code>index.html</code> のみで作成して欲しい.</li>
+    <li>CSSやJavascriptを使用しても良いが, 別ファイルの場合回収は保証できないので, 埋め込みを推奨する.</li>
+    </ul></li>
+<li>HTMLファイルからソースファイルを閲覧できるようにする. ソースファイルを <code>index.html</code> と同じ場所に置き, <code>index.html</code> からリンクする.</li>
+<li>完成後のディレクトリ構成の例:</li>
+<pre>~/public_html/java/2023-01-12/ の直下に
+         index.html    (ここから各ファイルへリンクする)
+         p19xxxx.jar   (この中にクラスファイルと画像ファイルを入れる)
+         MyFrame.java  (閲覧用)
+         MyPanel.java  (閲覧用)
+         MyModel.java  (閲覧用)
+</pre>
+<li><code>index.html</code> に説明を記入する. 適宜スクリーンショットが入るとなお良い.
+    <ul>
+    <li>ユーザー向けの説明 ... アニメーションの<em>様子</em>や, (もし操作があれば)<em>操作方法</em>の説明</li>
+    <li>開発者向けの説明 ... アニメーションの<em>仕組み</em>の説明. どの様に座標等の変数を変化させて実現しているか.</li>
+    <li>クラス分割の説明 ... どの様に<em>クラス分割</em>を行ったか. 何のデータを, いつ, どの様に, どのクラスからどのクラスへ, 受け渡ししているか.</li>
+    </ul>
+    </li><li><em>[注意]</em> 成績保管のため, 今回作成したウェブページは少なくとも年度末(3/31)までは消去せずに残しておくこと.</li>
+    <li>主な評価項目</li>
+    <ol>
+    <li>所定のディレクトリに配置されており, ダウンロードして動作させることが可能であるか</li>
+    <li>三つの説明</li>
+    <li>ソースファイルへのリンク</li>
+    <li>動作の複雑さ(座標変化, 状態変化, 操作可能性等)</li>
+    </ol>
+</ul>
+
+<h3>レポート</h3>
+
+<ul>
+<li>内容 ... 課題中に指示されている通り.</li>
+</ul>
+
+<h3>ヘルプとアドバイス</h3>
+
+<ul>
+
+<li>うまく動かない場合のチェックポイント:</li>
+<ul>
+<li>そもそもjavacでコンパイルしたか?</li>
+<li>クラスファイルや画像ファイルなど, 必要なファイルが全てjarファイルの中に入っているか?</li>
+</ul>
+
+<li>今回の課題はUNIXリテラシー能力が求められる. 不確かな場合は低学年の実験課題等を参照して良く復習すること.</li>
+  
+<li>デバッグの基本はデバッグプリントである. 随所に<code class="em">System.out.println</code>を挿入し, その行を<em>通過</em>していることや, <em>変数の値</em>が期待通りになっていることを確認せよ. 端末ではなく描画パネルに変数の値を随時表示(描画)しても良い.</li>
+<pre>System.out.println("x=" + x + " y=" + y); // 起動した端末へ表示
+</pre>
+<pre>g.drawString("x=" + x + " y=" + y, 16, 16); // 描画パネル上に表示(文字列をグラフィックスとして描画)
+</pre>
+
+<li><code>int型</code>や<code>double型</code>の変数をコンストラクタ/ゲッター/セッターで受け渡しできるのと同様に, フレームや描画パネル, モデルクラス等の<em>オブジェクト変数</em>も受け渡しできる.</li>
+<pre>// 例: 描画パネルからモデル内のフィールドにアクセスしたい場合
+public class MyModel {
+    ...
+}
+public class MyFrame extends JFrame {
+    private MyModel model;
+    private MyPanel panel;
+    public MyFrame() {
+        this.model = new MyModel();
+        this.panel = new MyPanel(model); // 描画パネルのコンストラクタにmodelを渡す
+    }
+}
+public class MyPanel extends JPanel {
+    private MyModel model;          // モデル参照用のフィールド
+    public MyPanel(MyModel model) { // 描画パネルのコンストラクタで上記のmodelを受け取り
+        this.model = model;         // フィールドに保存しておく(同一インスタンスを「指す」状態にする)
+    }
+    public void method() {          // モデル内のフィールドにアクセスしたい時
+        int a = this.model.getSomething(); // モデルに対してゲッターを呼び出す
+        a += 2;
+        this.model.setSomething(a);        // モデルに対してセッターを呼び出す
+    }
+}
+</pre>
+
+<li>自作のクラスで<em>定数</em>を定義する場合は, 「<code>public static final 型 定数名 = 値;</code>」とする. なお, 定数名はすべて<em>大文字+アンダースコア</em>で付ける(Java標準命名規則).</li>
+<pre>public class MyFrame extends JFrame {
+    public static final int NUM_BALLS = 5; // ボールの個数
+}
+</pre>
+
+<li>標準ライブラリで用意されている可変長の配列を使いたい場合は<code>ArrayList</code>クラスを調べてみると良い. (同様の機能を持つ古いクラスに<code>Vector</code>クラスがあるが, 現在は利用が推奨されていない. )</li>
+
+<li><code>sin</code>関数などの数学関数は, <code>Math.sin()</code>の様に先頭に「<code class="em">Math.</code>」を付加する事で利用できる. なお, 引数の単位はラジアンである. 円周率πには定数<code class="em">Math.PI</code>を利用できる.</li>
+
+<li>動きに物理法則を組み入れる場合, 理論上の計算ではy座標は上がプラス方向で下がマイナス方向だが, <em>画面上では逆</em>に, 下がプラス方向で上がマイナス方向であることに注意. なお, 描画パネル等の大きさは<code>getWidth(), getHeight()</code>で取得できる.</li>
+
+</ul>
+
+
+
+</body></html>

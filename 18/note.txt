@@ -1,0 +1,17 @@
+mvc -> buat sesuatu berdasarkan konsep ini
+
+gimana cara make mediatracker
+bikin pathfinding jadi static?
+semua perhitungan pindah ke class sendiri (model)
+-> ini sepertinya kyk ngambil path dll gitu deh,
+kalau update spritenya masih masuk ke view
+
+pelajari cara bikin catatan pengerjaan program (ada namanya sendiri ini)
+pelajari cara membuat map di game
+
+https://towardsdatascience.com/everything-you-need-to-know-about-mvc-architecture-3c827930b4c1
+
+untuk sementara ini bikin game restoran2an?
+lalu implementasi pathfinding sebelum ini, kalau ambis ya bikin lagi (gak boleh dijadikan static)
+ide ini masih bisa berubah seiring dengan asset yang bisa ditemukan
+

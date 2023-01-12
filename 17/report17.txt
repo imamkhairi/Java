@@ -769,3 +769,7 @@ public class Chara extends JLabel {
 画像インデックスについては、プログラム実行中もループしている。
 dirとactionはそれぞれ4ファイルずつしかないので、インデックスが3になると0にリセットされる。
 
+
+https://medium.com/@nicholas.w.swift/easy-a-star-pathfinding-7e6689c7f7b2
+https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html
+https://www.youtube.com/watch?v=-L-WgKMFuhE
