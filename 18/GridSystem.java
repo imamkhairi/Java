@@ -25,4 +25,6 @@ public class GridSystem {
     public static void main(String[] args) {
         new GridSystem();
     }
+
+    //Bikin method yang falsekan edge grid yang dipinggir
 }
