@@ -7,6 +7,8 @@ public class PathFinding {
 
     private int[][] gridGCost;
 
+    // Ini gk butuh edge 
+
     public PathFinding() {
         grid = new GridSystem();
 
