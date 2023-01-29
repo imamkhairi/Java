@@ -22,4 +22,7 @@ public class GridData {
         return this.traversable;
     }
 
+    public Point getCoordinate() {
+        return this.coordinate;
+    }
 }

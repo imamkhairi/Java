@@ -1,5 +1,5 @@
 import java.util.List;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.awt.*;
 
 public class GridSystem {
@@ -22,9 +22,8 @@ public class GridSystem {
         return this.gridData;
     }
 
-    public static void main(String[] args) {
-        new GridSystem();
-    }
-
-    //Bikin method yang falsekan edge grid yang dipinggir
+        // ini harusnya di grid system, di sini sekarang buat debug aja
+    // private void updateTraversableData(int x, int y, boolean t) {
+    //     this.grid.getGridData()[x][y].setTraversable(t);
+    // }
 }
