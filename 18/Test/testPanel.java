@@ -26,6 +26,12 @@ public class testPanel extends JPanel{
         this.repaint();
     }
 
+    private Graphics2D getBufferGraphics() {
+        Graphics g = this.bi.getGraphics();
+        Graphics2D g2 = (Graphics2D)g;
+        return g2;
+    }
+
     public void drawPointer(pointer p) {
         Graphics g = this.bi.getGraphics();
         Graphics2D g2 = (Graphics2D)g; 
@@ -40,6 +46,22 @@ public class testPanel extends JPanel{
         this.repaint();
     }
 
+    public void drawBox(box b, box[] target) {
+        Graphics2D g2 = this.getBufferGraphics();
+
+        g2.setColor(Color.LIGHT_GRAY);
+        g2.fillRect(b.getX(), b.getY(), b.getWidth(), b.getHeight());
+        for (int i = 0; i < target.length; i ++) {
+            g2.setColor(Color.DARK_GRAY);
+            g2.fillRect(target[i].getX(), target[i].getY(), target[i].getWidth(), target[i].getHeight());
+        }
+        g2.dispose();
+    }
+
+    public void drawAll(pointer p, box b, box[] target) {
+        this.drawPointer(p);
+        this.drawBox(b, target);
+    }
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
         // g2.drawLine(0,0,50,50);

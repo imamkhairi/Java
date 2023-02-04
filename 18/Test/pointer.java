@@ -3,11 +3,11 @@ public class pointer {
     private int y;
     private int height;
     private int width;
-    private int xBoundary;
-    private int yBoundary;
+    private int leftBoundary;
+    private int rightBoundary;
     private int moveSpeed;
 
-    public pointer(int xBoundary, int yBoundary) {
+    public pointer(int leftBoundary, int rightBoundary) {
         this.x = 250;
         this.y = 250;
         this.height = 40;
@@ -15,8 +15,8 @@ public class pointer {
 
         this.moveSpeed = 3;
 
-        this.xBoundary = xBoundary;
-        this.yBoundary = yBoundary;
+        this.leftBoundary = leftBoundary;
+        this.rightBoundary = rightBoundary;
     }
 
     public int getX() {
@@ -37,11 +37,10 @@ public class pointer {
 
 
     public void move() {
-        if(this.x + this.width/2 > this.xBoundary || this.x - this.width/2 < 0) {
+        if(this.x > this.rightBoundary || this.x < this.leftBoundary) {
             this.moveSpeed = -this.moveSpeed;
         } 
         this.x += this.moveSpeed;
     }
 
-    // add keyboard listener trus ambil koordinat dari x y nya
 }

@@ -25,7 +25,7 @@ public class PathFinder {
     private List<Point> path;
 
     public PathFinder(Point startPoint, Point currentPoint, Point endPoint) {
-        grid = new GridSystem(); // ini harusnya dipassing dari constructor
+        // grid = new GridSystem(); // ini harusnya dipassing dari constructor
 
         // ini bisa digunakan untuk besar array cost
         this.length = this.grid.getGridData().length;
