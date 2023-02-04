@@ -10,8 +10,8 @@ public class NPC extends Entity {
 
     private LinkedList<Point> path;
     
-    public NPC(Point endPoint) {
-        super();
+    public NPC(Toolkit tk, Point endPoint) {
+        super(tk);
         // angap dari pintu masuk dulu
         // this.startPoint = new Point(16, 13);
         this.startPoint = new Point(7,5);

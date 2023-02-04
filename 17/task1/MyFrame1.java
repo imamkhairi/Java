@@ -18,6 +18,7 @@ public class MyFrame1 extends JFrame {
         Image chara = tk.getImage("Dead (1).png").getScaledInstance(200,170, Image.SCALE_DEFAULT);
 
         this.mp = new MyPanel1();
+        // this.mp.draw();
         this.mp.setChara(chara);
 
         this.getContentPane().add(this.mp);

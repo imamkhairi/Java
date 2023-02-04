@@ -24,6 +24,8 @@ public class MyFrame extends JFrame implements ActionListener{
     public MyFrame() {
         super();
         
+        Toolkit tk = Toolkit.getDefaultToolkit();
+
         this.timer = new Timer(1000/this.fps, this);
         this.timer.start();
 
@@ -33,19 +35,20 @@ public class MyFrame extends JFrame implements ActionListener{
         this.table = new Table(1,1,2,2,this.gridSystem);
         this.chairPoints = this.table.getChairPosition();
         
-        this.customerNPC = new NPC(this.chairPoints.get((int)(Math.random()*4)));
+        this.customerNPC = new NPC(tk, this.chairPoints.get((int)(Math.random()*4)));
         // this.customerNPC = new NPC(new Point(0,1));
+        System.out.println(this.customerNPC.getFileName());
+        Image buffer = tk.getImage(this.customerNPC.getFileName());
+        
 
         this.pathFinder = new PathFinder(this.gridSystem);
-        
 
         // DEBUG
         this.customerNPC.setPath(this.pathFinder.startPathFinding(this.customerNPC.getStarPoint(), this.customerNPC.getCurrentPoint(), this.customerNPC.getEndPoint()));
-        System.out.println(this.customerNPC.getPath());
 
         this.getContentPane().add(this.gamePanel);
 
-        this.gamePanel.drawAll(this.gridSystem, this.table, this.customerNPC);
+        this.gamePanel.drawAll(this.gridSystem, this.table, this.customerNPC, buffer);
 
         this.pack();
         this.setResizable(false);
@@ -60,15 +63,15 @@ public class MyFrame extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(i == 10) {
-            // System.out.println("1 second");
-            this.customerNPC.move();
-            this.gamePanel.drawAll(this.gridSystem, this.table, this.customerNPC);
-            this.gamePanel.repaint();
-            i = 0;
-        } else {
-            i++;
-        }
+        // if(i == 10) {
+        //     // System.out.println("1 second");
+        //     this.customerNPC.move();
+        //     this.gamePanel.drawAll(this.gridSystem, this.table, this.customerNPC);
+        //     this.gamePanel.repaint();
+        //     i = 0;
+        // } else {
+        //     i++;
+        // }
         // System.out.println(i);
     }
 }
