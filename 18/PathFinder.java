@@ -52,7 +52,6 @@ public class PathFinder {
 
         this.open.add(this.start);
         while(this.current.x != this.end.x || this.current.y != this.end.y) {
-            System.out.println("open : "+this.open);
             this.current = this.updateCurrent(this.getLowestF()); 
             this.getTraversableNeighbor(this.current.x, this.current.y);
     

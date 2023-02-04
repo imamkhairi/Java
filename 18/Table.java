@@ -4,6 +4,7 @@ import java.util.LinkedList;
 public class Table extends Furniture {
     public Table(int x, int y, int height, int width, GridSystem gridSystem) {
         super(x, y, height, width, gridSystem);
+        this.updateGridTraversable();
     }
 
     public LinkedList<Point> getChairPosition() {
@@ -15,5 +16,13 @@ public class Table extends Furniture {
         }
 
         return chairPoints;
+    }
+
+    private void updateGridTraversable() {
+        for (int i = 0; i < this.getWidth(); i++) {
+            for (int j = 0; j < this.getHeight(); j++){
+                this.getGridSystem().setTraversable(this.getX() + i, this.getY() + j, false);
+            }
+        }
     }
 }

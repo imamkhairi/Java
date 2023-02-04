@@ -1,9 +1,6 @@
-import java.util.List;
-import java.util.LinkedList;
 import java.awt.*;
 
 public class GridSystem {
-    private List<GridData> data;
     private Dimension windowSize;
     private GridData[][] gridData;
     private int gridSize;
@@ -47,8 +44,4 @@ public class GridSystem {
     public void setTraversable(int x, int y, boolean traversable) {
         this.gridData[x][y].setTraversable(traversable);
     }
-    // ini harusnya di grid system, di sini sekarang buat debug aja
-    // private void updateTraversableData(int x, int y, boolean t) {
-    //     this.grid.getGridData()[x][y].setTraversable(t);
-    // }
 }

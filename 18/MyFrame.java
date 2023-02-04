@@ -30,11 +30,11 @@ public class MyFrame extends JFrame implements ActionListener{
         this.gamePanel = new MyPanel(this.windowSize, this.gridSize);
         this.gridSystem = new GridSystem(this.windowSize, this.gridSize);
 
-        this.table = new Table(10,10,2,2,this.gridSystem);
+        this.table = new Table(1,1,2,2,this.gridSystem);
         this.chairPoints = this.table.getChairPosition();
         
-        // this.customerNPC = new NPC(this.chairPoints.get((int)(Math.random()*4)));
-        this.customerNPC = new NPC(new Point(0,1));
+        this.customerNPC = new NPC(this.chairPoints.get((int)(Math.random()*4)));
+        // this.customerNPC = new NPC(new Point(0,1));
 
         this.pathFinder = new PathFinder(this.gridSystem);
         
