@@ -13,7 +13,8 @@ public class NPC extends Entity {
     public NPC(Point endPoint) {
         super();
         // angap dari pintu masuk dulu
-        this.startPoint = new Point(16, 13);
+        // this.startPoint = new Point(16, 13);
+        this.startPoint = new Point(7,5);
         this.currentPoint = new Point(this.startPoint.x, this.startPoint.y);
         this.endPoint = endPoint;
     }
