@@ -9,7 +9,8 @@ public class PathFinder {
     private Point current;
     private Point end; 
 
-    private int length;
+    private int xLength;
+    private int yLength;
 
     private int currentCost = 10;
 
@@ -19,21 +20,22 @@ public class PathFinder {
 
     private Point[][] parent;
 
-    private List<Point> open; 
-    private List<Point> close; 
-    private List<Point> nbr;
-    private List<Point> path;
+    private LinkedList<Point> open; 
+    private LinkedList<Point> close; 
+    private LinkedList<Point> nbr;
+    private LinkedList<Point> path;
 
     public PathFinder(GridSystem gridSystem) {
         this.gridSystem = gridSystem; // ini harusnya dipassing dari constructor
 
         // ini bisa digunakan untuk besar array cost
-        this.length = this.gridSystem.getGridData().length;
+        this.xLength = this.gridSystem.getGridData().length;
+        this.yLength = this.gridSystem.getGridData()[0].length;
 
-        this.gridGCost = new int[this.length][this.length];
-        this.gridHCost = new int[this.length][this.length];
-        this.gridFCost = new int[this.length][this.length];
-        this.parent = new Point[this.length][this.length];
+        this.gridGCost = new int[this.xLength][this.yLength];
+        this.gridHCost = new int[this.xLength][this.yLength];
+        this.gridFCost = new int[this.xLength][this.yLength];
+        this.parent = new Point[this.xLength][this.yLength];
 
         this.open = new LinkedList<Point>();
         this.close = new LinkedList<Point>();
@@ -43,10 +45,12 @@ public class PathFinder {
         // start dan end akan diambil dari input klik / masing2 npc akan beda
     }   
 
-    public void startPathFinding(Point startPoint, Point currentPoint, Point endPoint) {
+    public LinkedList<Point> startPathFinding(Point startPoint, Point currentPoint, Point endPoint) {
         this.start = startPoint;
         this.current = currentPoint;
         this.end = endPoint;
+
+        this.path.clear();
 
         this.open.add(this.start);
         while(this.current.x != this.end.x || this.current.y != this.end.y) {
@@ -81,30 +85,8 @@ public class PathFinder {
         // System.out.println();
     
         this.setPath(); 
-        System.out.println(this.path);
-        // System.out.println("===============================================================");
-        // this.current = this.updateCurrent(this.getLowestF()); 
-        // this.getTraversableNeighbor(this.current.x, this.current.y);
-        // this.updateGCost();
-        // this.updateHCost();
-        // this.updateFCost();
-        // // System.out.println(this.nbr);
-        // // System.out.println(this.nbr);
-        // this.cekCost(this.gridGCost);
-        // System.out.println();
-        // this.cekCost(this.gridHCost);
-        // System.out.println();
-        // this.cekCost(this.gridFCost);
-        
-        // System.out.println(this.current);
-        // System.out.println(this.parent[this.current.x][this.current.y]);
-
-        // for(int i = 0; i < 10; i ++) {
-        //     for (int j = 0; j < 10; j ++) {
-        //         System.out.print(this.parent[i][j] + " ");
-        //     }
-        //     System.out.println();
-        // }
+        this.normalizePath();
+        return this.path;
 
     }
 
@@ -116,6 +98,14 @@ public class PathFinder {
             }
             System.out.println();
         }
+    }
+
+    private void normalizePath() {
+        LinkedList<Point> buffer = new LinkedList<Point>();
+        for (int i = this.path.size()-2; i >= 0; i--) {
+            buffer.add(this.path.get(i));
+        }
+        this.path = buffer;
     }
 
     private void setPath() {
@@ -190,6 +180,11 @@ public class PathFinder {
     }
 
     private LinkedList<Point> getLowestF() {
+        if(this.open.size() == 0) {
+            System.out.println("kosong");
+        } else {
+            
+        }
         int lowest = this.gridFCost[this.open.get(0).x][this.open.get(0).y];
         LinkedList<Point> result = new LinkedList<>();
 
@@ -228,8 +223,8 @@ public class PathFinder {
     }
 
     private void updateFCost() {
-        for (int i = 0; i < this.length; i ++) {
-            for (int j = 0; j < this.length; j ++) {
+        for (int i = 0; i < this.xLength; i ++) {
+            for (int j = 0; j < this.yLength; j ++) {
                 this.gridFCost[i][j] = this.gridGCost[i][j] + this.gridHCost[i][j];
             }
         }
@@ -289,8 +284,8 @@ public class PathFinder {
                 
                 int a = x + i;
                 int b = y + j;
-                
-                if (a < 0 || b < 0 || a > this.length - 1 || b > this.length - 1) continue;
+                System.out.println(a + " , " + b);
+                if (a < 0 || b < 0 || a > this.xLength - 1 || b > this.yLength - 1) continue;
                 else if (!this.gridSystem.getGridData()[a][b].getTraversable() || this.checkInClose(a,b)) continue;
                 
                 this.nbr.add(new Point(a, b));

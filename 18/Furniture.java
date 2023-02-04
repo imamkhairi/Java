@@ -4,13 +4,15 @@ public class Furniture {
     private int height;
     private int width;
     private int gridSize;
+    private GridSystem gridSystem;
 
-    public Furniture(int x, int y, int height, int width) {
+    public Furniture(int x, int y, int height, int width, GridSystem gridSystem) {
         this.gridSize = gridSize;
         this.x = x;
         this.y = y;
         this.height = height;
         this.width = width;
+        this.gridSystem = gridSystem;
     }
 
     public int getX() {
@@ -29,5 +31,7 @@ public class Furniture {
         return this.width;
     }
 
-
+    public GridSystem getGridSystem() {
+        return this.gridSystem;
+    }
 }

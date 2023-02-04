@@ -16,6 +16,8 @@ public class GridSystem {
 
         this.rowCount = (int)this.windowSize.getHeight()/this.gridSize;    
         this.columnCount = (int)this.windowSize.getWidth()/this.gridSize; 
+
+        // System.out.println(this.rowCount + ", " +this.columnCount);
         
         this.gridData = new GridData[this.columnCount][this.rowCount];
 
@@ -24,6 +26,10 @@ public class GridSystem {
                 this.gridData[i][j] = new GridData(true, new Point(i,j));
             }
         }
+
+        System.out.println("ukuran grid");
+        System.out.println(this.gridData.length);
+        System.out.println(this.gridData[0].length);
     }
 
     public GridData[][] getGridData() {
@@ -42,6 +48,9 @@ public class GridSystem {
         return this.gridSize;
     }
 
+    public void setTraversable(int x, int y, boolean traversable) {
+        this.gridData[x][y].setTraversable(traversable);
+    }
     // ini harusnya di grid system, di sini sekarang buat debug aja
     // private void updateTraversableData(int x, int y, boolean t) {
     //     this.grid.getGridData()[x][y].setTraversable(t);

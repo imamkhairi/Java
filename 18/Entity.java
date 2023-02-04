@@ -1,7 +1,8 @@
 import java.awt.*;
 
 public class Entity {
-    public Point currentPoint;
+    private Point currentPoint;
+    
     // public Point endPoint;
 
     public Entity() {

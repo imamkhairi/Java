@@ -28,22 +28,15 @@ public class MyPanel extends JPanel{
 
     // GRID
 
-    private void drawHorizontalGrid(GridSystem gridSystem) {
-        Graphics2D g2 = this.getBufferGraphics();
-        // super.paintComponent(g2);
-
+    private void drawHorizontalGrid(Graphics2D g2, GridSystem gridSystem) {
         g2.setColor(Color.LIGHT_GRAY);
         for(int i = 1; i <= gridSystem.getRowCount(); i++) {
             g2.drawLine(0, i*this.gridSize, 
             this.windowSize.width, i*this.gridSize);
         }
-
-        g2.dispose();
-        this.repaint();
     }
 
-    private void drawVerticalGrid(GridSystem gridSystem) {
-        Graphics2D g2 = this.getBufferGraphics();
+    private void drawVerticalGrid(Graphics2D g2, GridSystem gridSystem) {
         // super.paintComponent(g2);
 
         g2.setColor(Color.LIGHT_GRAY);
@@ -51,48 +44,37 @@ public class MyPanel extends JPanel{
             g2.drawLine(i*this.gridSize, 0, 
             i*this.gridSize, this.windowSize.height);
         }
-
-        g2.dispose();
-        this.repaint();
     }
 
 
     // Furniture
 
-    private void drawTable(Table table) {
-        Graphics2D g2 = this.getBufferGraphics();
+    private void drawTable(Graphics2D g2, Table table) {
         // super.paintComponent(g2);
 
         g2.setColor(Color.GREEN);
         g2.fillRect(this.changeToGridCoordinate(table.getX()), this.changeToGridCoordinate(table.getY()), 
         this.changeToGridCoordinate(table.getWidth()), this.changeToGridCoordinate(table.getHeight()));
-
-        g2.dispose();
-        this.repaint();
     }
 
-    public void drawAll(GridSystem gridSystem, Table table) {
+    // NPC
+    private void drawCostumer(Graphics2D g2, NPC costumer) {
+        // super.paintComponent(g2);
+
+        g2.setColor(Color.ORANGE);
+        g2.fillRect(this.changeToGridCoordinate(costumer.getCurrentPoint().x), this.changeToGridCoordinate(costumer.getCurrentPoint().y),
+        this.gridSize, this.gridSize);
+    }
+
+    public void drawAll(GridSystem gridSystem, Table table, NPC costumer) {
         Graphics2D g2 = this.getBufferGraphics();
         super.paintComponent(g2);
 
         // makin bawah, makin di atas di panel
-        this.drawHorizontalGrid(gridSystem);
-        this.drawVerticalGrid(gridSystem);
-        this.drawTable(table);
-
-        g2.dispose();
-        this.repaint();
-    }
-
-    public void drawAll(GridSystem gridSystem, Table table, Table example) {
-        Graphics2D g2 = this.getBufferGraphics();
-        super.paintComponent(g2);
-
-        // makin bawah, makin di atas di panel
-        this.drawHorizontalGrid(gridSystem);
-        this.drawVerticalGrid(gridSystem);
-        this.drawTable(table);
-        this.drawTable(example);
+        this.drawTable(g2, table);
+        this.drawCostumer(g2, costumer);
+        this.drawHorizontalGrid(g2, gridSystem);
+        this.drawVerticalGrid(g2, gridSystem);
 
         g2.dispose();
         this.repaint();
