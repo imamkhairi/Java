@@ -6,7 +6,7 @@ import java.awt.image.*;
 public class MyPanel extends JPanel{
     private Dimension windowSize;
     private BufferedImage bi;
-    private int  gridSize;
+    private int gridSize;
 
     public MyPanel(Dimension windowSize, int gridSize) {
         this.windowSize = windowSize;
@@ -22,9 +22,15 @@ public class MyPanel extends JPanel{
         return g2;
     }
 
+    private int changeToGridCoordinate(int target) {
+        return this.gridSize*target;
+    }
+
+    // GRID
+
     private void drawHorizontalGrid(GridSystem gridSystem) {
         Graphics2D g2 = this.getBufferGraphics();
-        super.paintComponent(g2);
+        // super.paintComponent(g2);
 
         g2.setColor(Color.LIGHT_GRAY);
         for(int i = 1; i <= gridSystem.getRowCount(); i++) {
@@ -38,7 +44,7 @@ public class MyPanel extends JPanel{
 
     private void drawVerticalGrid(GridSystem gridSystem) {
         Graphics2D g2 = this.getBufferGraphics();
-        super.paintComponent(g2);
+        // super.paintComponent(g2);
 
         g2.setColor(Color.LIGHT_GRAY);
         for(int i = 1; i <= gridSystem.getColumnCount(); i++) {
@@ -50,13 +56,43 @@ public class MyPanel extends JPanel{
         this.repaint();
     }
 
-    public void drawAll(GridSystem gridSystem) {
+
+    // Furniture
+
+    private void drawTable(Table table) {
         Graphics2D g2 = this.getBufferGraphics();
-        
+        // super.paintComponent(g2);
+
+        g2.setColor(Color.GREEN);
+        g2.fillRect(this.changeToGridCoordinate(table.getX()), this.changeToGridCoordinate(table.getY()), 
+        this.changeToGridCoordinate(table.getWidth()), this.changeToGridCoordinate(table.getHeight()));
+
+        g2.dispose();
+        this.repaint();
+    }
+
+    public void drawAll(GridSystem gridSystem, Table table) {
+        Graphics2D g2 = this.getBufferGraphics();
         super.paintComponent(g2);
 
+        // makin bawah, makin di atas di panel
         this.drawHorizontalGrid(gridSystem);
         this.drawVerticalGrid(gridSystem);
+        this.drawTable(table);
+
+        g2.dispose();
+        this.repaint();
+    }
+
+    public void drawAll(GridSystem gridSystem, Table table, Table example) {
+        Graphics2D g2 = this.getBufferGraphics();
+        super.paintComponent(g2);
+
+        // makin bawah, makin di atas di panel
+        this.drawHorizontalGrid(gridSystem);
+        this.drawVerticalGrid(gridSystem);
+        this.drawTable(table);
+        this.drawTable(example);
 
         g2.dispose();
         this.repaint();
@@ -67,36 +103,4 @@ public class MyPanel extends JPanel{
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.drawImage(this.bi, null, 0, 0);
     }
-
-    // @Override
-    // public void mouseClicked(MouseEvent e) {
-    //     int x = e.getX();        
-    //     int y = e.getY();
-    //     System.out.println("Mouse : "+  x + ", " + y);        
-    // }
-
-    // @Override
-    // public void mousePressed(MouseEvent e) {
-    //     // TODO Auto-generated method stub
-        
-    // }
-
-    // @Override
-    // public void mouseReleased(MouseEvent e) {
-    //     // TODO Auto-generated method stub
-        
-    // }
-
-    // @Override
-    // public void mouseEntered(MouseEvent e) {
-    //     // TODO Auto-generated method stub
-        
-    // }
-
-    // @Override
-    // public void mouseExited(MouseEvent e) {
-    //     // TODO Auto-generated method stub
-        
-    // }
-
 }

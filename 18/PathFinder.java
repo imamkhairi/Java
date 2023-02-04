@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.LinkedList;
 
 public class PathFinder {
-    private GridSystem grid;
+    private GridSystem gridSystem;
     
     private Point start;
     private Point current;
@@ -24,11 +24,11 @@ public class PathFinder {
     private List<Point> nbr;
     private List<Point> path;
 
-    public PathFinder(Point startPoint, Point currentPoint, Point endPoint) {
-        // grid = new GridSystem(); // ini harusnya dipassing dari constructor
+    public PathFinder(GridSystem gridSystem) {
+        this.gridSystem = gridSystem; // ini harusnya dipassing dari constructor
 
         // ini bisa digunakan untuk besar array cost
-        this.length = this.grid.getGridData().length;
+        this.length = this.gridSystem.getGridData().length;
 
         this.gridGCost = new int[this.length][this.length];
         this.gridHCost = new int[this.length][this.length];
@@ -41,12 +41,13 @@ public class PathFinder {
         this.path = new LinkedList<Point>();
 
         // start dan end akan diambil dari input klik / masing2 npc akan beda
+    }   
+
+    public void startPathFinding(Point startPoint, Point currentPoint, Point endPoint) {
         this.start = startPoint;
         this.current = currentPoint;
         this.end = endPoint;
-    }   
 
-    public void startPathFinding() {
         this.open.add(this.start);
         while(this.current.x != this.end.x || this.current.y != this.end.y) {
             this.current = this.updateCurrent(this.getLowestF()); 
@@ -290,7 +291,7 @@ public class PathFinder {
                 int b = y + j;
                 
                 if (a < 0 || b < 0 || a > this.length - 1 || b > this.length - 1) continue;
-                else if (!this.grid.getGridData()[a][b].getTraversable() || this.checkInClose(a,b)) continue;
+                else if (!this.gridSystem.getGridData()[a][b].getTraversable() || this.checkInClose(a,b)) continue;
                 
                 this.nbr.add(new Point(a, b));
                 

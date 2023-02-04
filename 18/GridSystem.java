@@ -17,10 +17,10 @@ public class GridSystem {
         this.rowCount = (int)this.windowSize.getHeight()/this.gridSize;    
         this.columnCount = (int)this.windowSize.getWidth()/this.gridSize; 
         
-        this.gridData = new GridData[10][10];
+        this.gridData = new GridData[this.columnCount][this.rowCount];
 
-        for(int i = 0; i < 10; i++) {
-            for(int j = 0; j < 10; j++) {
+        for(int i = 0; i < this.columnCount; i++) {
+            for(int j = 0; j < this.rowCount; j++) {
                 this.gridData[i][j] = new GridData(true, new Point(i,j));
             }
         }
