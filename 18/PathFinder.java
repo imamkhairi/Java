@@ -26,9 +26,8 @@ public class PathFinder {
     private LinkedList<Point> path;
 
     public PathFinder(GridSystem gridSystem) {
-        this.gridSystem = gridSystem; // ini harusnya dipassing dari constructor
+        this.gridSystem = gridSystem;
 
-        // ini bisa digunakan untuk besar array cost
         this.xLength = this.gridSystem.getGridData().length;
         this.yLength = this.gridSystem.getGridData()[0].length;
 
@@ -42,7 +41,6 @@ public class PathFinder {
         this.nbr = new LinkedList<Point>();
         this.path = new LinkedList<Point>();
 
-        // start dan end akan diambil dari input klik / masing2 npc akan beda
     }   
 
     public LinkedList<Point> startPathFinding(Point startPoint, Point currentPoint, Point endPoint) {
@@ -54,36 +52,18 @@ public class PathFinder {
 
         this.open.add(this.start);
         while(this.current.x != this.end.x || this.current.y != this.end.y) {
+            System.out.println("open : "+this.open);
             this.current = this.updateCurrent(this.getLowestF()); 
             this.getTraversableNeighbor(this.current.x, this.current.y);
-            // System.out.println(this.nbr);
     
             this.updateGCost();
             this.updateHCost();
             this.updateFCost();
-    
-            // check
-            // System.out.println(this.nbr);
-            // System.out.println("G COST");
-            // this.cekCost(this.gridGCost);
-            // System.out.println("H COST");
-            // this.cekCost(this.gridHCost);
-            // System.out.println("F COST");
-            // this.cekCost(this.gridFCost);
             
             this.checkNeighbor();
             this.nbr.clear();
         }
-        
-        // System.out.println();
-        // for(int i = 0; i < 10; i ++) {
-        //     for (int j = 0; j < 10; j ++) {
-        //         System.out.print(this.parent[j][i].y + " ");
-        //     }
-        //     System.out.println();
-        // }
-        // System.out.println();
-    
+
         this.setPath(); 
         this.normalizePath();
         return this.path;
@@ -91,14 +71,14 @@ public class PathFinder {
     }
 
     //DEBUG
-    private void cekCost(int[][] target) {
-        for(int i = 0; i < 10; i ++) {
-            for (int j = 0; j < 10; j ++) {
-                System.out.print(target[j][i] + " ");
-            }
-            System.out.println();
-        }
-    }
+    // private void cekCost(int[][] target) {
+    //     for(int i = 0; i < 10; i ++) {
+    //         for (int j = 0; j < 10; j ++) {
+    //             System.out.print(target[j][i] + " ");
+    //         }
+    //         System.out.println();
+    //     }
+    // }
 
     private void normalizePath() {
         LinkedList<Point> buffer = new LinkedList<Point>();
@@ -180,11 +160,6 @@ public class PathFinder {
     }
 
     private LinkedList<Point> getLowestF() {
-        if(this.open.size() == 0) {
-            System.out.println("kosong");
-        } else {
-            
-        }
         int lowest = this.gridFCost[this.open.get(0).x][this.open.get(0).y];
         LinkedList<Point> result = new LinkedList<>();
 
@@ -270,11 +245,7 @@ public class PathFinder {
 
         return result;
     }
-    
-    // ini harusnya di grid system, di sini sekarang buat debug aja
-    // private void updateTraversableData(int x, int y, boolean t) {
-    //     this.grid.getGridData()[x][y].setTraversable(t);
-    // }
+
 
     private void getTraversableNeighbor(int x, int y) {
         int[] v = {-1,0,1};
@@ -284,18 +255,13 @@ public class PathFinder {
                 
                 int a = x + i;
                 int b = y + j;
-                System.out.println(a + " , " + b);
+                // System.out.println(a + " , " + b);
                 if (a < 0 || b < 0 || a > this.xLength - 1 || b > this.yLength - 1) continue;
                 else if (!this.gridSystem.getGridData()[a][b].getTraversable() || this.checkInClose(a,b)) continue;
                 
                 this.nbr.add(new Point(a, b));
                 
                 this.checkParent(a, b, x, y);
-                // if(this.parent[a][b] != null) {
-                //     if(this.getCost(new Point(a,b), this.parent[a][b]) > this.getCost(new Point(a,b), new Point(x,y))){
-                //         this.parent[a][b] = new Point(x, y);
-                //     }
-                // }
             }
         }
     }
@@ -325,4 +291,5 @@ public class PathFinder {
         }
         return result;
     }
+
 }

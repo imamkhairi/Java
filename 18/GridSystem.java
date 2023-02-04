@@ -26,10 +26,6 @@ public class GridSystem {
                 this.gridData[i][j] = new GridData(true, new Point(i,j));
             }
         }
-
-        System.out.println("ukuran grid");
-        System.out.println(this.gridData.length);
-        System.out.println(this.gridData[0].length);
     }
 
     public GridData[][] getGridData() {
