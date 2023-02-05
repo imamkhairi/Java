@@ -1,4 +1,8 @@
 import java.awt.*;
+import java.awt.image.*;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public class Entity {
     private Point currentPoint;
@@ -9,6 +13,8 @@ public class Entity {
     private Image sprite;
     private String fileName;
     private Image[] sprites;
+
+    private BufferedImage[] aaa;
 
     public Entity(Toolkit tk) {
         this.name = "adam";
@@ -21,7 +27,27 @@ public class Entity {
         this.setFileName();
         // this.setSprite(tk);
         this.currentPoint = new Point(7,5);
+
+        this.aaa = new BufferedImage[6];
+        this.loadBuffer(tk);
     }
+
+    public void loadBuffer(Toolkit tk) {
+        for (int i = 0; i < this.aaa.length; i++) {
+            this.index = i;
+            this.setFileName();
+            try {
+                this.aaa[i] = ImageIO.read(getClass().getResourceAsStream(this.fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public BufferedImage getBufferedImage() {
+        return this.aaa[this.index];
+    }
+
 
     public void setFileName() {
         // "res\adam_idle_front_0.png"
@@ -34,7 +60,6 @@ public class Entity {
         } else {
             this.index = 0;
         }
-        System.out.println(this.index);
     }
 
     public void setSprites(Toolkit tk) {

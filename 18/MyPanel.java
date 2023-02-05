@@ -81,7 +81,8 @@ public class MyPanel extends JPanel{
     // TEST
     public void paintImage(Graphics2D g2) {
         super.paintComponent(g2);
-        g2.drawImage(this.customer.getSprites(), 500, 500, this);
+        // g2.drawImage(this.customer.getSprites(), 500, 500, this);
+        g2.drawImage(this.customer.getBufferedImage(), 500, 500, 64,128, null);
     }
 
     public void paintComponent(Graphics g) {

@@ -71,7 +71,7 @@ public class MyFrame extends JFrame implements ActionListener, MouseListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(i == 30) {
+        if(i == 5) {
         //     // System.out.println("1 second");
         //     this.customerNPC.move();
         //     this.gamePanel.drawAll(this.gridSystem, this.table, this.customerNPC);
