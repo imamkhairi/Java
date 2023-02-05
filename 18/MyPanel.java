@@ -61,8 +61,11 @@ public class MyPanel extends JPanel{
 
     // NPC
     public void drawCustomer(Graphics2D g2) {
-        int x = this.changeToGridCoordinate(this.customer.getCurrentPoint().x);
-        int y = this.changeToGridCoordinate(this.customer.getCurrentPoint().y - 1);
+        // int x = this.changeToGridCoordinate(this.customer.getCurrentPoint().x);
+        int x = this.customer.getCurrentPoint().x;
+        // int y = this.changeToGridCoordinate(this.customer.getCurrentPoint().y - 1);
+        int y = this.customer.getCurrentPoint().y - this.gridSize;
+
         g2.drawImage(this.customer.getBufferedImage(), x, y, this.gridSize,this.gridSize*2, null);
     }
 

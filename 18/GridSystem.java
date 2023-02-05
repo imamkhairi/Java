@@ -3,13 +3,12 @@ import java.awt.*;
 public class GridSystem {
     private Dimension windowSize;
     private GridData[][] gridData;
-    private int gridSize;
+    private final int gridSize = 64;
     private int columnCount;
     private int rowCount;
 
-    public GridSystem(Dimension windowSize, int gridSize) {
+    public GridSystem(Dimension windowSize) {
         this.windowSize = windowSize;
-        this.gridSize = gridSize;
 
         this.rowCount = (int)this.windowSize.getHeight()/this.gridSize;    
         this.columnCount = (int)this.windowSize.getWidth()/this.gridSize; 

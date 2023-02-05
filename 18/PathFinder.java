@@ -43,10 +43,14 @@ public class PathFinder {
 
     }   
 
-    public LinkedList<Point> startPathFinding(Point startPoint, Point currentPoint, Point endPoint) {
-        this.start = startPoint;
-        this.current = currentPoint;
-        this.end = endPoint;
+    private Point convertPoint(Point target, int gridSize) {
+        Point result = new Point(target.x/gridSize, target.y/gridSize);
+        return result;
+    }
+    public LinkedList<Point> startPathFinding(Point startPoint, Point currentPoint, Point endPoint, int gridSize) {
+        this.start = this.convertPoint(startPoint, gridSize);
+        this.current = this.convertPoint(currentPoint, gridSize);
+        this.end = this.convertPoint(endPoint, gridSize);
 
         this.path.clear();
 
@@ -68,16 +72,6 @@ public class PathFinder {
         return this.path;
 
     }
-
-    //DEBUG
-    // private void cekCost(int[][] target) {
-    //     for(int i = 0; i < 10; i ++) {
-    //         for (int j = 0; j < 10; j ++) {
-    //             System.out.print(target[j][i] + " ");
-    //         }
-    //         System.out.println();
-    //     }
-    // }
 
     private void normalizePath() {
         LinkedList<Point> buffer = new LinkedList<Point>();

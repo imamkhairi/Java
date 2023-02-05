@@ -11,17 +11,19 @@ public class Entity {
     private String direction;
     private int index;
     private String fileName;
+    private int gridSize;
 
     private BufferedImage[] sprite;
 
-    public Entity() {
+    public Entity(Point start, int gridSize) {
         this.name = "adam";
         this.action = "walk";
         this.direction = "front";
         this.index = 0;
+        this.gridSize = gridSize;
 
         this.setFileName();
-        this.currentPoint = new Point(7,5);
+        this.currentPoint = new Point(start.x * this.gridSize, start.y * this.gridSize);
 
         this.sprite = new BufferedImage[6];
         this.loadBuffer();
@@ -58,5 +60,13 @@ public class Entity {
 
     public String getFileName() {
         return this.fileName;
+    }
+
+    public Point getCurrentPoint() {
+        return this.currentPoint;
+    }
+
+    public void setCurrentPoint(Point target) {
+        this.currentPoint = new Point(target.x*this.gridSize, target.y*this.gridSize);
     }
 }
