@@ -11,7 +11,7 @@ public class MyPanel2 extends JPanel {
     public MyPanel2() {
         this.setPreferredSize(this.panelSize);
         this.setBackground(Color.BLACK);
-        this.chara = new Image[1];
+        this.chara = new Image[4];
     }
 
     public MyPanel2(Toolkit tk) {
@@ -41,12 +41,20 @@ public class MyPanel2 extends JPanel {
         this.sprite = tk.getImage(this.fileName).getScaledInstance(120, 140, Image.SCALE_DEFAULT);
     }
 
+    public void increaseIndex() {
+        if(this.index < 3) {
+            this.index ++;
+        } else {
+            this.index = 0;
+        }
+    }
+
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
         super.paintComponent(g2);
         // for(int i = 0; i < this.chara.length; i ++) {
         //     g2.drawImage(this.chara[i], 0+120*i, 0, this);
         // }
-        g2.drawImage(this.sprite, 0, 0, this);
+        g2.drawImage(this.chara[index], 0, 0, this);
     }
 } 

@@ -10,15 +10,15 @@ public class MyFrame2 extends JFrame implements MouseListener{
     public MyFrame2() {
         super();
 
-        this.chara = new Image[1];
+        this.chara = new Image[4];
         
         this.tk = Toolkit.getDefaultToolkit();
-        // for(int i = 0; i < chara.length; i ++) {
-        //     this.chara[i] = this.tk.getImage("front" + i +".png").getScaledInstance(120, 140, Image.SCALE_DEFAULT);
-        // }
+        for(int i = 0; i < chara.length; i ++) {
+            this.chara[i] = this.tk.getImage("front" + i +".png").getScaledInstance(120, 140, Image.SCALE_DEFAULT);
+        }
 
-        this.mp = new MyPanel2(tk);
-        // this.mp.setChara(this.chara);
+        this.mp = new MyPanel2();
+        this.mp.setChara(this.chara);
         // this.mp.updateChara(tk);
 
         this.getContentPane().add(this.mp);
@@ -37,8 +37,7 @@ public class MyFrame2 extends JFrame implements MouseListener{
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("clicked");        
-        this.mp.updateChara(this.tk);
+        this.mp.increaseIndex();        
         this.mp.repaint();
     }
 

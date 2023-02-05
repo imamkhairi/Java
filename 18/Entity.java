@@ -34,14 +34,19 @@ public class Entity {
         } else {
             this.index = 0;
         }
+        System.out.println(this.index);
     }
 
     public void setSprites(Toolkit tk) {
         for (int i = 0; i < this.sprites.length; i++) {
-            this.increaseIndex();
+            this.index = i;
             this.setFileName();
             this.sprites[i] = tk.getImage(this.fileName).getScaledInstance(64, 128, Image.SCALE_DEFAULT);
         }
+    }
+
+    public Image getSprites() {
+        return this.sprites[this.index];
     }
 
     public void setSprite(Toolkit tk) {

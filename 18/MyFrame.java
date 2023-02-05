@@ -39,6 +39,8 @@ public class MyFrame extends JFrame implements ActionListener, MouseListener{
         this.chairPoints = this.table.getChairPosition();
         
         this.customerNPC = new NPC(this.tk, this.chairPoints.get((int)(Math.random()*4)));
+
+        this.customerNPC.setSprites(tk);
         // this.customerNPC = new NPC(new Point(0,1));
         
         
@@ -49,6 +51,7 @@ public class MyFrame extends JFrame implements ActionListener, MouseListener{
         this.customerNPC.setSprite(tk);
 
         this.gamePanel = new MyPanel(this.windowSize, this.gridSize, this.customerNPC);
+
         this.getContentPane().add(this.gamePanel);
 
         // this.gamePanel.drawAll(this.gridSystem, this.table, this.customerNPC);
@@ -68,15 +71,16 @@ public class MyFrame extends JFrame implements ActionListener, MouseListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(i == 20) {
+        if(i == 30) {
         //     // System.out.println("1 second");
         //     this.customerNPC.move();
         //     this.gamePanel.drawAll(this.gridSystem, this.table, this.customerNPC);
         //     this.gamePanel.repaint();
 
-            this.customerNPC.increaseIndex();
-            this.customerNPC.setFileName();
-            this.customerNPC.setSprite(this.tk);  
+            // this.customerNPC.increaseIndex();
+            // this.customerNPC.setFileName();
+            // this.customerNPC.setSprite(this.tk);
+            this.customerNPC.increaseIndex();  
             this.gamePanel.repaint();  
 
             i = 0;
