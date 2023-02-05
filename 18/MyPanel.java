@@ -80,15 +80,17 @@ public class MyPanel extends JPanel{
 
     // TEST
     public void paintImage(Graphics2D g2) {
+        // super.paintComponent(g2);
         g2.drawImage(this.customer.getSprite(), 500, 500, this);
     }
 
     public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         this.paintImage(this.getBufferGraphics());
 
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.drawImage(this.bi, null, 0, 0);
     }
 }
