@@ -16,7 +16,7 @@ public class Entity {
 
     public Entity() {
         this.name = "adam";
-        this.action = "idle";
+        this.action = "walk";
         this.direction = "front";
         this.index = 0;
 
@@ -45,7 +45,6 @@ public class Entity {
 
 
     public void setFileName() {
-        // "res\adam_idle_front_0.png"
         this.fileName = "res\\" +this.name + "_" + this.action + "_" + this.direction + "_" + this.index + ".png";
     }
 

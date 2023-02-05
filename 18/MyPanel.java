@@ -71,11 +71,10 @@ public class MyPanel extends JPanel{
         super.paintComponent(g2);
 
         // makin bawah, makin di atas di panel
-        this.drawCustomer(g2);
         this.drawTable(g2);
+        this.drawCustomer(g2);
         this.drawHorizontalGrid(g2);
         this.drawVerticalGrid(g2);
-
 
         g2.dispose();
         this.repaint();
