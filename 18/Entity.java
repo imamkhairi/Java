@@ -6,13 +6,8 @@ public class Entity {
     private String action;
     private String direction;
     private int index;
-
     private Image sprite;
-
     private String fileName;
-
-    
-    // public Point endPoint;
 
     public Entity(Toolkit tk) {
         this.name = "adam";
@@ -32,7 +27,7 @@ public class Entity {
     }
 
     public void setSprite(Toolkit tk) {
-        this.sprite = tk.getImage(this.fileName);
+        this.sprite = tk.getImage(this.fileName).getScaledInstance(64, 128, Image.SCALE_DEFAULT);
     }
 
     public String getFileName() {
@@ -40,7 +35,6 @@ public class Entity {
     }
 
     public Image getSprite() {
-        // System.out.println(this.sprite);
         return this.sprite;
     }
     

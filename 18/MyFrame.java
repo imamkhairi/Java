@@ -3,6 +3,8 @@ import java.util.LinkedList;
 import java.awt.*;
 import javax.swing.*;
 
+import java.awt.event.*;
+
 public class MyFrame extends JFrame implements ActionListener{
     private Timer timer;
     private int i = 0;
@@ -29,26 +31,25 @@ public class MyFrame extends JFrame implements ActionListener{
         this.timer = new Timer(1000/this.fps, this);
         this.timer.start();
 
-        this.gamePanel = new MyPanel(this.windowSize, this.gridSize);
         this.gridSystem = new GridSystem(this.windowSize, this.gridSize);
-
+        
         this.table = new Table(1,1,2,2,this.gridSystem);
         this.chairPoints = this.table.getChairPosition();
         
         this.customerNPC = new NPC(tk, this.chairPoints.get((int)(Math.random()*4)));
         // this.customerNPC = new NPC(new Point(0,1));
-        System.out.println(this.customerNPC.getFileName());
-        Image buffer = tk.getImage(this.customerNPC.getFileName());
         
-
+        
         this.pathFinder = new PathFinder(this.gridSystem);
-
+        
         // DEBUG
         this.customerNPC.setPath(this.pathFinder.startPathFinding(this.customerNPC.getStarPoint(), this.customerNPC.getCurrentPoint(), this.customerNPC.getEndPoint()));
+        this.customerNPC.setSprite(tk);
 
+        this.gamePanel = new MyPanel(this.windowSize, this.gridSize, this.customerNPC);
         this.getContentPane().add(this.gamePanel);
 
-        this.gamePanel.drawAll(this.gridSystem, this.table, this.customerNPC, buffer);
+        // this.gamePanel.drawAll(this.gridSystem, this.table, this.customerNPC);
 
         this.pack();
         this.setResizable(false);
