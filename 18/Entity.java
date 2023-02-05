@@ -10,34 +10,29 @@ public class Entity {
     private String action;
     private String direction;
     private int index;
-    private Image sprite;
     private String fileName;
-    private Image[] sprites;
 
-    private BufferedImage[] aaa;
+    private BufferedImage[] sprite;
 
-    public Entity(Toolkit tk) {
+    public Entity() {
         this.name = "adam";
         this.action = "idle";
         this.direction = "front";
         this.index = 0;
 
-        this.sprites = new Image[6];
-
         this.setFileName();
-        // this.setSprite(tk);
         this.currentPoint = new Point(7,5);
 
-        this.aaa = new BufferedImage[6];
-        this.loadBuffer(tk);
+        this.sprite = new BufferedImage[6];
+        this.loadBuffer();
     }
 
-    public void loadBuffer(Toolkit tk) {
-        for (int i = 0; i < this.aaa.length; i++) {
+    public void loadBuffer() {
+        for (int i = 0; i < this.sprite.length; i++) {
             this.index = i;
             this.setFileName();
             try {
-                this.aaa[i] = ImageIO.read(getClass().getResourceAsStream(this.fileName));
+                this.sprite[i] = ImageIO.read(getClass().getResourceAsStream(this.fileName));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -45,7 +40,7 @@ public class Entity {
     }
 
     public BufferedImage getBufferedImage() {
-        return this.aaa[this.index];
+        return this.sprite[this.index];
     }
 
 
@@ -62,28 +57,7 @@ public class Entity {
         }
     }
 
-    public void setSprites(Toolkit tk) {
-        for (int i = 0; i < this.sprites.length; i++) {
-            this.index = i;
-            this.setFileName();
-            this.sprites[i] = tk.getImage(this.fileName).getScaledInstance(64, 128, Image.SCALE_DEFAULT);
-        }
-    }
-
-    public Image getSprites() {
-        return this.sprites[this.index];
-    }
-
-    public void setSprite(Toolkit tk) {
-        this.sprite = tk.getImage(this.fileName).getScaledInstance(64, 128, Image.SCALE_DEFAULT);
-    }
-
     public String getFileName() {
         return this.fileName;
     }
-
-    public Image getSprite() {
-        return this.sprite;
-    }
-    
 }

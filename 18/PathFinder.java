@@ -107,8 +107,7 @@ public class PathFinder {
         for (Point neighbor : this.nbr) {
             int x = neighbor.x;
             int y = neighbor.y;
-            // int currentCost = this.currentCost;
-            if (!this.checkInOpen(x, y)) { // disini harusnya juga dicek shorter path (cost terendah)
+            if (!this.checkInOpen(x, y)) { 
                 this.parent[x][y] = new Point(this.current.x, this.current.y);
                 this.open.add(neighbor);
             }   

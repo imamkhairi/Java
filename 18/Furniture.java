@@ -1,9 +1,16 @@
+import java.awt.image.*;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 public class Furniture {
     private int x;
     private int y;
     private int height;
     private int width;
     private int gridSize;
+    
+    private BufferedImage sprite;
     private GridSystem gridSystem;
 
     public Furniture(int x, int y, int height, int width, GridSystem gridSystem) {
@@ -13,6 +20,21 @@ public class Furniture {
         this.height = height;
         this.width = width;
         this.gridSystem = gridSystem;
+
+        this.loadSprite();
+    }
+
+    private void loadSprite() {
+        try {
+            //sementara
+            this.sprite = ImageIO.read(getClass().getResourceAsStream("res\\table0.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public BufferedImage getSprite() {
+        return this.sprite;
     }
 
     public int getX() {
