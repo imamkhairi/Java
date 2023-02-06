@@ -34,12 +34,16 @@ public class MyFrame extends JFrame implements ActionListener{
         this.table = new Table(1,1,2,2,this.gridSystem);
         this.chairPoints = this.table.getChairPosition();
         
-        this.customerNPC = new NPC(new Point(7,5), this.chairPoints.get((int)(Math.random()*4)), this.gridSize);
+        // this.customerNPC = new NPC(new Point(7,5), this.chairPoints.get((int)(Math.random()*4)), this.gridSize);
+        this.customerNPC = new NPC(new Point(7,5), this.chairPoints.get(3), this.gridSize);
 
         this.pathFinder = new PathFinder(this.gridSystem);
         
         // DEBUG
         this.customerNPC.setPath(this.pathFinder.startPathFinding(this.customerNPC.getStarPoint(), this.customerNPC.getCurrentPoint(), this.customerNPC.getEndPoint(), this.gridSize));
+        System.out.println(this.customerNPC.getPath());
+
+
 
         this.gamePanel = new MyPanel(this.windowSize, this.gridSize, this.customerNPC, this.table, this.gridSystem);
 
