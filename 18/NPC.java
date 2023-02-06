@@ -69,7 +69,6 @@ public class NPC extends Entity {
             System.out.println(direction[0] +" , " + direction[1]);
 
             if (this.getCurrentPoint().x == this.path.get(0).x*64 && this.getCurrentPoint().y == this.path.get(0).y*64){
-                System.out.println("masuk ----------------");
                 this.setCurrentPoint(this.path.get(0));
                 this.setBufferPoint(this.path.get(0));
                 this.path.remove(0);
