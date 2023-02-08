@@ -2,26 +2,26 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.image.*;
 
-// public class MyPanel extends JPanel implements MouseListener{
 public class MyPanel extends JPanel{
     private Dimension windowSize;
     private int gridSize;
-    
     private BufferedImage bi;
-
     private NPC customer;
-    private Table table;
-
     private GridSystem gridSystem;
+    private StageData stageData;
 
-    public MyPanel(Dimension windowSize, int gridSize, NPC customer, Table table, GridSystem gridSystem) {
+
+    public MyPanel(Dimension windowSize, int gridSize, NPC customer, GridSystem gridSystem, StageData stageData) {
         this.windowSize = windowSize;
         this.setPreferredSize(this.windowSize);
         this.bi = new BufferedImage(this.windowSize.width, this.windowSize.height, BufferedImage.TYPE_INT_ARGB);
         this.gridSize = gridSize;
         this.customer = customer;
-        this.table = table;
         this.gridSystem = gridSystem;
+        this.stageData = stageData;
+        // this.table = table;
+
+        // this.table = new Table(10, 10, 2, 2, this.gridSystem);
     }
 
     private Graphics2D getBufferGraphics() {
@@ -53,20 +53,31 @@ public class MyPanel extends JPanel{
 
 
     // Furniture
-    private void drawTable(Graphics2D g2) {
-        int x = this.changeToGridCoordinate(this.table.getX());
-        int y = this.changeToGridCoordinate(this.table.getY());
-        g2.drawImage(this.table.getSprite(),x, y, this.gridSize*this.table.getWidth(), this.gridSize*this.table.getHeight(), null);
+    private void drawFurniture(Graphics2D g2, Furniture furniture) {
+        int x = this.changeToGridCoordinate(furniture.getX());
+        int y = this.changeToGridCoordinate(furniture.getY());
+        g2.drawImage(furniture.getSprite(),x, y, this.gridSize*furniture.getWidth(), this.gridSize*furniture.getHeight(), null);
     }
 
     // NPC
     public void drawCustomer(Graphics2D g2) {
         // int x = this.changeToGridCoordinate(this.customer.getCurrentPoint().x);
-        int x = this.customer.getCurrentPoint().x;
         // int y = this.changeToGridCoordinate(this.customer.getCurrentPoint().y - 1);
+        int x = this.customer.getCurrentPoint().x;
         int y = this.customer.getCurrentPoint().y - this.gridSize;
 
         g2.drawImage(this.customer.getBufferedImage(), x, y, this.gridSize,this.gridSize*2, null);
+    }
+
+    //Stage
+    private void drawStage(Graphics2D g2) {
+        g2.drawImage(this.stageData.getBackgroundImage(), 0, 0, this.windowSize.width, this.windowSize.height, null);
+        for ( int i = 0; i < this.stageData.getTables().length; i++){
+            this.drawFurniture(g2, this.stageData.getTables()[i]);
+        }
+        for ( int i = 0; i < this.stageData.getChairs().length; i ++) {
+            this.drawFurniture(g2, this.stageData.getChairs()[i]);
+        }
     }
 
     public void drawAll() {
@@ -74,7 +85,7 @@ public class MyPanel extends JPanel{
         super.paintComponent(g2);
 
         // makin bawah, makin di atas di panel
-        this.drawTable(g2);
+        this.drawStage(g2);
         this.drawCustomer(g2);
         this.drawHorizontalGrid(g2);
         this.drawVerticalGrid(g2);

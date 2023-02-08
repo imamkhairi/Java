@@ -9,8 +9,8 @@ public class MyFrame extends JFrame implements ActionListener{
 
     private MyPanel gamePanel;
     private GridSystem gridSystem;
-    private Table table;
     private NPC customerNPC;
+    private StageData stageData;
 
     private PathFinder pathFinder;
 
@@ -19,7 +19,7 @@ public class MyFrame extends JFrame implements ActionListener{
     private final Dimension windowSize = new Dimension(1920, 1080);
     private int gridSize; 
 
-    private final int fps = 30;
+    private final int fps = 60;
 
 
     public MyFrame() {
@@ -30,27 +30,21 @@ public class MyFrame extends JFrame implements ActionListener{
 
         this.gridSystem = new GridSystem(this.windowSize);
         this.gridSize = this.gridSystem.getGridSize();
+
+        this.stageData = new StageData(this.gridSystem);
+        this.chairPoints = this.stageData.getChairPoints();
         
-        this.table = new Table(1,1,2,2,this.gridSystem);
-        this.chairPoints = this.table.getChairPosition();
-        
-        // this.customerNPC = new NPC(new Point(7,5), this.chairPoints.get((int)(Math.random()*4)), this.gridSize);
-        this.customerNPC = new NPC(new Point(7,5), this.chairPoints.get(3), this.gridSize);
+        this.customerNPC = new NPC(new Point(14,14+(int)(Math.random()*2)), this.chairPoints.get((int)(Math.random()*36)), this.gridSize, this.gridSystem);
+        // this.customerNPC = new NPC(new Point(7,5), this.chairPoints.get(3), this.gridSize);
 
         this.pathFinder = new PathFinder(this.gridSystem);
         
         // DEBUG
         this.customerNPC.setPath(this.pathFinder.startPathFinding(this.customerNPC.getStarPoint(), this.customerNPC.getCurrentPoint(), this.customerNPC.getEndPoint(), this.gridSize));
-        System.out.println(this.customerNPC.getPath());
+        // System.out.println(this.customerNPC.getPath());
 
-
-
-        this.gamePanel = new MyPanel(this.windowSize, this.gridSize, this.customerNPC, this.table, this.gridSystem);
-
+        this.gamePanel = new MyPanel(this.windowSize, this.gridSize, this.customerNPC, this.gridSystem, this.stageData);
         this.getContentPane().add(this.gamePanel);
-
-        // this.gamePanel.drawAll(this.gridSystem, this.table, this.customerNPC);
-
         this.pack();
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,7 +66,6 @@ public class MyFrame extends JFrame implements ActionListener{
         } else {
             i++;
         }
-        // System.out.println(i);
     }
 
 }

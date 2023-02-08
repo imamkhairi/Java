@@ -48,6 +48,10 @@ public class PathFinder {
         return result;
     }
     public LinkedList<Point> startPathFinding(Point startPoint, Point currentPoint, Point endPoint, int gridSize) {
+        // this.start = this.convertPoint(startPoint, gridSize);
+        // this.current = this.convertPoint(currentPoint, gridSize);
+        // this.end = this.convertPoint(endPoint, gridSize);
+
         this.start = this.convertPoint(startPoint, gridSize);
         this.current = this.convertPoint(currentPoint, gridSize);
         this.end = this.convertPoint(endPoint, gridSize);
@@ -244,15 +248,12 @@ public class PathFinder {
         for (int i : v) {
             for (int j : v){
                 if (i == 0 && j == 0 ) continue;
-                
                 int a = x + i;
                 int b = y + j;
                 // System.out.println(a + " , " + b);
                 if (a < 0 || b < 0 || a > this.xLength - 1 || b > this.yLength - 1) continue;
                 else if (!this.gridSystem.getGridData()[a][b].getTraversable() || this.checkInClose(a,b)) continue;
-                
                 this.nbr.add(new Point(a, b));
-                
                 this.checkParent(a, b, x, y);
             }
         }

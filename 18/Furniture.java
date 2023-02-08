@@ -8,26 +8,23 @@ public class Furniture {
     private int y;
     private int height;
     private int width;
-    private int gridSize;
+    // private int gridSize;
     
     private BufferedImage sprite;
     private GridSystem gridSystem;
 
     public Furniture(int x, int y, int height, int width, GridSystem gridSystem) {
-        this.gridSize = gridSize;
+        // this.gridSize = this.gridSystem.getGridSize();
         this.x = x;
         this.y = y;
         this.height = height;
         this.width = width;
         this.gridSystem = gridSystem;
-
-        this.loadSprite();
     }
 
-    private void loadSprite() {
+    public void loadSprite(String fileName) {
         try {
-            //sementara
-            this.sprite = ImageIO.read(getClass().getResourceAsStream("res\\table0.png"));
+            this.sprite = ImageIO.read(getClass().getResourceAsStream(fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }
