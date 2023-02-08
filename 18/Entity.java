@@ -13,7 +13,7 @@ public class Entity {
     private String fileName;
     private int gridSize;
 
-    private BufferedImage[] sprite;
+    private BufferedImage sprite;
 
     public Entity(Point start, int gridSize) {
         this.name = "adam";
@@ -25,26 +25,22 @@ public class Entity {
         this.setFileName();
         this.currentPoint = new Point(start.x * this.gridSize, start.y * this.gridSize);
 
-        this.sprite = new BufferedImage[6];
-        this.loadBuffer();
+        // this.sprite = new BufferedImage[6];
+        // this.loadBuffer();
+        this.loadSprite();
     }
 
-    public void loadBuffer() {
-        for (int i = 0; i < this.sprite.length; i++) {
-            this.index = i;
-            this.setFileName();
-            try {
-                this.sprite[i] = ImageIO.read(getClass().getResourceAsStream(this.fileName));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public void loadSprite() {
+        try {
+            this.sprite = ImageIO.read(getClass().getResourceAsStream(this.fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public BufferedImage getBufferedImage() {
-        return this.sprite[this.index];
+    public BufferedImage getSprite() {
+        return this.sprite;
     }
-
 
     public void setFileName() {
         this.fileName = "res\\" +this.name + "_" + this.action + "_" + this.direction + "_" + this.index + ".png";
@@ -69,4 +65,14 @@ public class Entity {
     public void setCurrentPoint(Point target) {
         this.currentPoint = new Point(target.x*this.gridSize, target.y*this.gridSize);
     }
+
+    public void setDirection(String newDirection) {
+        this.direction = newDirection;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    
 }

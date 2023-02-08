@@ -19,7 +19,7 @@ public class MyFrame extends JFrame implements ActionListener{
     private final Dimension windowSize = new Dimension(1920, 1080);
     private int gridSize; 
 
-    private final int fps = 60;
+    private final int fps = 50;
 
 
     public MyFrame() {
@@ -35,14 +35,9 @@ public class MyFrame extends JFrame implements ActionListener{
         this.chairPoints = this.stageData.getChairPoints();
         
         this.customerNPC = new NPC(new Point(14,14+(int)(Math.random()*2)), this.chairPoints.get((int)(Math.random()*36)), this.gridSize, this.gridSystem);
-        // this.customerNPC = new NPC(new Point(7,5), this.chairPoints.get(3), this.gridSize);
 
         this.pathFinder = new PathFinder(this.gridSystem);
         
-        // DEBUG
-        this.customerNPC.setPath(this.pathFinder.startPathFinding(this.customerNPC.getStarPoint(), this.customerNPC.getCurrentPoint(), this.customerNPC.getEndPoint(), this.gridSize));
-        // System.out.println(this.customerNPC.getPath());
-
         this.gamePanel = new MyPanel(this.windowSize, this.gridSize, this.customerNPC, this.gridSystem, this.stageData);
         this.getContentPane().add(this.gamePanel);
         this.pack();
@@ -60,7 +55,7 @@ public class MyFrame extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if(i == 5) {
             this.customerNPC.move();
-            this.customerNPC.increaseIndex();  
+            // this.customerNPC.increaseIndex();  
             this.gamePanel.repaint();  
             i = 0;
         } else {

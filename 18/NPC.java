@@ -9,16 +9,17 @@ public class NPC extends Entity {
 
     private LinkedList<Point> path;
 
-    // private boolean first  = true;
+    private int phase;
+
     
     public NPC(Point startPoint, Point endPoint, int gridSize, GridSystem gridSystem) {
         super(startPoint, gridSize);
-        // angap dari pintu masuk dulu
-        // this.startPoint = new Point(16, 13);
         this.startPoint = new Point(this.getCurrentPoint().x, this.getCurrentPoint().y);
         this.endPoint = new Point(endPoint.x*gridSize, endPoint.y*gridSize);
         this.bufferPoint = new Point (this.getCurrentPoint().x/64, this.getCurrentPoint().y/64);
         this.pathFinder = new PathFinder(gridSystem);
+        this.setPath(this.pathFinder.startPathFinding(this.startPoint, this.getCurrentPoint(), this.endPoint, gridSize));
+        this.phase = 0;
     }
 
     public Point getStarPoint() {
@@ -55,23 +56,82 @@ public class NPC extends Entity {
         this.bufferPoint = target;
     }
 
+    public int getPhase() {
+        return this.phase;
+    }
+
+    private void changeDirection(int x, int y) {
+        if(x < 0) {
+            this.setDirection("left");
+        } else if(x > 0) {
+            this.setDirection("right");
+        }
+
+        if(y > 0 && x == 0) {
+            this.setDirection("front");
+        } else if(y < 0 && x == 0) {
+            this.setDirection("back");
+        }
+    }
+
+    private int normalizeSpeed(int[] direction) {
+        int speed;
+
+        if(direction[0] != 0 && direction[1] != 0) {
+            speed = 8;
+        } else {
+            speed = 16;
+        }
+        return speed;
+    }
+
+    private void changeAction() {
+        if(this.path.size() != 0) {
+            this.setAction("walk");
+        } else {
+            if(this.phase == 1) {
+                this.setAction("sit");
+                int[] x1 = {2,13,24};
+                int[] x2 = {5,16,27};
+                for (int i : x1) {
+                    if(this.endPoint.x/64 == i) {
+                        this.setDirection("right");
+                    }
+                }
+                for (int i : x2) {
+                    if(this.endPoint.x/64 == i) {
+                        this.setDirection("left");
+                    }
+                }
+            }
+        }
+    }
+
     public void move() {
         if(this.path.size() != 0) {
             int[] direction = new int[2];
-
             direction = this.getDirectionValue();
-            // System.out.println(direction[0] +" , " + direction[1]);
-
+            this.changeDirection(direction[0], direction[1]);
             if (this.getCurrentPoint().x == this.path.get(0).x*64 && this.getCurrentPoint().y == this.path.get(0).y*64){
                 this.setCurrentPoint(this.path.get(0));
                 this.setBufferPoint(this.path.get(0));
                 this.path.remove(0);
             } else {
-                this.getCurrentPoint().translate(16*direction[0], 16*direction[1]);
+                int speed = this.normalizeSpeed(direction);
+                this.getCurrentPoint().translate(speed*direction[0], speed*direction[1]);
             }
-
         } else {
-            System.out.println("arrived");
+            if(this.phase == 0) this.phase++;
         }
+
+        this.changeAction();
+        this.increaseIndex();
+        this.setFileName();
+        this.loadSprite();
+    }
+
+    public void startNewPath() {
+        this.phase = 0;
+        
     }
 }

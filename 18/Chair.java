@@ -1,6 +1,3 @@
-import java.awt.*;
-import java.util.LinkedList;
-
 public class Chair extends Furniture {
     private boolean occupied;
 

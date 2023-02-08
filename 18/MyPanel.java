@@ -1,8 +1,9 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.image.*;
+import java.awt.event.*;
 
-public class MyPanel extends JPanel{
+public class MyPanel extends JPanel implements MouseListener{
     private Dimension windowSize;
     private int gridSize;
     private BufferedImage bi;
@@ -19,9 +20,8 @@ public class MyPanel extends JPanel{
         this.customer = customer;
         this.gridSystem = gridSystem;
         this.stageData = stageData;
-        // this.table = table;
 
-        // this.table = new Table(10, 10, 2, 2, this.gridSystem);
+        this.addMouseListener(this);
     }
 
     private Graphics2D getBufferGraphics() {
@@ -66,7 +66,7 @@ public class MyPanel extends JPanel{
         int x = this.customer.getCurrentPoint().x;
         int y = this.customer.getCurrentPoint().y - this.gridSize;
 
-        g2.drawImage(this.customer.getBufferedImage(), x, y, this.gridSize,this.gridSize*2, null);
+        g2.drawImage(this.customer.getSprite(), x, y, this.gridSize,this.gridSize*2, null);
     }
 
     //Stage
@@ -101,5 +101,38 @@ public class MyPanel extends JPanel{
         
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.drawImage(this.bi, null, 0, 0);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if(this.customer.getPhase() == 1) {
+            System.out.println("bisa");
+            this.customer.startNewPath();
+            System.out.println(this.customer.getPhase());
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
     }
 }
