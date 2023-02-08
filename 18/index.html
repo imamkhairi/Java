@@ -65,7 +65,26 @@
 
 <H2 style="color: #fefae0; font-size: 150%;">クラス分割の説明</H2>
 <p>
+    How the class partitioning was done. What data is being passed from one class to another, when, how, and from which class to another.
 
+
+
+    Entity -> NPC
+    
+    Furniture -> Chair (
+             Table
+    
+    GridData -> data for a grid
+    GridSystem -> save all the grid value and control how the grid behaviour
+    
+    MyFrame -> where everything instantiated and passed to the panel to get drawn
+    
+    MyPanel -> Used to draw everything, which means this class will take every data from MyFrame
+    
+    PathFinder
+    
+    StageData -> contain every data about the layout of the background and its component(Chair, table)
+    
 </p>
 
 <UL>
