@@ -51,6 +51,10 @@ public class PathFinder {
         // this.start = this.convertPoint(startPoint, gridSize);
         // this.current = this.convertPoint(currentPoint, gridSize);
         // this.end = this.convertPoint(endPoint, gridSize);
+        this.open.clear();
+        this.close.clear();
+        this.nbr.clear();
+        this.path.clear();
 
         this.start = this.convertPoint(startPoint, gridSize);
         this.current = this.convertPoint(currentPoint, gridSize);
@@ -70,9 +74,11 @@ public class PathFinder {
             this.checkNeighbor();
             this.nbr.clear();
         }
-
+        
         this.setPath(); 
         this.normalizePath();
+        
+        
         return this.path;
 
     }
@@ -250,7 +256,6 @@ public class PathFinder {
                 if (i == 0 && j == 0 ) continue;
                 int a = x + i;
                 int b = y + j;
-                // System.out.println(a + " , " + b);
                 if (a < 0 || b < 0 || a > this.xLength - 1 || b > this.yLength - 1) continue;
                 else if (!this.gridSystem.getGridData()[a][b].getTraversable() || this.checkInClose(a,b)) continue;
                 this.nbr.add(new Point(a, b));

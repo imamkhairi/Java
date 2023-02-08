@@ -121,7 +121,12 @@ public class NPC extends Entity {
                 this.getCurrentPoint().translate(speed*direction[0], speed*direction[1]);
             }
         } else {
-            if(this.phase == 0) this.phase++;
+            if(this.phase == 0) {
+                this.phase++;
+                System.out.println("start : " + this.startPoint);
+                System.out.println("current : " + this.getCurrentPoint());
+                System.out.println("end : " + this.endPoint);
+            }
         }
 
         this.changeAction();
@@ -130,8 +135,16 @@ public class NPC extends Entity {
         this.loadSprite();
     }
 
-    public void startNewPath() {
+    public void startNewPath(Point p) {
         this.phase = 0;
+        this.startPoint = this.endPoint;
+        this.setCurrentPoint(new Point(this.startPoint.x/64, this.startPoint.y/64));
+        this.endPoint = new Point(p.x*64, p.y*64);
+        this.setPath(this.pathFinder.startPathFinding(this.startPoint, this.getCurrentPoint(), this.endPoint, 64));
+
+        System.out.println("start : " + this.startPoint);
+        System.out.println("current : " + this.getCurrentPoint());
+        System.out.println("end : " + this.endPoint);
         
     }
 }

@@ -2,6 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.image.*;
 import java.awt.event.*;
+import java.util.LinkedList;
 
 public class MyPanel extends JPanel implements MouseListener{
     private Dimension windowSize;
@@ -10,9 +11,10 @@ public class MyPanel extends JPanel implements MouseListener{
     private NPC customer;
     private GridSystem gridSystem;
     private StageData stageData;
+    private LinkedList<Point> chairPoints;
 
 
-    public MyPanel(Dimension windowSize, int gridSize, NPC customer, GridSystem gridSystem, StageData stageData) {
+    public MyPanel(Dimension windowSize, int gridSize, NPC customer, GridSystem gridSystem, StageData stageData, LinkedList<Point> chairPoints) {
         this.windowSize = windowSize;
         this.setPreferredSize(this.windowSize);
         this.bi = new BufferedImage(this.windowSize.width, this.windowSize.height, BufferedImage.TYPE_INT_ARGB);
@@ -20,6 +22,7 @@ public class MyPanel extends JPanel implements MouseListener{
         this.customer = customer;
         this.gridSystem = gridSystem;
         this.stageData = stageData;
+        this.chairPoints = chairPoints;
 
         this.addMouseListener(this);
     }
@@ -84,11 +87,10 @@ public class MyPanel extends JPanel implements MouseListener{
         Graphics2D g2 = this.getBufferGraphics();
         super.paintComponent(g2);
 
-        // makin bawah, makin di atas di panel
         this.drawStage(g2);
         this.drawCustomer(g2);
-        this.drawHorizontalGrid(g2);
-        this.drawVerticalGrid(g2);
+        // this.drawHorizontalGrid(g2);
+        // this.drawVerticalGrid(g2);
 
         g2.dispose();
         this.repaint();
@@ -107,32 +109,24 @@ public class MyPanel extends JPanel implements MouseListener{
     public void mouseClicked(MouseEvent e) {
         if(this.customer.getPhase() == 1) {
             System.out.println("bisa");
-            this.customer.startNewPath();
+            this.customer.startNewPath(this.chairPoints.get((int)(Math.random()*36)));
             System.out.println(this.customer.getPhase());
         }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        // TODO Auto-generated method stub
-        
     }
 }
