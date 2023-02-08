@@ -5,7 +5,7 @@ import javax.swing.*;
 
 public class MyFrame extends JFrame implements ActionListener{
     private Timer timer;
-    private int i = 0;
+    private int i;
 
     private MyPanel gamePanel;
     private GridSystem gridSystem;
@@ -23,24 +23,26 @@ public class MyFrame extends JFrame implements ActionListener{
     public MyFrame() {
         super();
         
-        this.timer = new Timer(1000/this.fps, this);
-        this.timer.start();
-
+        
         this.gridSystem = new GridSystem(this.windowSize);
         this.gridSize = this.gridSystem.getGridSize();
-
+        
         this.stageData = new StageData(this.gridSystem);
         this.chairPoints = this.stageData.getChairPoints();
         
         this.customerNPC = new NPC(new Point(14,14+(int)(Math.random()*2)), this.chairPoints.get((int)(Math.random()*36)), this.gridSize, this.gridSystem);
-
-        this.gamePanel = new MyPanel(this.windowSize, this.gridSize, this.customerNPC, this.gridSystem, this.stageData, this.chairPoints);
+        
+        this.gamePanel = new MyPanel(this.windowSize, this.gridSize, this.customerNPC, this.stageData, this.chairPoints);
         this.getContentPane().add(this.gamePanel);
         this.pack();
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+        
+        this.i = 0;
+        this.timer = new Timer(1000/this.fps, this);
+        this.timer.start();
     }
     
     public static void main(String[] args) {
@@ -49,12 +51,12 @@ public class MyFrame extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(i == 5) {
+        if(this.i == 3) {
             this.customerNPC.move();
             this.gamePanel.repaint();  
-            i = 0;
+            this.i = 0;
         } else {
-            i++;
+            this.i++;
         }
     }
 

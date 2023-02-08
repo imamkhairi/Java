@@ -14,13 +14,13 @@ public class MyPanel extends JPanel implements MouseListener{
     private LinkedList<Point> chairPoints;
 
 
-    public MyPanel(Dimension windowSize, int gridSize, NPC customer, GridSystem gridSystem, StageData stageData, LinkedList<Point> chairPoints) {
+    public MyPanel(Dimension windowSize, int gridSize, NPC customer, StageData stageData, LinkedList<Point> chairPoints) {
         this.windowSize = windowSize;
         this.setPreferredSize(this.windowSize);
         this.bi = new BufferedImage(this.windowSize.width, this.windowSize.height, BufferedImage.TYPE_INT_ARGB);
         this.gridSize = gridSize;
         this.customer = customer;
-        this.gridSystem = gridSystem;
+        // this.gridSystem = gridSystem;
         this.stageData = stageData;
         this.chairPoints = chairPoints;
 
@@ -38,21 +38,21 @@ public class MyPanel extends JPanel implements MouseListener{
     }
 
     // GRID
-    private void drawHorizontalGrid(Graphics2D g2) {
-        g2.setColor(Color.LIGHT_GRAY);
-        for(int i = 1; i <= this.gridSystem.getRowCount(); i++) {
-            g2.drawLine(0, i*this.gridSize, 
-            this.windowSize.width, i*this.gridSize);
-        }
-    }
+    // private void drawHorizontalGrid(Graphics2D g2) {
+    //     g2.setColor(Color.LIGHT_GRAY);
+    //     for(int i = 1; i <= this.gridSystem.getRowCount(); i++) {
+    //         g2.drawLine(0, i*this.gridSize, 
+    //         this.windowSize.width, i*this.gridSize);
+    //     }
+    // }
 
-    private void drawVerticalGrid(Graphics2D g2) {
-        g2.setColor(Color.LIGHT_GRAY);
-        for(int i = 1; i <= this.gridSystem.getColumnCount(); i++) {
-            g2.drawLine(i*this.gridSize, 0, 
-            i*this.gridSize, this.windowSize.height);
-        }
-    }
+    // private void drawVerticalGrid(Graphics2D g2) {
+    //     g2.setColor(Color.LIGHT_GRAY);
+    //     for(int i = 1; i <= this.gridSystem.getColumnCount(); i++) {
+    //         g2.drawLine(i*this.gridSize, 0, 
+    //         i*this.gridSize, this.windowSize.height);
+    //     }
+    // }
 
 
     // Furniture

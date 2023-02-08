@@ -1,0 +1,82 @@
+<!doctype html>
+<!--
+　作品紹介ウェブページのテンプレートファイル
+　最小限の項目だけ示しています．
+　自由に追加・変更してください．
+-->
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- link rel="stylesheet" href="./style.css" -->
+<TITLE>テーマ１８</TITLE>
+</head>
+<body style="background-color: #283618;">
+<H1 style="text-align: center; color: #fefae0; font-size: 200%;">テーマ１８</H1>
+
+<P style="text-align: justify; font-size: 120%; color: #fefae0;">
+ゲームを作りたいのですが、時間がなくて完成させることができません。ということで、こんな感じでやっています。パスファインダーアルゴリズムを利用したアニメーションのようなものです。
+このゲームの基本は、パスファインダーアルゴリズム（A*アルゴリズム）をどのように実装するかということです。このプログラムでは、そのアルゴリズムを使って、ある地点に移動するキャラクターを見ることができます。
+</P>
+
+<H2 style="color: #fefae0; font-size: 150%;">スクリーンショット</H2>
+
+<CENTER>
+<A HREF="image\screenshot0.jpg">
+<IMG SRC="image\screenshot0.jpg" HEIGHT="400">
+</A>
+</CENTER>
+
+<H2 style="color: #fefae0; font-size: 150%;">ユーザー向けの説明</H2>
+<p style="text-align: justify; font-size: 120%; color: #fefae0;">
+    キャラクタは、1フレームごとに使用する画像を変えてアニメーションさせる。
+    <ul>
+        <li style="text-align: justify; font-size: 120%; color: #fefae0;">
+            最初は、プログラムが自動的にキャラクタに目的地を指定する。
+        </li>
+        <li style="text-align: justify; font-size: 120%; color: #fefae0;">
+            目的地に着くと、椅子に座る。
+        </li>
+        <li style="text-align: justify; font-size: 120%; color: #fefae0;">
+            また歩き出すために、画面をクリックするだけである。
+        </li>
+    </ul> 
+</p>
+
+
+<!-- <UL> -->
+<!-- <LI>ソースファイル：<A HREF="ソースファイル.c"><TT>ソースファイル.c</TT></A> -->
+<!-- 分割ソースの場合，もちろん，HREF="圧縮ファイル.tgz" -->
+<!-- <LI>コンパイル：<TT>$ cc ... -lncurses</TT> -->
+<!-- Makefile の場合，もちろん，$ tar zxvf ...; cd ...; make -->
+<!-- </UL> -->
+<!-- <P> -->
+
+<br>
+<H2 style="color: #fefae0; font-size: 150%;">開発者向けの説明</H2>
+<p style="text-align: justify; font-size: 120%; color: #fefae0;">
+    表示されている画像を変化させることでアニメーションを作成します。<br>
+    使用する画像を変更するために、ファイル名を格納するStringフィールド <code>String fileName;</code> を使用した。ロードされた画像ファイルがこのフィールド値に基づいていることを意味する。<br>
+    このフィールドは、他のフィールド、<code>String name; String action; String direction; int index;</code> によって決定される。<br>
+    <code> this.fileName = "res\\" +this.name + "_" + this.action + "_" + this.direction + "_" + this.index + ".png";</code> <br>
+    このプログラムは、繰り返し実行するたびに、これらのフィールドの値を変化させる。<br>
+    例えば、キャラクターが右に移動する場合、<code>this.setDirection("right");</code> 方向フィールドは "right"に変更されます<br>
+    キャラクターが目的地に到着すれば、<code>this.setAction("sit");</code> フィールドの値は "sit "に変更されます。
+</p>
+
+<H2 style="color: #fefae0; font-size: 150%;">クラス分割の説明</H2>
+<p>
+
+</p>
+
+<UL>
+<LI>...
+<LI>...
+<LI>...
+</UL>
+
+<HR>
+
+<DIV>
+</DIV>
+</BODY>
+</HTML>
