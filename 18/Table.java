@@ -6,7 +6,7 @@ public class Table extends Furniture {
     public Table(int x, int y, int height, int width, GridSystem gridSystem) {
         super(x, y, height, width, gridSystem);
         this.updateGridTraversable();
-        this.loadSprite("res\\table0.png");
+        this.loadSprite("res/table0.png");
     }
 
     public LinkedList<Point> getChairPosition() {

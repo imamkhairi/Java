@@ -14,13 +14,12 @@ public class MyPanel extends JPanel implements MouseListener{
     private LinkedList<Point> chairPoints;
 
 
-    public MyPanel(Dimension windowSize, int gridSize, NPC customer, StageData stageData, LinkedList<Point> chairPoints) {
+    public MyPanel(Dimension windowSize, int gridSize, NPC customer, StageData stageData, LinkedList<Point> chairPoints, JFrame frame) {
         this.windowSize = windowSize;
         this.setPreferredSize(this.windowSize);
         this.bi = new BufferedImage(this.windowSize.width, this.windowSize.height, BufferedImage.TYPE_INT_ARGB);
         this.gridSize = gridSize;
         this.customer = customer;
-        // this.gridSystem = gridSystem;
         this.stageData = stageData;
         this.chairPoints = chairPoints;
 
@@ -108,9 +107,8 @@ public class MyPanel extends JPanel implements MouseListener{
     @Override
     public void mouseClicked(MouseEvent e) {
         if(this.customer.getPhase() == 1) {
-            System.out.println("bisa");
             this.customer.startNewPath(this.chairPoints.get((int)(Math.random()*36)));
-            System.out.println(this.customer.getPhase());
+            // System.out.println(this.customer.getPhase());
         }
     }
 

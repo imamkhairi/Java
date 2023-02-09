@@ -64,28 +64,103 @@
 </p>
 
 <H2 style="color: #fefae0; font-size: 150%;">クラス分割の説明</H2>
-<p>
-    How the class partitioning was done. What data is being passed from one class to another, when, how, and from which class to another.
-
-
-
-    Entity -> NPC
-    
-    Furniture -> Chair (
-             Table
-    
-    GridData -> data for a grid
-    GridSystem -> save all the grid value and control how the grid behaviour
-    
-    MyFrame -> where everything instantiated and passed to the panel to get drawn
-    
-    MyPanel -> Used to draw everything, which means this class will take every data from MyFrame
-    
-    PathFinder
-    
-    StageData -> contain every data about the layout of the background and its component(Chair, table)
-    
-</p>
+<style>
+    table,th,td {
+        border: 1px solid #fefae0;
+        border-collapse: collapse;
+        color: #fefae0;
+    }
+    th {
+        font-size: 120%;
+        width: fit-content;
+    }
+</style>
+<table>
+    <tr>
+        <th>Class</th>
+        <th>Parent</th>
+        <th>Child</th>
+        <th>機能</th>
+        <th>MVC</th>
+    </tr>
+    <tr>
+        <td>Chair</td>
+        <td>Furniture</td>
+        <td>-</td>
+        <td>椅子の描画に必要なデータ</td>
+        <td>Model</td>
+    </tr>
+    <tr>
+        <td>Entity</td>
+        <td>-</td>
+        <td>NPC</td>
+        <td>プレイヤーキャラクターとNPCの親クラス</td>
+        <td>Model</td>
+    </tr>
+    <tr>
+        <td>Furniture</td>
+        <td>-</td>
+        <td>Chair, Table</td>
+        <td>椅子とテーブルの親クラスになり、相互フィールドがここに格納される</td>
+        <td>Model</td>
+    </tr>
+    <tr>
+        <td>GridData</td>
+        <td>-</td>
+        <td>-</td>
+        <td>1つのグリッドに必要なすべてのデータを保存する</td>
+        <td>Model</td>
+    </tr>
+    <tr>
+        <td>GridSystem</td>
+        <td>-</td>
+        <td>-</td>
+        <td>GridData クラスをまとめて、グリッドの動作を制御する</td>
+        <td>Model</td>
+    </tr>
+    <tr>
+        <td>MyFrame</td>
+        <td>JFrame</td>
+        <td>-</td>
+        <td>このプログラムのフレームを作成する</td>
+        <td>Controller</td>
+    </tr>
+    <tr>
+        <td>MyPanel</td>
+        <td>JPanel</td>
+        <td>-</td>
+        <td>このプログラムで使用されるすべての画像の描画パネルを提供する</td>
+        <td>View</td>
+    </tr>
+    <tr>
+        <td>NPC</td>
+        <td>Entity</td>
+        <td>-</td>
+        <td>NPCに必要なすべてのデータが含まれています。つまり、このクラスにはPathFinderクラスのフィールドがある。</td>
+        <td>Model</td>
+    </tr>
+    <tr>
+        <td>PathFinder</td>
+        <td>-</td>
+        <td>-</td>
+        <td>NPCが目的地に行くためにどのような経路をとるべきかを計算する。</td>
+        <td>Model</td>
+    </tr>
+    <tr>
+        <td>StageData</td>
+        <td>-</td>
+        <td>-</td>
+        <td>背景とそのコンポーネント(椅子、テーブル)のレイアウトに関するすべてのデータが含まれている。</td>
+        <td>Model</td>
+    </tr>
+    <tr>
+        <td>Table</td>
+        <td>Furniture</td>
+        <td>-</td>
+        <td>テーブルの描画に必要なデータ</td>
+        <td>Model</td>
+    </tr>
+</table>
 
 <UL>
 <LI>...

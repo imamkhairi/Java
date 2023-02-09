@@ -43,7 +43,7 @@ public class Entity {
     }
 
     public void setFileName() {
-        this.fileName = "res\\" +this.name + "_" + this.action + "_" + this.direction + "_" + this.index + ".png";
+        this.fileName = "res/" +this.name + "_" + this.action + "_" + this.direction + "_" + this.index + ".png";
     }
 
     public void increaseIndex() {

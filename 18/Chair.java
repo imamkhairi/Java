@@ -4,7 +4,7 @@ public class Chair extends Furniture {
     public Chair(int x, int y, int height, int width, GridSystem gridSystem) {
         super(x, y, height, width, gridSystem);
         this.occupied = false;
-        this.loadSprite("res\\chair0.png");
+        this.loadSprite("res/chair0.png");
         // this.updateGridTraversable();
     }
 

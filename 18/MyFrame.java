@@ -32,7 +32,7 @@ public class MyFrame extends JFrame implements ActionListener{
         
         this.customerNPC = new NPC(new Point(14,14+(int)(Math.random()*2)), this.chairPoints.get((int)(Math.random()*36)), this.gridSize, this.gridSystem);
         
-        this.gamePanel = new MyPanel(this.windowSize, this.gridSize, this.customerNPC, this.stageData, this.chairPoints);
+        this.gamePanel = new MyPanel(this.windowSize, this.gridSize, this.customerNPC, this.stageData, this.chairPoints, this);
         this.getContentPane().add(this.gamePanel);
         this.pack();
         this.setResizable(false);
@@ -43,6 +43,18 @@ public class MyFrame extends JFrame implements ActionListener{
         this.i = 0;
         this.timer = new Timer(1000/this.fps, this);
         this.timer.start();
+
+        KeyAdapter listener = new KeyAdapter() {
+            @Override public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+
+            if(key == KeyEvent.VK_Q) {
+                System.exit(0);
+            }
+            }
+        };
+
+        this.addKeyListener(listener);
     }
     
     public static void main(String[] args) {

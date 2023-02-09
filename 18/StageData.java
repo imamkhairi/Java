@@ -52,7 +52,7 @@ public class StageData {
 
     private void loadBackground() {
         try {
-            this.backgroundImage = ImageIO.read(getClass().getResourceAsStream("res\\backgroundtest.png"));
+            this.backgroundImage = ImageIO.read(getClass().getResourceAsStream("res/backgroundtest.png"));
         } catch(IOException e) {
             e.printStackTrace();
         }
