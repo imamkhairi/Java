@@ -54,7 +54,7 @@ public class MyFrame extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(this.i == 3) {
+        if(this.i == 4) {
             this.customerNPC.move();
             this.gamePanel.repaint();  
             this.i = 0;

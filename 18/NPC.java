@@ -136,10 +136,5 @@ public class NPC extends Entity {
         this.setCurrentPoint(new Point(this.startPoint.x/64, this.startPoint.y/64));
         this.endPoint = new Point(p.x*64, p.y*64);
         this.setPath(this.pathFinder.startPathFinding(this.startPoint, this.getCurrentPoint(), this.endPoint, 64));
-
-        System.out.println("start : " + this.startPoint);
-        System.out.println("current : " + this.getCurrentPoint());
-        System.out.println("end : " + this.endPoint);
-        
     }
 }
