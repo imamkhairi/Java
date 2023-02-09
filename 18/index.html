@@ -26,6 +26,9 @@
 </A>
 </CENTER>
 
+<H2 style="color: #fefae0; font-size: 150%;">ソースプログラム</H2>
+
+
 <H2 style="color: #fefae0; font-size: 150%;">ユーザー向けの説明</H2>
 <p style="text-align: justify; font-size: 120%; color: #fefae0;">
     キャラクタは、1フレームごとに使用する画像を変えてアニメーションさせる。
@@ -39,17 +42,12 @@
         <li style="text-align: justify; font-size: 120%; color: #fefae0;">
             また歩き出すために、画面をクリックするだけである。
         </li>
+        <li style="text-align: justify; font-size: 120%; color: #fefae0;">
+            プログラムを終了するには、qを押す。
+        </li>
     </ul> 
 </p>
 
-
-<!-- <UL> -->
-<!-- <LI>ソースファイル：<A HREF="ソースファイル.c"><TT>ソースファイル.c</TT></A> -->
-<!-- 分割ソースの場合，もちろん，HREF="圧縮ファイル.tgz" -->
-<!-- <LI>コンパイル：<TT>$ cc ... -lncurses</TT> -->
-<!-- Makefile の場合，もちろん，$ tar zxvf ...; cd ...; make -->
-<!-- </UL> -->
-<!-- <P> -->
 
 <br>
 <H2 style="color: #fefae0; font-size: 150%;">開発者向けの説明</H2>
@@ -62,6 +60,7 @@
     例えば、キャラクターが右に移動する場合、<code>this.setDirection("right");</code> 方向フィールドは "right"に変更されます<br>
     キャラクターが目的地に到着すれば、<code>this.setAction("sit");</code> フィールドの値は "sit "に変更されます。
 </p>
+
 
 <H2 style="color: #fefae0; font-size: 150%;">クラス分割の説明</H2>
 <style>
@@ -162,11 +161,20 @@
     </tr>
 </table>
 
-<UL>
-<LI>...
-<LI>...
-<LI>...
-</UL>
+<style>
+    li {
+        color: #fefae0;
+        font-size: 120%;
+    }
+</style>
+<H2 style="color: #fefae0; font-size: 150%;">改善案</H2>
+<ul>
+    <li>プレイヤーキャラクターを作る</li>
+    <li>キャラクターは椅子の位置を横断してはいけません</li>
+    <li>ある種のミニゲームを含む</li>
+    <li>PathFinderアルゴリズムはまた最適化される</li>
+    <li>2Dに奥行きを持たせるには、y座標値が大きいコンポーネントをy座標値が小さいコンポーネントの上に描画する必要がある</li>
+</ul>
 
 <HR>
 

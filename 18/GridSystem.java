@@ -9,12 +9,8 @@ public class GridSystem {
 
     public GridSystem(Dimension windowSize) {
         this.windowSize = windowSize;
-
         this.rowCount = (int)this.windowSize.getHeight()/this.gridSize;    
         this.columnCount = (int)this.windowSize.getWidth()/this.gridSize; 
-
-        // System.out.println(this.rowCount + ", " +this.columnCount);
-        
         this.gridData = new GridData[this.columnCount][this.rowCount];
 
         for(int i = 0; i < this.columnCount; i++) {

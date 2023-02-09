@@ -6,9 +6,7 @@ public class NPC extends Entity {
     private Point startPoint;
     private Point endPoint;
     private Point bufferPoint;
-
     private LinkedList<Point> path;
-
     private int phase;
 
     
@@ -123,9 +121,6 @@ public class NPC extends Entity {
         } else {
             if(this.phase == 0) {
                 this.phase++;
-                System.out.println("start : " + this.startPoint);
-                System.out.println("current : " + this.getCurrentPoint());
-                System.out.println("end : " + this.endPoint);
             }
         }
 

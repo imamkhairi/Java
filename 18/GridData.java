@@ -2,7 +2,7 @@ import java.awt.*;
 
 public class GridData {
     private boolean traversable;
-    private Point coordinate; // point di sini masih gk jelas gunanya apa
+    private Point coordinate; 
 
     public GridData(boolean t, Point p) {
         this.traversable = t;

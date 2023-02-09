@@ -6,32 +6,23 @@ import javax.swing.*;
 public class MyFrame extends JFrame implements ActionListener{
     private Timer timer;
     private int i;
-
     private MyPanel gamePanel;
     private GridSystem gridSystem;
     private NPC customerNPC;
     private StageData stageData;
-
     private LinkedList<Point> chairPoints;
-
     private final Dimension windowSize = new Dimension(1920, 1080);
     private int gridSize; 
-
     private final int fps = 60;
 
 
     public MyFrame() {
         super();
-        
-        
         this.gridSystem = new GridSystem(this.windowSize);
         this.gridSize = this.gridSystem.getGridSize();
-        
         this.stageData = new StageData(this.gridSystem);
         this.chairPoints = this.stageData.getChairPoints();
-        
         this.customerNPC = new NPC(new Point(14,14+(int)(Math.random()*2)), this.chairPoints.get((int)(Math.random()*36)), this.gridSize, this.gridSystem);
-        
         this.gamePanel = new MyPanel(this.windowSize, this.gridSize, this.customerNPC, this.stageData, this.chairPoints, this);
         this.getContentPane().add(this.gamePanel);
         this.pack();

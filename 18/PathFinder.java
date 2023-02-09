@@ -48,9 +48,6 @@ public class PathFinder {
         return result;
     }
     public LinkedList<Point> startPathFinding(Point startPoint, Point currentPoint, Point endPoint, int gridSize) {
-        // this.start = this.convertPoint(startPoint, gridSize);
-        // this.current = this.convertPoint(currentPoint, gridSize);
-        // this.end = this.convertPoint(endPoint, gridSize);
         this.open.clear();
         this.close.clear();
         this.nbr.clear();

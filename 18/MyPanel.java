@@ -63,8 +63,6 @@ public class MyPanel extends JPanel implements MouseListener{
 
     // NPC
     public void drawCustomer(Graphics2D g2) {
-        // int x = this.changeToGridCoordinate(this.customer.getCurrentPoint().x);
-        // int y = this.changeToGridCoordinate(this.customer.getCurrentPoint().y - 1);
         int x = this.customer.getCurrentPoint().x;
         int y = this.customer.getCurrentPoint().y - this.gridSize;
 
@@ -108,7 +106,6 @@ public class MyPanel extends JPanel implements MouseListener{
     public void mouseClicked(MouseEvent e) {
         if(this.customer.getPhase() == 1) {
             this.customer.startNewPath(this.chairPoints.get((int)(Math.random()*36)));
-            // System.out.println(this.customer.getPhase());
         }
     }
 

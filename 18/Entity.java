@@ -25,8 +25,6 @@ public class Entity {
         this.setFileName();
         this.currentPoint = new Point(start.x * this.gridSize, start.y * this.gridSize);
 
-        // this.sprite = new BufferedImage[6];
-        // this.loadBuffer();
         this.loadSprite();
     }
 
